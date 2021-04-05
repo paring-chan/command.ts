@@ -5,7 +5,7 @@ import { COMMANDS_KEY } from '../constants'
 export function command(
   opts: Partial<ICommandDecoratorOptions> = {},
 ): MethodDecorator {
-  return (target, propertyKey, descriptor) => {
+  return (target, propertyKey) => {
     if (!(target instanceof Module)) {
       throw new TypeError('Class does not extends `Module` class.')
     }
@@ -20,7 +20,7 @@ export function command(
       description: opts.description,
       name: propertyKey as string,
       usesCtx: types[0] === Context,
-      args: types.slice(1).map((x, y) => ({
+      args: types.slice(1).map((x) => ({
         type: x,
         optional: false, // not implemented
       })),
