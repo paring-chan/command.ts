@@ -6,7 +6,7 @@ export function command(
 ): MethodDecorator {
   return (target, propertyKey, descriptor) => {
     if (!(target instanceof Module)) {
-      throw new TypeError("Command decorator must be used in `Module` class.")
+      throw new TypeError("Class does not extends `Module` class.")
     }
   }
 }
