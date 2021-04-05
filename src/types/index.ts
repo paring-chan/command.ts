@@ -18,3 +18,6 @@ export interface ICommandDecoratorMetadata {
   optional: boolean
   usesCtx: boolean
 }
+
+export type ICommandDecorator = ICommandDecoratorOptions &
+  ICommandDecoratorMetadata
