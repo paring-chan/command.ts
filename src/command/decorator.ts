@@ -1,10 +1,5 @@
 import { Module } from "../structures"
-
-export interface ICommandDecoratorOptions {
-  aliases: string[]
-  brief: string
-  description: string
-}
+import { ICommandDecoratorOptions } from ".."
 
 export function command(
   opts: Partial<ICommandDecoratorOptions> = {},
