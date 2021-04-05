@@ -1,5 +1,6 @@
 import { Context, Module } from '../structures'
 import { ICommandDecorator, ICommandDecoratorOptions } from '..'
+import { COMMANDS_KEY } from '../constants'
 
 export function command(
   opts: Partial<ICommandDecoratorOptions> = {},
@@ -24,5 +25,9 @@ export function command(
         optional: false, // not implemented
       })),
     }
+    const metas: ICommandDecorator[] =
+      Reflect.getMetadata(COMMANDS_KEY, target) || []
+    metas.push(meta)
+    Reflect.defineMetadata(COMMANDS_KEY, metas, target)
   }
 }
