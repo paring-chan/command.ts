@@ -8,5 +8,10 @@ export function command(
     if (!(target instanceof Module)) {
       throw new TypeError('Class does not extends `Module` class.')
     }
+    const types: Function[] = Reflect.getMetadata(
+      'design:paramtypes',
+      target,
+      propertyKey,
+    )
   }
 }
