@@ -4,8 +4,8 @@ export type CommandClientOptions = {
 
 export interface ICommandDecoratorOptions {
   aliases: string[]
-  brief: string
-  description: string
+  brief?: string
+  description?: string
 }
 
 export interface ICommandArgument {
