@@ -1,6 +1,14 @@
-import Discord from 'discord.js'
-import {CommandClient} from "../dist";
+import Discord from "discord.js"
+import { command, CommandClient, Module } from "../dist"
 
-const client = new CommandClient({
-    intents: Discord.Intents.ALL
-}, {})
+class TestModule extends Module {
+  @command()
+  async test() {}
+}
+
+const client = new CommandClient(
+  {
+    intents: Discord.Intents.ALL,
+  },
+  {},
+)
