@@ -1,1 +1,5 @@
-export class Context {}
+import { Message } from 'discord.js'
+
+export class Context {
+  constructor(public msg: Message) {}
+}
