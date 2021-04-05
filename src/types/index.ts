@@ -1,3 +1,3 @@
 export type CommandClientOptions = {
-    owners?: string[] | 'auto'
+  owners?: string[] | "auto"
 }

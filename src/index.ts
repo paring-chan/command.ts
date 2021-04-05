@@ -1,2 +1,2 @@
-import 'reflect-metadata'
-export * from './structures'
+import "reflect-metadata"
+export * from "./structures"

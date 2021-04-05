@@ -1,4 +1,3 @@
 export function command(): MethodDecorator {
-    return (target, propertyKey, descriptor) => {
-    }
+  return (target, propertyKey, descriptor) => {}
 }
