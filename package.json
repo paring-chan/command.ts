@@ -5,7 +5,8 @@
   "types": "dist/index.d.ts",
   "license": "MIT",
   "devDependencies": {
-    "discord.js": "discordjs/discord.js"
+    "discord.js": "discordjs/discord.js",
+    "prettier": "^2.2.1"
   },
   "dependencies": {
     "reflect-metadata": "^0.1.13"
