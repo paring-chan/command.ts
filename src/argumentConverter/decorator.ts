@@ -1,19 +1,18 @@
 import { Module } from '../structures'
-// import { IListener, ListenerDecorator } from '..'
-// import { LISTENERS_KEY } from '../constants'
+import { IArgConverterDecorator } from '../types'
+import { ARG_CONVERTER_KEY } from '../constants'
 
-export function argConverter(event: string): MethodDecorator {
+export function argConverter(type: Function): MethodDecorator {
   return (target, propertyKey) => {
     if (!(target instanceof Module)) {
       throw new TypeError('Class does not extend `Module` class.')
     }
-    // const meta: ListenerDecorator = {
-    //   event,
-    //   id: target.constructor.name + ':' + (propertyKey as string),
-    //   key: propertyKey as string,
-    // }
-    // const metas: IListener[] = Reflect.getMetadata(LISTENERS_KEY, target) || []
-    // metas.push(meta)
-    // Reflect.defineMetadata(LISTENERS_KEY, metas, target)
+    const meta: IArgConverterDecorator = {
+      type,
+    }
+    const metas: IArgConverterDecorator[] =
+      Reflect.getMetadata(ARG_CONVERTER_KEY, target) || []
+    metas.push(meta)
+    Reflect.defineMetadata(ARG_CONVERTER_KEY, metas, target)
   }
 }

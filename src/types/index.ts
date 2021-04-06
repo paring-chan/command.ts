@@ -50,3 +50,12 @@ export type Listener = IListener & {
   wrapper: (...args: any[]) => any
   module: Module
 }
+
+export interface IArgConverterDecorator {
+  type: Function
+}
+
+export interface ArgConverter {
+  type: Function
+  convert: (arg: string) => any
+}
