@@ -24,15 +24,14 @@ export class CommandManager {
       module,
     )
     if (!decorators) return
-    const commands: Command[] = decorators.map((v, k) => ({
+    const commands: Command[] = decorators.map((v) => ({
       usesCtx: v.usesCtx,
       args: v.args,
       brief: v.brief,
       description: v.description,
       module: module,
       name: v.name,
-      // @ts-ignore
-      execute: module[v.key],
+      execute: Reflect.get(module, v.key),
       aliases: v.aliases,
     }))
     this.commands.set(module, commands)
@@ -44,7 +43,7 @@ export class CommandManager {
       module,
     )
     if (!decorators) return
-    const converters: ArgConverter[] = decorators.map((v, k) => ({
+    const converters: ArgConverter[] = decorators.map((v) => ({
       convert: Reflect.get(module, v.key),
       type: v.type,
     }))
