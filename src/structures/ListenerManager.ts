@@ -26,7 +26,8 @@ export class ListenerManager {
       id: x.id,
       module,
       event: x.event,
-      wrapper: (...args: any[]) => Reflect.get(module, x.key)(...args),
+      wrapper: (...args: any[]) =>
+        Reflect.get(module, x.key).apply(module, args),
     }))
 
     listeners.forEach((listener) =>

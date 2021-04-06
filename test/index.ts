@@ -1,5 +1,7 @@
 import Discord from 'discord.js'
-import { command, CommandClient, Context, listener, Module } from '../dist'
+import { CommandClient, listener, Module } from '../dist'
+// @ts-ignore
+import config from './config.json'
 
 class TestModule extends Module {
   constructor(private client: CommandClient) {
@@ -20,3 +22,5 @@ const client = new CommandClient(
 )
 
 client.registry.registerModule('test', new TestModule(client))
+
+client.login(config.token)
