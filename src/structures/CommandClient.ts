@@ -1,6 +1,5 @@
 import { Client, ClientOptions } from 'discord.js'
-import { CommandClientOptions, Registry } from '..'
-import { CommandHandler } from '../defaultModules/CommandHandler'
+import { CommandClientOptions, Registry, CommandHandler } from '..'
 
 export class CommandClient extends Client {
   registry = new Registry(this)

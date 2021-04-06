@@ -18,6 +18,12 @@ export class CommandManager {
     return result
   }
 
+  get argConverterList(): ArgConverter[] {
+    const result: ArgConverter[] = []
+    this.argumentConverters.forEach((x) => result.push(...x))
+    return result
+  }
+
   private registerCommands(module: Module) {
     const decorators: ICommandDecorator[] = Reflect.getMetadata(
       COMMANDS_KEY,

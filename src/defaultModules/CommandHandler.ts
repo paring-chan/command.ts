@@ -1,6 +1,6 @@
-import { CommandClient, Module } from '../structures'
-import { listener } from '../listener'
 import { Message } from 'discord.js'
+import { CommandClient, Context, Module } from '../structures'
+import { listener } from '../listener'
 
 export class CommandHandler extends Module {
   constructor(private client: CommandClient) {
@@ -23,8 +23,42 @@ export class CommandHandler extends Module {
     if (!cmd) return
     const commandArgs = cmd.args
     const parsedArgs: any[] = []
-    args.forEach((v, i) => {
+    for (const i in commandArgs) {
+      const v = args[i]
       const arg = commandArgs[i]
-    })
+      if (arg.type === String) {
+        parsedArgs[i] = v
+        continue
+      }
+      const converter = this.client.registry.commandManager.argConverterList.find(
+        (x) => x.type === arg.type,
+      )
+      if (converter) {
+        try {
+          parsedArgs[i] = await converter.convert.apply(module, [v])
+        } catch (e) {
+          return this.client.emit('commandError', msg, e)
+        }
+      } else {
+        return this.client.emit(
+          'commandError',
+          new Error(
+            `No converter found for type ${arg.type.constructor.name}.`,
+          ),
+        )
+      }
+    }
+    const executeArgs = []
+    if (cmd.usesCtx) {
+      executeArgs[0] = new Context(msg)
+    } else {
+      executeArgs[0] = msg
+    }
+    executeArgs.push(...parsedArgs)
+    try {
+      cmd.execute.apply(cmd.module, executeArgs)
+    } catch (e) {
+      this.client.emit('commandError', e, msg)
+    }
   }
 }

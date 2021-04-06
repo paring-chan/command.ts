@@ -1,4 +1,4 @@
-export * from './CommandClient'
-export * from './Module'
-export * from './Context'
-export * from './Registry'
+export { CommandClient } from './CommandClient'
+export { Module } from './Module'
+export { Context } from './Context'
+export { Registry } from './Registry'
