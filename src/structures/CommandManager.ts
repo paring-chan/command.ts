@@ -25,5 +25,7 @@ export class CommandManager {
     this.commands.set(module, commands)
   }
 
-  unregister(module: Module) {}
+  unregister(module: Module) {
+    this.commands.delete(module)
+  }
 }
