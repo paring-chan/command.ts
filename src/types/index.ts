@@ -1,7 +1,8 @@
 import { Module } from '../structures'
 
 export type CommandClientOptions = {
-  owners?: string[] | 'auto'
+  owners: string[] | 'auto'
+  prefix: string
 }
 
 export interface ICommandDecoratorOptions {
@@ -29,6 +30,7 @@ export interface Command {
   execute: Function
   args: ICommandArgument[]
   name: string
+  aliases: string[]
   description?: string
   brief?: string
   usesCtx: boolean

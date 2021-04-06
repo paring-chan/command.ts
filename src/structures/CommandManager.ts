@@ -6,6 +6,12 @@ import { COMMANDS_KEY } from '../constants'
 export class CommandManager {
   commands: Collection<Module, Command[]> = new Collection()
 
+  get commandList(): Command[] {
+    const result: Command[] = []
+    this.commands.forEach((x) => result.push(...x))
+    return result
+  }
+
   register(module: Module) {
     const decorators: ICommandDecorator[] = Reflect.getMetadata(
       COMMANDS_KEY,
@@ -21,6 +27,7 @@ export class CommandManager {
       name: v.name,
       // @ts-ignore
       execute: module[v.key],
+      aliases: v.aliases,
     }))
     this.commands.set(module, commands)
   }
