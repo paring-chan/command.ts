@@ -1,4 +1,4 @@
-import { Module } from '../structures/Module'
+import { Module } from '../structures'
 import { Collection } from 'discord.js'
 import { Command, ICommandDecorator } from '../types'
 import { COMMANDS_KEY } from '../constants'
@@ -12,7 +12,7 @@ export class CommandManager {
     return result
   }
 
-  register(module: Module) {
+  private registerCommands(module: Module) {
     const decorators: ICommandDecorator[] = Reflect.getMetadata(
       COMMANDS_KEY,
       module,
@@ -30,6 +30,12 @@ export class CommandManager {
       aliases: v.aliases,
     }))
     this.commands.set(module, commands)
+  }
+
+  registerArgConverter(module: Module) {}
+
+  register(module: Module) {
+    this.registerCommands(module)
   }
 
   unregister(module: Module) {
