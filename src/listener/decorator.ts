@@ -2,7 +2,7 @@ import { Module } from '../structures'
 import { IListener } from '..'
 import { LISTENERS_KEY } from '../constants'
 
-export function command(event: string): MethodDecorator {
+export function listener(event: string): MethodDecorator {
   return (target, propertyKey) => {
     if (!(target instanceof Module)) {
       throw new TypeError('Class does not extend `Module` class.')
