@@ -1,10 +1,14 @@
 import Discord from 'discord.js'
-import { command, CommandClient, Context, Module } from '../dist'
+import { command, CommandClient, Context, listener, Module } from '../dist'
 
 class TestModule extends Module {
-  @command()
-  async test(ctx: Context, test: string) {
-    console.log(test)
+  constructor(private client: CommandClient) {
+    super()
+  }
+
+  @listener('ready')
+  async ready() {
+    console.log(`Logged in as ${this.client.user!.tag}`)
   }
 }
 
@@ -15,4 +19,4 @@ const client = new CommandClient(
   {},
 )
 
-client.registry.registerModule('test', new TestModule())
+client.registry.registerModule('test', new TestModule(client))
