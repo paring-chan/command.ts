@@ -18,12 +18,13 @@ export function command(
       aliases: opts.aliases || [],
       brief: opts.brief,
       description: opts.description,
-      name: propertyKey as string,
+      name: opts.name || (propertyKey as string),
       usesCtx: types[0] === Context,
       args: types.slice(1).map((x) => ({
         type: x,
         optional: false, // not implemented
       })),
+      key: propertyKey as string,
     }
     const metas: ICommandDecorator[] =
       Reflect.getMetadata(COMMANDS_KEY, target) || []

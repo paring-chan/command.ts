@@ -19,6 +19,7 @@ export interface ICommandArgument {
 export interface ICommandDecoratorMetadata {
   args: ICommandArgument[]
   usesCtx: boolean
+  key: string
 }
 
 export type ICommandDecorator = ICommandDecoratorOptions &
