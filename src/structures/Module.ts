@@ -1,1 +1,5 @@
-export class Module {}
+export class Module {
+  load() {}
+
+  unload() {}
+}
