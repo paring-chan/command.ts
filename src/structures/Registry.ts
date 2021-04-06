@@ -8,5 +8,6 @@ export class Registry {
 
   registerModule(id: string, module: Module) {
     this.modules.set(id, module)
+    this.commandManager.register(module)
   }
 }

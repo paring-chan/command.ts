@@ -7,7 +7,10 @@ export class CommandManager {
   commands: Collection<Module, Command[]> = new Collection()
 
   register(module: Module) {
-    const decorators: ICommandDecorator[] = Reflect.get(module, COMMANDS_KEY)
+    const decorators: ICommandDecorator[] = Reflect.getMetadata(
+      COMMANDS_KEY,
+      module,
+    )
     if (!decorators) return
     const commands: Command[] = decorators.map((v, k) => ({
       usesCtx: v.usesCtx,
@@ -19,7 +22,7 @@ export class CommandManager {
       // @ts-ignore
       execute: module[v.key],
     }))
-    console.log(commands)
+    this.commands.set(module, commands)
   }
 
   unregister(module: Module) {}

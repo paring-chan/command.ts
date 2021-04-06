@@ -14,3 +14,5 @@ const client = new CommandClient(
   },
   {},
 )
+
+client.registry.registerModule('test', new TestModule())
