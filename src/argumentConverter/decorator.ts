@@ -9,6 +9,7 @@ export function argConverter(type: Function): MethodDecorator {
     }
     const meta: IArgConverterDecorator = {
       type,
+      key: propertyKey as string,
     }
     const metas: IArgConverterDecorator[] =
       Reflect.getMetadata(ARG_CONVERTER_KEY, target) || []

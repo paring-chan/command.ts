@@ -1,7 +1,12 @@
 import { Module } from '../structures'
 import { Collection } from 'discord.js'
-import { ArgConverter, Command, ICommandDecorator } from '../types'
-import { COMMANDS_KEY } from '../constants'
+import {
+  ArgConverter,
+  Command,
+  IArgConverterDecorator,
+  ICommandDecorator,
+} from '../types'
+import { ARG_CONVERTER_KEY, COMMANDS_KEY } from '../constants'
 
 export class CommandManager {
   commands: Collection<Module, Command[]> = new Collection()
@@ -33,9 +38,21 @@ export class CommandManager {
     this.commands.set(module, commands)
   }
 
-  registerArgConverter(module: Module) {}
+  registerArgConverter(module: Module) {
+    const decorators: IArgConverterDecorator[] = Reflect.getMetadata(
+      ARG_CONVERTER_KEY,
+      module,
+    )
+    if (!decorators) return
+    const converters: ArgConverter[] = decorators.map((v, k) => ({
+      convert: Reflect.get(module, v.key),
+      type: v.type,
+    }))
+    this.argumentConverters.set(module, converters)
+  }
 
   register(module: Module) {
+    this.registerArgConverter(module)
     this.registerCommands(module)
   }
 

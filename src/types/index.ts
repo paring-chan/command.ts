@@ -53,6 +53,7 @@ export type Listener = IListener & {
 
 export interface IArgConverterDecorator {
   type: Function
+  key: string
 }
 
 export interface ArgConverter {
