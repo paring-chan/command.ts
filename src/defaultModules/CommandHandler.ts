@@ -26,6 +26,12 @@ export class CommandHandler extends Module {
     for (const i in commandArgs) {
       const v = args[i]
       const arg = commandArgs[i]
+      if (!arg.optional && !v) {
+        return this.client.emit(
+          'commandError',
+          new Error(`An argument is required but not provided.`),
+        )
+      }
       if (arg.type === String) {
         parsedArgs[i] = v
         continue
