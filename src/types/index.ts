@@ -34,3 +34,10 @@ export interface Command {
   usesCtx: boolean
   module: Module
 }
+
+export interface IListener {
+  event: string
+  id: string
+  module: Module
+  execute: Function
+}
