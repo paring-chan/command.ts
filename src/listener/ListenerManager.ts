@@ -1,8 +1,8 @@
 import { Collection } from 'discord.js'
-import { Module } from '../structures/Module'
+import { Module } from '../structures'
 import { Listener, ListenerDecorator } from '../types'
 import { LISTENERS_KEY } from '../constants'
-import { CommandClient } from '../structures/CommandClient'
+import { CommandClient } from '../structures'
 
 export class ListenerManager {
   listeners: Collection<Module, Listener[]> = new Collection()
