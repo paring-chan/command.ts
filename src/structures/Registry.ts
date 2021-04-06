@@ -1,8 +1,8 @@
 import { Module } from './Module'
 import { Collection } from 'discord.js'
-import { CommandManager } from './CommandManager'
+import { CommandManager } from '../command'
 import { CommandClient } from './CommandClient'
-import { ListenerManager } from './ListenerManager'
+import { ListenerManager } from '../listener'
 
 export class Registry {
   constructor(private client: CommandClient) {}

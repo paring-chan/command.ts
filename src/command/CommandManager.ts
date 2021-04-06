@@ -1,4 +1,4 @@
-import { Module } from './Module'
+import { Module } from '../structures/Module'
 import { Collection } from 'discord.js'
 import { Command, ICommandDecorator } from '../types'
 import { COMMANDS_KEY } from '../constants'
