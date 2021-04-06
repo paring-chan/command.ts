@@ -1,10 +1,11 @@
 import { Module } from '../structures'
 import { Collection } from 'discord.js'
-import { Command, ICommandDecorator } from '../types'
+import { ArgConverter, Command, ICommandDecorator } from '../types'
 import { COMMANDS_KEY } from '../constants'
 
 export class CommandManager {
   commands: Collection<Module, Command[]> = new Collection()
+  argumentConverters: Collection<Module, ArgConverter[]> = new Collection()
 
   get commandList(): Command[] {
     const result: Command[] = []
