@@ -38,6 +38,13 @@ export interface Command {
 export interface IListener {
   event: string
   id: string
+}
+
+export type ListenerDecorator = IListener & {
+  key: string
+}
+
+export type Listener = IListener & {
+  wrapper: (...args: any[]) => any
   module: Module
-  execute: Function
 }

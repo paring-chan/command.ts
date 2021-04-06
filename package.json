@@ -5,6 +5,7 @@
   "types": "dist/index.d.ts",
   "license": "MIT",
   "devDependencies": {
+    "@types/node": "^14.14.37",
     "discord.js": "discordjs/discord.js",
     "prettier": "^2.2.1"
   },

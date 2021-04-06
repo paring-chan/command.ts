@@ -1,5 +1,5 @@
 import { Module } from '../structures'
-import { IListener } from '..'
+import { IListener, ListenerDecorator } from '..'
 import { LISTENERS_KEY } from '../constants'
 
 export function listener(event: string): MethodDecorator {
@@ -7,11 +7,10 @@ export function listener(event: string): MethodDecorator {
     if (!(target instanceof Module)) {
       throw new TypeError('Class does not extend `Module` class.')
     }
-    const meta: IListener = {
+    const meta: ListenerDecorator = {
       event,
-      execute: Reflect.get(target, propertyKey),
-      module: target,
       id: target.constructor.name + ':' + (propertyKey as string),
+      key: propertyKey as string,
     }
     const metas: IListener[] = Reflect.getMetadata(LISTENERS_KEY, target) || []
     metas.push(meta)
