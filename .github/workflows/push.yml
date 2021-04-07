@@ -14,4 +14,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_REGISTRY_URL: 'npm.pkg.github.com'
