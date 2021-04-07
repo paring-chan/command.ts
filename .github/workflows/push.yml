@@ -11,6 +11,6 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
           scope: '@pikokr'
       - run: yarn && yarn tsc
-      - run: npm publish
+      - run: npm publish --force
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
