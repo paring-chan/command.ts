@@ -12,6 +12,8 @@ jobs:
           scope: '@pikokr'
       - run: yarn && yarn tsc
       - run: npm unpublish @pikokr/command.ts-v2@1.0.0
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
