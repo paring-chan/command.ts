@@ -42,6 +42,12 @@ export class CommandHandler extends Module {
       if (converter) {
         try {
           parsedArgs[i] = await converter.convert.apply(module, [v, msg])
+          if (!parsedArgs[i]) {
+            return this.client.emit(
+              'commandError',
+              new Error('Argument converter returned no result.'),
+            )
+          }
         } catch (e) {
           return this.client.emit('commandError', msg, e)
         }
