@@ -52,6 +52,7 @@ export class CommandManager {
     const converters: ArgConverter[] = decorators.map((v) => ({
       convert: Reflect.get(module, v.key),
       type: v.type,
+      module: module,
     }))
     this.argumentConverters.set(module, converters)
   }

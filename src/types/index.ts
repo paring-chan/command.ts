@@ -60,4 +60,5 @@ export interface IArgConverterDecorator {
 export interface ArgConverter {
   type: Function
   convert: (arg: string, msg: Message) => any
+  module: Module
 }
