@@ -41,7 +41,7 @@ export class CommandHandler extends Module {
       )
       if (converter) {
         try {
-          parsedArgs[i] = await converter.convert.apply(module, [v])
+          parsedArgs[i] = await converter.convert.apply(module, [v, msg])
         } catch (e) {
           return this.client.emit('commandError', msg, e)
         }

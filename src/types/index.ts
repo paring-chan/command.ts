@@ -1,4 +1,5 @@
 import { Module } from '../structures'
+import { Message } from 'discord.js'
 
 export type CommandClientOptions = {
   owners: string[] | 'auto'
@@ -58,5 +59,5 @@ export interface IArgConverterDecorator {
 
 export interface ArgConverter {
   type: Function
-  convert: (arg: string) => any
+  convert: (arg: string, msg: Message) => any
 }
