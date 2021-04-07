@@ -12,6 +12,7 @@ export class Registry {
   listenerManager = new ListenerManager(this.client)
 
   async registerModule(id: string, module: Module) {
+    if (this.modules.has(id)) throw new Error('Module already registered.')
     await module.load()
     this.modules.set(id, module)
     this.listenerManager.register(module)

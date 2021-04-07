@@ -1,5 +1,10 @@
 import { Client, ClientOptions } from 'discord.js'
-import { CommandClientOptions, Registry, CommandHandler } from '..'
+import {
+  CommandClientOptions,
+  Registry,
+  CommandHandler,
+  BuiltInConverters,
+} from '..'
 
 export class CommandClient extends Client {
   registry = new Registry(this)
@@ -15,5 +20,6 @@ export class CommandClient extends Client {
       prefix: commandOptions.prefix || '!',
     }
     this.registry.registerModule('commandHandler', new CommandHandler(this))
+    this.registry.registerModule('builtInConverters', new BuiltInConverters())
   }
 }
