@@ -19,10 +19,7 @@ export class CommandClient extends Client {
       owners: commandOptions.owners || 'auto',
       prefix: commandOptions.prefix || '!',
     }
-    this.registry.registerModule('commandHandler', new CommandHandler(this))
-    this.registry.registerModule(
-      'builtInConverters',
-      new BuiltInConverters(this),
-    )
+    this.registry.registerModule(new CommandHandler(this))
+    this.registry.registerModule(new BuiltInConverters(this))
   }
 }
