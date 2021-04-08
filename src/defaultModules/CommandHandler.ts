@@ -21,6 +21,10 @@ export class CommandHandler extends Module {
         x.aliases.map((r) => r.toLowerCase()).includes(command),
     )
     if (!cmd) return
+    if (cmd.ownerOnly) {
+      if (!this.client.owners.includes(msg.author.id))
+        return this.client.emit('ownerOnlyCommand', msg, cmd)
+    }
     const commandArgs = cmd.args
     const parsedArgs: any[] = []
     for (const i in commandArgs) {

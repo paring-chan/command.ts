@@ -9,6 +9,7 @@ import {
 export class CommandClient extends Client {
   registry = new Registry(this)
   commandOptions: CommandClientOptions
+  owners: string[] = []
 
   constructor(
     clientOptions: ClientOptions,
