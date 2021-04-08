@@ -16,5 +16,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/pikokr/command.ts-v2"
+  },
+  "scripts": {
+    "prepack": "tsc"
   }
 }
