@@ -40,5 +40,5 @@ export const ownerOnly: MethodDecorator = (target, propertyKey) => {
   const list: Set<string> =
     Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, target) || new Set()
   list.add(propertyKey as string)
-  Reflect.defineMetadata(COMMANDS_KEY, list, target)
+  Reflect.defineMetadata(COMMANDS_OWNER_ONLY_KEY, list, target)
 }
