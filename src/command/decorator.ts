@@ -33,16 +33,12 @@ export function command(
   }
 }
 
-export function ownerOnly(
-  opts: Partial<ICommandDecoratorOptions> = {},
-): MethodDecorator {
-  return (target, propertyKey) => {
-    if (!(target instanceof Module)) {
-      throw new TypeError('Class does not extends `Module` class.')
-    }
-    const list: Set<string> =
-      Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, target) || new Set()
-    list.add(propertyKey as string)
-    Reflect.defineMetadata(COMMANDS_KEY, list, target)
+export const ownerOnly: MethodDecorator = (target, propertyKey) => {
+  if (!(target instanceof Module)) {
+    throw new TypeError('Class does not extends `Module` class.')
   }
+  const list: Set<string> =
+    Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, target) || new Set()
+  list.add(propertyKey as string)
+  Reflect.defineMetadata(COMMANDS_KEY, list, target)
 }
