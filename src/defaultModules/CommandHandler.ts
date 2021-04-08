@@ -4,7 +4,7 @@ import { listener } from '../listener'
 
 export class CommandHandler extends Module {
   constructor(private client: CommandClient) {
-    super()
+    super(__filename)
   }
 
   @listener('message')

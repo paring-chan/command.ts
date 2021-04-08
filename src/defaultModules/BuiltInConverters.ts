@@ -3,7 +3,7 @@ import { GuildMember, Message, User } from 'discord.js'
 
 export class BuiltInConverters extends Module {
   constructor(private client: CommandClient) {
-    super()
+    super(__filename)
   }
 
   getUserIDByMention(mention: string) {
