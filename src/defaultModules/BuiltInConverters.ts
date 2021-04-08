@@ -35,4 +35,10 @@ export class BuiltInConverters extends Module {
     const user = msg.guild?.members.cache.get(id)
     return user || null
   }
+
+  @argConverter(Number)
+  number(value: string) {
+    const n = Number(value)
+    return isNaN(n) ? null : n
+  }
 }
