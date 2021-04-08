@@ -1,4 +1,4 @@
-import { Client, ClientOptions } from 'discord.js'
+import { Client, ClientOptions, Team, User } from 'discord.js'
 import {
   CommandClientOptions,
   Registry,
@@ -22,5 +22,20 @@ export class CommandClient extends Client {
     }
     this.registry.registerModule(new CommandHandler(this))
     this.registry.registerModule(new BuiltInConverters(this))
+  }
+
+  async login(token?: string): Promise<string> {
+    const res = await super.login(token)
+    if (this.commandOptions.owners === 'auto') {
+      const app = await this.fetchApplication()
+      if (app.owner instanceof Team) {
+        this.owners = app.owner.members.map((x) => x.id)
+      } else if (app.owner instanceof User) {
+        this.owners = [app.owner.id]
+      }
+    } else {
+      this.owners = this.commandOptions.owners
+    }
+    return res
   }
 }
