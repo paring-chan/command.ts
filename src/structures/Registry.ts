@@ -43,6 +43,7 @@ export class Registry {
     if (!key) return false
     const module = this.modules.get(key)!
     await this.unregisterModule(module)
+    delete require.cache[module.__path]
     const newModule = load()
     await this.registerModule(newModule)
     return true
