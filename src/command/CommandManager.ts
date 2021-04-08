@@ -6,7 +6,11 @@ import {
   IArgConverterDecorator,
   ICommandDecorator,
 } from '../types'
-import { ARG_CONVERTER_KEY, COMMANDS_KEY } from '../constants'
+import {
+  ARG_CONVERTER_KEY,
+  COMMANDS_KEY,
+  COMMANDS_OWNER_ONLY_KEY,
+} from '../constants'
 
 export class CommandManager {
   commands: Collection<Module, Command[]> = new Collection()
@@ -29,6 +33,10 @@ export class CommandManager {
       COMMANDS_KEY,
       module,
     )
+    const ownerOnlyKeys: Set<string> = Reflect.getMetadata(
+      COMMANDS_OWNER_ONLY_KEY,
+      module,
+    )
     if (!decorators) return
     const commands: Command[] = decorators.map((v) => ({
       usesCtx: v.usesCtx,
@@ -39,6 +47,7 @@ export class CommandManager {
       name: v.name,
       execute: Reflect.get(module, v.key),
       aliases: v.aliases,
+      ownerOnly: ownerOnlyKeys.has(v.key),
     }))
     this.commands.set(module, commands)
   }

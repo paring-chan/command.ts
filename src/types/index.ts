@@ -36,6 +36,7 @@ export interface Command {
   brief?: string
   usesCtx: boolean
   module: Module
+  ownerOnly: boolean
 }
 
 export interface IListener {
