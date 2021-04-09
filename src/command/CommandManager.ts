@@ -33,10 +33,8 @@ export class CommandManager {
       COMMANDS_KEY,
       module,
     )
-    const ownerOnlyKeys: Set<string> = Reflect.getMetadata(
-      COMMANDS_OWNER_ONLY_KEY,
-      module,
-    )
+    const ownerOnlyKeys: Set<string> =
+      Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, module) || new Set()
     if (!decorators) return
     const commands: Command[] = decorators.map((v) => ({
       usesCtx: v.usesCtx,

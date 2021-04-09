@@ -5,7 +5,7 @@ import config from './config.json'
 
 class TestModule extends Module {
   constructor(private client: CommandClient) {
-    super()
+    super(__filename)
   }
 
   @listener('ready')
@@ -41,9 +41,11 @@ const client = new CommandClient(
   {
     intents: Discord.Intents.ALL,
   },
-  {},
+  {
+    prefix: '!test ',
+  },
 )
 
-client.registry.registerModule('test', new TestModule(client))
+client.registry.registerModule(new TestModule(client))
 
 client.login(config.token)
