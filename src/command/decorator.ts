@@ -18,6 +18,20 @@ export function command(
       target,
       propertyKey,
     )
+    const optionals: number[] =
+      Reflect.getMetadata(COMMANDS_OPTIONAL_KEY, target, propertyKey) || []
+    if (optionals.includes(0)) {
+      throw new Error('First property must not be optional')
+    }
+
+    let lastOpt = optionals[0] + 1
+
+    for (const i of optionals) {
+      if (lastOpt - i !== 1)
+        throw new Error('Only the last arguments can be an optional argument')
+      lastOpt = i
+    }
+
     const meta: ICommandDecorator = {
       aliases: opts.aliases || [],
       brief: opts.brief,
