@@ -30,6 +30,7 @@ export class Registry {
     await module.unload()
     this.listenerManager.unregister(module)
     this.commandManager.unregister(module)
+    this.modules.delete(key)
   }
 
   async loadModule(pathToModule: string) {
