@@ -36,6 +36,9 @@ export class CommandHandler extends Module {
           new Error(`An argument is required but not provided.`),
         )
       }
+      if (arg.optional && !v) {
+        break
+      }
       if (arg.type === String) {
         parsedArgs[i] = v
         continue
