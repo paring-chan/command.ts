@@ -31,4 +31,25 @@ export class Registry {
     this.listenerManager.unregister(module)
     this.commandManager.unregister(module)
   }
+
+  async loadModule(pathToModule: string) {
+    const module = await import(pathToModule)
+    if (typeof module.install !== 'function')
+      throw new Error('install function not found.')
+    const installResult = module.install(this.client)
+    if (!(installResult instanceof Module))
+      throw new Error('install function returned invalid result.')
+    await this.registerModule(installResult)
+  }
+
+  async unloadModule(module: Module) {
+    await this.unregisterModule(module)
+    delete require.cache[module.__path]
+  }
+
+  async reloadModule(module: Module) {
+    const path = module.__path
+    await this.unloadModule(module)
+    await this.loadModule(path)
+  }
 }
