@@ -38,9 +38,9 @@ export function command(
       description: opts.description,
       name: opts.name || (propertyKey as string),
       usesCtx: types[0] === Context,
-      args: types.slice(1).map((x) => ({
+      args: types.slice(1).map((x, i) => ({
         type: x,
-        optional: false, // not implemented
+        optional: optionals.includes(i + 1),
       })),
       key: propertyKey as string,
     }
