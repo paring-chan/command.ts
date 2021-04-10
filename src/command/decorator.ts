@@ -1,6 +1,10 @@
 import { Context, Module } from '../structures'
 import { ICommandDecorator, ICommandDecoratorOptions } from '..'
-import { COMMANDS_KEY, COMMANDS_OWNER_ONLY_KEY } from '../constants'
+import {
+  COMMANDS_KEY,
+  COMMANDS_OPTIONAL_KEY,
+  COMMANDS_OWNER_ONLY_KEY,
+} from '../constants'
 
 export function command(
   opts: Partial<ICommandDecoratorOptions> = {},
@@ -41,4 +45,18 @@ export const ownerOnly: MethodDecorator = (target, propertyKey) => {
     Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, target) || new Set()
   list.add(propertyKey as string)
   Reflect.defineMetadata(COMMANDS_OWNER_ONLY_KEY, list, target)
+}
+
+export const optional = (
+  target: Object,
+  propertyKey: string,
+  parameterIndex: number,
+) => {
+  if (!(target instanceof Module)) {
+    throw new TypeError('Class does not extends `Module` class.')
+  }
+  const indexes: number[] =
+    Reflect.getMetadata(COMMANDS_OPTIONAL_KEY, target, propertyKey) || []
+  indexes.push(parameterIndex)
+  Reflect.defineMetadata(COMMANDS_OPTIONAL_KEY, indexes, target, propertyKey)
 }
