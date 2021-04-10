@@ -31,22 +31,4 @@ export class Registry {
     this.listenerManager.unregister(module)
     this.commandManager.unregister(module)
   }
-
-  async reloadModule(
-    modOrID: string | Module,
-    load: () => Module,
-  ): Promise<boolean> {
-    const key: string =
-      typeof modOrID === 'string'
-        ? modOrID
-        : this.modules.findKey((x) => x.__path === modOrID.__path)!
-    if (!key) return false
-    const module = this.modules.get(key)
-    if (!module) return false
-    await this.unregisterModule(module)
-    delete require.cache[module.__path]
-    const newModule = load()
-    await this.registerModule(newModule)
-    return true
-  }
 }
