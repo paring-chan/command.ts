@@ -18,6 +18,6 @@
     "url": "https://github.com/pikokr/command.ts-v2"
   },
   "scripts": {
-    "install": "tsc"
+    "postinstall": "tsc"
   }
 }
