@@ -1,5 +1,4 @@
 module.exports = {
-  themeConfig: {
-    logo: '/logo.png',
-  },
+  title: 'Command.TS',
+  description: require('../../package.json').description,
 }
