@@ -119,3 +119,4 @@ dist
 
 .idea
 docs/.vuepress/dist
+docs/*/api

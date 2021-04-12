@@ -12,6 +12,16 @@ module.exports = {
         title: 'Introduction',
         path: '/docs/',
       },
+      {
+        title: 'API',
+        path: '/docs/api/',
+        children: [
+          {
+            title: 'Modules',
+            path: '/docs/api/modules',
+          },
+        ],
+      },
     ],
   },
 }
