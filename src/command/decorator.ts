@@ -20,8 +20,12 @@ export function command(
       propertyKey,
     )
     const rest = Reflect.getMetadata(COMMANDS_REST_KEY, target, propertyKey)
-    if (typeof rest === 'number' && types.length - 1 !== rest)
-      throw new Error('Only the last argument can be rest')
+    if (typeof rest === 'number') {
+      if (types.length - 1 !== rest)
+        throw new Error('Only the last argument can be rest')
+      if (types[rest] !== String)
+        throw new Error('Rest argument type must be string')
+    }
     const optionals: number[] =
       Reflect.getMetadata(COMMANDS_OPTIONAL_KEY, target, propertyKey) || []
     if (optionals.includes(0)) {
