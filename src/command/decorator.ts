@@ -4,6 +4,7 @@ import {
   COMMANDS_KEY,
   COMMANDS_OPTIONAL_KEY,
   COMMANDS_OWNER_ONLY_KEY,
+  COMMANDS_REST_KEY,
 } from '../constants'
 
 export function command(
@@ -18,6 +19,9 @@ export function command(
       target,
       propertyKey,
     )
+    const rest = Reflect.getMetadata(COMMANDS_REST_KEY, target, propertyKey)
+    if (typeof rest === 'number' && types.length - 1 !== rest)
+      throw new Error('Only the last argument can be rest')
     const optionals: number[] =
       Reflect.getMetadata(COMMANDS_OPTIONAL_KEY, target, propertyKey) || []
     if (optionals.includes(0)) {
@@ -73,4 +77,15 @@ export const optional = (
     Reflect.getMetadata(COMMANDS_OPTIONAL_KEY, target, propertyKey) || []
   indexes.push(parameterIndex)
   Reflect.defineMetadata(COMMANDS_OPTIONAL_KEY, indexes, target, propertyKey)
+}
+
+export const rest = (
+  target: Object,
+  propertyKey: string,
+  parameterIndex: number,
+) => {
+  if (!(target instanceof Module)) {
+    throw new TypeError('Class does not extends `Module` class.')
+  }
+  Reflect.defineMetadata(COMMANDS_REST_KEY, parameterIndex, target, propertyKey)
 }
