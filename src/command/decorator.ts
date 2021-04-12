@@ -45,6 +45,7 @@ export function command(
       args: types.slice(1).map((x, i) => ({
         type: x,
         optional: optionals.includes(i + 1),
+        rest: i === rest,
       })),
       key: propertyKey as string,
     }

@@ -16,6 +16,7 @@ export interface ICommandDecoratorOptions {
 export interface ICommandArgument {
   type: Function
   optional: boolean
+  rest: boolean
 }
 
 export interface ICommandDecoratorMetadata {
