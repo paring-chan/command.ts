@@ -33,8 +33,8 @@ export class CommandClient extends Client {
   async login(token?: string): Promise<string> {
     const res = await super.login(token)
     if (this.commandOptions.owners === 'auto') {
-      // @ts-ignore
       const app =
+        // @ts-ignore
         ((await this.fetchApplication?.()) as ClientApplication) ||
         this.application!
       if (app.owner instanceof Team) {
