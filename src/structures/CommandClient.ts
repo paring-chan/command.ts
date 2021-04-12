@@ -33,9 +33,7 @@ export class CommandClient extends Client {
   async login(token?: string): Promise<string> {
     const res = await super.login(token)
     if (this.commandOptions.owners === 'auto') {
-      const app =
-        ((await (this as any).fetchApplication?.()) as ClientApplication) ||
-        this.application!
+      const app = await this.fetchApplication()
       if (app.owner instanceof Team) {
         this.owners = app.owner.members.map((x) => x.id)
       } else if (app.owner instanceof User) {
