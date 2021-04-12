@@ -29,8 +29,12 @@ export class CommandHandler extends Module {
     const commandArgs = cmd.args
     const parsedArgs: any[] = []
     for (const i in commandArgs) {
-      const v = args[i]
+      const v = args.shift()!
       const arg = commandArgs[i]
+      if (arg.rest) {
+        parsedArgs.push(args.join(' '))
+        break
+      }
       if (!arg.optional && !v) {
         return this.client.emit(
           'commandError',
