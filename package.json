@@ -6,8 +6,10 @@
   "license": "MIT",
   "devDependencies": {
     "discord.js": "discordjs/discord.js",
+    "discord.js-docgen": "discordjs/discord.js-docgen",
     "prettier": "^2.2.1",
-    "typedoc": "^0.20.35"
+    "typedoc": "^0.20.35",
+    "vuepress": "^1.8.2"
   },
   "dependencies": {
     "@types/node": "^14.14.37",
@@ -20,6 +22,6 @@
   },
   "scripts": {
     "prepack": "tsc",
-    "docs": "typedoc src/index.ts"
+    "docs:dev": "vuepress dev docs"
   }
 }
