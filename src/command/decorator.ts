@@ -1,11 +1,13 @@
 import { Context, Module } from '../structures'
-import { ICommandDecorator, ICommandDecoratorOptions } from '..'
+import { CheckFunction, ICommandDecorator, ICommandDecoratorOptions } from '..'
 import {
+  COMMANDS_CHECK_KEY,
   COMMANDS_KEY,
   COMMANDS_OPTIONAL_KEY,
   COMMANDS_OWNER_ONLY_KEY,
   COMMANDS_REST_KEY,
 } from '../constants'
+import { Message } from 'discord.js'
 
 export function command(
   opts: Partial<ICommandDecoratorOptions> = {},
@@ -59,6 +61,18 @@ export function command(
       Reflect.getMetadata(COMMANDS_KEY, target) || []
     metas.push(meta)
     Reflect.defineMetadata(COMMANDS_KEY, metas, target)
+  }
+}
+
+export function check(...checks: CheckFunction[]): MethodDecorator {
+  return (target, propertyKey) => {
+    if (!(target instanceof Module)) {
+      throw new TypeError('Class does not extends `Module` class.')
+    }
+    const list: CheckFunction[] =
+      Reflect.getMetadata(COMMANDS_CHECK_KEY, target) || []
+    list.push(...checks)
+    Reflect.defineMetadata(COMMANDS_CHECK_KEY, list, target)
   }
 }
 

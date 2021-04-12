@@ -64,3 +64,5 @@ export interface ArgConverter {
   convert: (arg: string, msg: Message) => any
   module: Module
 }
+
+export type CheckFunction = (msg: Message) => boolean | Promise<boolean>
