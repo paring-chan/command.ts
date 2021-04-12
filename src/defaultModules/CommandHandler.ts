@@ -26,6 +26,14 @@ export class CommandHandler extends Module {
       if (!this.client.owners.includes(msg.author.id))
         return this.client.emit('ownerOnlyCommand', msg, cmd)
     }
+    const checks = cmd.checks
+    for (const check of checks) {
+      try {
+        if (!(await check(msg))) return
+      } catch {
+        return
+      }
+    }
     const commandArgs = cmd.args
     const parsedArgs: any[] = []
     for (const i in commandArgs) {
