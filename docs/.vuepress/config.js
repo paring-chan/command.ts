@@ -7,5 +7,11 @@ module.exports = {
     docsBranch: 'master',
     editLinks: true,
     docsDir: 'docs',
+    sidebar: [
+      {
+        title: 'Introduction',
+        path: '/docs/',
+      },
+    ],
   },
 }

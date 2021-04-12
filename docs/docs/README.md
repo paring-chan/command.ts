@@ -36,7 +36,7 @@ const client = new CommandClient()
 client.login('TOKEN_HERE')
 ```
 
-### Get started with creating your first module
+## Create your first module
 
 Create your own module with command.ts.
 
