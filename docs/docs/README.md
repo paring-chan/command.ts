@@ -38,6 +38,8 @@ client.login('TOKEN_HERE')
 
 ### Get started with creating your first module
 
+Create your own module with command.ts.
+
 ```typescript
 // modules/hello.ts
 
@@ -65,4 +67,10 @@ class HelloModule extends Module {
 export function install(client: CommandClient) {
   return new HelloModule(client)
 }
+```
+
+Then register it to client.
+
+```typescript
+client.registry.loadModule('modules/hello')
 ```
