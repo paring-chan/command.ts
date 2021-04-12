@@ -35,3 +35,34 @@ const client = new CommandClient()
 
 client.login('TOKEN_HERE')
 ```
+
+### Get started with creating your first module
+
+```typescript
+// modules/hello.ts
+
+import { CommandClient, Module, command } from "@pikostudio/command.ts"
+import { Message } from 'discord.js'
+
+class HelloModule extends Module {
+  constructor(private client: CommandClient) {
+    super(__filename)
+  }
+
+  // command
+  @command()
+  async hello(msg: Message) {
+    msg.reply(`Hello ${msg.author.username}!`)
+  }
+  
+  // listener
+  @listener('ready')
+  ready() {
+    console.log(`Bot ${this.client.user!.username} is ready!`)
+  }
+}
+
+export function install(client: CommandClient) {
+  return new HelloModule(client)
+}
+```
