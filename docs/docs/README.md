@@ -74,3 +74,7 @@ Then register it to client.
 ```typescript
 client.registry.loadModule('modules/hello')
 ```
+
+## Contribute
+
+You can make pull requests to [this repository](https://github.com/pikokr/command.ts-v2)
