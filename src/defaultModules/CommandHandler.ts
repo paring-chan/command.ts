@@ -1,7 +1,6 @@
 import { Message } from 'discord.js'
 import { CommandClient, Context, Module } from '../structures'
 import { listener } from '../listener'
-import { COMMANDS_REST_KEY } from '../constants'
 
 export class CommandHandler extends Module {
   constructor(private client: CommandClient) {
