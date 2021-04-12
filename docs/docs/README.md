@@ -16,9 +16,22 @@ You can install command.ts by running this command
 yarn add @pikostudio/command.ts
 ```
 </code-block>
+
 <code-block title="NPM">
 ```bash
 npm i @pikostudio/command.ts
 ```
 </code-block>
 </code-group>
+
+### Adding command.ts to your project
+
+You can use `CommandClient` class to use command.ts features.
+
+```typescript
+import { CommandClient } from "@pikostudio/command.ts"
+
+const client = new CommandClient()
+
+client.login('TOKEN_HERE')
+```
