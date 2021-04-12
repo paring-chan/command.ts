@@ -4,7 +4,7 @@ heroImage: /logo.png
 heroText: Command.TS
 tagline: Command, listener handler for discord.js
 actionText: Get started →
-actionLink: /guide/
+actionLink: /docs/
 features:
 - title: Easy to use
   details: The features can be used with decorators
