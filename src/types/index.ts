@@ -38,6 +38,7 @@ export interface Command {
   usesCtx: boolean
   module: Module
   ownerOnly: boolean
+  checks: CheckFunction[]
 }
 
 export interface IListener {

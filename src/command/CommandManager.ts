@@ -2,6 +2,7 @@ import { Module } from '../structures'
 import { Collection } from 'discord.js'
 import {
   ArgConverter,
+  CheckFunction,
   Command,
   IArgConverterDecorator,
   ICommandDecorator,
@@ -35,6 +36,8 @@ export class CommandManager {
     )
     const ownerOnlyKeys: Set<string> =
       Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, module) || new Set()
+    const checks: CheckFunction[] =
+      Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, module) || []
     if (!decorators) return
     const commands: Command[] = decorators.map((v) => ({
       usesCtx: v.usesCtx,
@@ -46,6 +49,7 @@ export class CommandManager {
       execute: Reflect.get(module, v.key),
       aliases: v.aliases,
       ownerOnly: ownerOnlyKeys.has(v.key),
+      checks,
     }))
     this.commands.set(module, commands)
   }
