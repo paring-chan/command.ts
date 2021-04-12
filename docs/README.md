@@ -1,1 +1,4 @@
-# COMMAND.TS
+---
+home: true
+heroImage: /hero.png
+---
