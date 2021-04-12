@@ -24,7 +24,7 @@
   },
   "scripts": {
     "prepack": "tsc",
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:dev": "typedoc --out docs/docs/api src/index.ts && vuepress dev docs",
+    "docs:build": "typedoc --out docs/docs/api src/index.ts && vuepress build docs"
   }
 }
