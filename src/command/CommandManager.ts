@@ -9,6 +9,7 @@ import {
 } from '../types'
 import {
   ARG_CONVERTER_KEY,
+  COMMANDS_CHECK_KEY,
   COMMANDS_KEY,
   COMMANDS_OWNER_ONLY_KEY,
 } from '../constants'
@@ -37,7 +38,7 @@ export class CommandManager {
     const ownerOnlyKeys: Set<string> =
       Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, module) || new Set()
     const checks: CheckFunction[] =
-      Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, module) || []
+      Reflect.getMetadata(COMMANDS_CHECK_KEY, module) || []
     if (!decorators) return
     const commands: Command[] = decorators.map((v) => ({
       usesCtx: v.usesCtx,
