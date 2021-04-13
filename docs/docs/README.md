@@ -1,3 +1,7 @@
+---
+editLink: true
+---
+
 # Command.TS
 
 Command.TS is command framework for discord.js.
