@@ -43,7 +43,7 @@ Create your own module with command.ts.
 ```typescript
 // modules/hello.ts
 
-import { CommandClient, Module, command } from "@pikostudio/command.ts"
+import { CommandClient, Module, command, listener } from "@pikostudio/command.ts"
 import { Message } from 'discord.js'
 
 class HelloModule extends Module {
