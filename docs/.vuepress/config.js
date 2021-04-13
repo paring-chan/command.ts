@@ -47,6 +47,10 @@ module.exports = {
         path: '/docs/',
       },
       {
+        title: 'Guide',
+        path: '/docs/guide/',
+      },
+      {
         title: 'API',
         path: '/docs/api/',
         children: generateAPISidebar(),
