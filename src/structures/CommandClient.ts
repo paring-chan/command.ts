@@ -37,7 +37,7 @@ export class CommandClient extends Client {
         // @ts-ignore
         this.application! ||
         //@ts-ignore
-        ((await this.fetchApplication?.()) as ClientApplication)
+        (await this.fetchApplication())
       if (app.owner instanceof Team) {
         this.owners = app.owner.members.map((x) => x.id)
       } else if (app.owner instanceof User) {
