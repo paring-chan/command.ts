@@ -1,5 +1,5 @@
 import Discord, { Message, User } from 'discord.js'
-import { command, CommandClient, listener, Module } from '../dist'
+import { command, CommandClient, listener, Module, rest } from '../dist'
 // @ts-ignore
 import config from './config.json'
 
@@ -19,7 +19,7 @@ class TestModule extends Module {
   }
 
   @command()
-  async test(msg: Message, test: string) {
+  async test(msg: Message, @rest test: string) {
     await msg.reply(test, {
       allowedMentions: {
         repliedUser: false,

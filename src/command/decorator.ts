@@ -7,7 +7,6 @@ import {
   COMMANDS_OWNER_ONLY_KEY,
   COMMANDS_REST_KEY,
 } from '../constants'
-import { Message } from 'discord.js'
 
 export function command(
   opts: Partial<ICommandDecoratorOptions> = {},
@@ -53,7 +52,7 @@ export function command(
       args: types.slice(1).map((x, i) => ({
         type: x,
         optional: optionals.includes(i + 1),
-        rest: i === rest,
+        rest: i === rest - 1,
       })),
       key: propertyKey as string,
     }
