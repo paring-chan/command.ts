@@ -39,7 +39,7 @@ export class CommandHandler extends Module {
       const v = args.shift()!
       const arg = commandArgs[i]
       if (arg.rest) {
-        parsedArgs.push(args.join(' '))
+        parsedArgs.push([v, ...args].join(' '))
         break
       }
       if (!arg.optional && !v) {
