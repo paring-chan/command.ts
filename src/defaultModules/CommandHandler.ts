@@ -89,7 +89,7 @@ export class CommandHandler extends Module {
     }
     const executeArgs = []
     if (cmd.usesCtx) {
-      executeArgs[0] = new Context(msg)
+      executeArgs[0] = new Context(msg, prefix)
     } else {
       executeArgs[0] = msg
     }
