@@ -3,7 +3,7 @@ import { Message } from 'discord.js'
 
 export type CommandClientOptions = {
   owners: string[] | 'auto'
-  prefix: string | ((msg: Message) => string)
+  prefix: string | ((msg: Message) => string | Promise<string>)
 }
 
 export interface ICommandDecoratorOptions {

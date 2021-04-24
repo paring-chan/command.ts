@@ -9,7 +9,11 @@ export class CommandHandler extends Module {
 
   @listener('message')
   async onMessage(msg: Message) {
-    const prefix = this.client.commandOptions.prefix
+    const prefixFunction = this.client.commandOptions.prefix
+    const prefix =
+      typeof prefixFunction === 'function'
+        ? await prefixFunction(msg)
+        : prefixFunction
     const { content } = msg
     if (!content.startsWith(prefix)) return
     const args = content.slice(prefix.length).split(' ')
