@@ -48,7 +48,7 @@ module.exports = {
       },
       {
         title: 'Guide',
-        path: '/docs/guide/',
+        path: '/guide/',
       },
       {
         title: 'API',

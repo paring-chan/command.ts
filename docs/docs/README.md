@@ -35,7 +35,9 @@ You can use `CommandClient` class to use command.ts features.
 ```typescript
 import { CommandClient } from "@pikostudio/command.ts"
 
-const client = new CommandClient()
+const client = new CommandClient({
+  prefix: '!'
+})
 
 client.login('TOKEN_HERE')
 ```
