@@ -3,7 +3,7 @@ import { ISlashCommandDecorator, ISlashCommandDecoratorOptions } from '..'
 import { SLASH_COMMANDS_KEY } from '../constants'
 
 export function slashCommand(
-  opts: Partial<ISlashCommandDecoratorOptions> = {},
+  opts: ISlashCommandDecoratorOptions,
 ): MethodDecorator {
   return (target, propertyKey) => {
     if (!(target instanceof Module)) {
@@ -17,10 +17,9 @@ export function slashCommand(
     )
     const meta: ISlashCommandDecorator = {
       name: opts.name || (propertyKey as string),
-      args: types.slice(1).map((x, i) => ({
-        type: x,
-      })),
       key: propertyKey as string,
+      description: opts.description,
+      options: opts.options,
     }
     const metas: ISlashCommandDecorator[] =
       Reflect.getMetadata(SLASH_COMMANDS_KEY, target) || []

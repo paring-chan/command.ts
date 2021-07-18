@@ -9,6 +9,7 @@
     "discord.js": "discordjs/discord.js",
     "discord.js-docgen": "discordjs/discord.js-docgen",
     "prettier": "^2.2.1",
+    "ts-node": "^10.1.0",
     "typedoc": "^0.20.35",
     "typedoc-plugin-markdown": "^3.6.1",
     "vuepress": "^1.8.2"

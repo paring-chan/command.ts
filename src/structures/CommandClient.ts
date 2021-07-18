@@ -4,6 +4,7 @@ import {
   ClientOptions,
   Team,
   User,
+  Util,
 } from 'discord.js'
 import {
   CommandClientOptions,
@@ -22,10 +23,16 @@ export class CommandClient extends Client {
     commandOptions: Partial<CommandClientOptions>,
   ) {
     super(clientOptions)
-    this.commandOptions = {
-      owners: commandOptions.owners || 'auto',
-      prefix: commandOptions.prefix || '!',
-    }
+    this.commandOptions = Util.mergeDefault(
+      {
+        owners: commandOptions.owners || 'auto',
+        prefix: commandOptions.prefix || '!',
+        slashCommands: {
+          autoRegister: false,
+        },
+      },
+      commandOptions,
+    ) as any
     this.registry.registerModule(new CommandHandler(this))
     this.registry.registerModule(new BuiltInConverters(this))
   }
@@ -34,6 +41,7 @@ export class CommandClient extends Client {
     const res = await super.login(token)
     if (this.commandOptions.owners === 'auto') {
       const app = this.application
+      await app?.fetch()
       if (app) {
         if (app.owner instanceof Team) {
           this.owners = app.owner.members.map((x) => x.id)
@@ -44,6 +52,7 @@ export class CommandClient extends Client {
     } else {
       this.owners = this.commandOptions.owners
     }
+    await this.registry.slashCommandManager.refreshCommands()
     return res
   }
 }

@@ -1,9 +1,13 @@
 import { Module } from '../structures'
-import { Message } from 'discord.js'
+import { ApplicationCommandOptionData, Message, Snowflake } from 'discord.js'
 
 export type CommandClientOptions = {
-  owners: string[] | 'auto'
+  owners: Snowflake[] | 'auto'
   prefix: string | ((msg: Message) => string | Promise<string>)
+  slashCommands: {
+    autoRegister: boolean
+    guild?: Snowflake
+  }
 }
 
 export interface ICommandDecoratorOptions {
@@ -26,7 +30,7 @@ export interface ICommandDecoratorMetadata {
 }
 
 export interface ISlashCommandDecoratorMetadata {
-  args: ISlashCommandArgument[]
+  options: ApplicationCommandOptionData[]
   key: string
 }
 
@@ -42,6 +46,8 @@ export interface ICommandArgument {
 
 export interface ISlashCommandDecoratorOptions {
   name: string
+  options: ApplicationCommandOptionData[]
+  description: string
 }
 
 export type ISlashCommandDecorator = ISlashCommandDecoratorMetadata &
@@ -65,11 +71,10 @@ export interface Command {
 
 export interface SlashCommand {
   execute: Function
-  args: ISlashCommandArgument[]
   name: string
+  description: string
   module: Module
-  ownerOnly: boolean
-  checks: CheckFunction[]
+  options: ApplicationCommandOptionData[]
 }
 
 export interface IListener {

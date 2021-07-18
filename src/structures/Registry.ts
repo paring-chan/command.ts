@@ -6,7 +6,7 @@ import { ListenerManager } from '../listener'
 import { SlashCommandManager } from '../slashCommand'
 
 export class Registry {
-  constructor(private client: CommandClient) {}
+  constructor(public client: CommandClient) {}
 
   modules: Collection<string, Module> = new Collection<string, Module>()
   commandManager = new CommandManager()
