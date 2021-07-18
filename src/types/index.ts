@@ -25,6 +25,28 @@ export interface ICommandDecoratorMetadata {
   key: string
 }
 
+export interface ISlashCommandDecoratorMetadata {
+  args: ISlashCommandArgument[]
+  key: string
+}
+
+export interface ISlashCommandArgument {
+  type: Function
+}
+
+export interface ICommandArgument {
+  type: Function
+  optional: boolean
+  rest: boolean
+}
+
+export interface ISlashCommandDecoratorOptions {
+  name: string
+}
+
+export type ISlashCommandDecorator = ISlashCommandDecoratorMetadata &
+  ISlashCommandDecoratorOptions
+
 export type ICommandDecorator = ICommandDecoratorOptions &
   ICommandDecoratorMetadata
 
@@ -36,6 +58,15 @@ export interface Command {
   description?: string
   brief?: string
   usesCtx: boolean
+  module: Module
+  ownerOnly: boolean
+  checks: CheckFunction[]
+}
+
+export interface SlashCommand {
+  execute: Function
+  args: ISlashCommandArgument[]
+  name: string
   module: Module
   ownerOnly: boolean
   checks: CheckFunction[]

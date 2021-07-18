@@ -3,12 +3,14 @@ import { Collection } from 'discord.js'
 import { CommandManager } from '../command'
 import { CommandClient } from './CommandClient'
 import { ListenerManager } from '../listener'
+import { SlashCommandManager } from '../slashCommand'
 
 export class Registry {
   constructor(private client: CommandClient) {}
 
   modules: Collection<string, Module> = new Collection<string, Module>()
   commandManager = new CommandManager()
+  slashCommandManager = new SlashCommandManager(this)
   listenerManager = new ListenerManager(this.client)
 
   async registerModule(module: Module) {
@@ -18,6 +20,7 @@ export class Registry {
     this.modules.set(module.__path, module)
     this.listenerManager.register(module)
     this.commandManager.register(module)
+    this.slashCommandManager.register(module)
   }
 
   async unregisterModule(modOrID: string | Module) {
@@ -30,6 +33,7 @@ export class Registry {
     await module.unload()
     this.listenerManager.unregister(module)
     this.commandManager.unregister(module)
+    this.slashCommandManager.unregister(module)
     this.modules.delete(key)
   }
 
