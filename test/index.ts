@@ -1,83 +1,7 @@
-// @ts-ignore
-import config from './config.json'
-import {
-  ApplicationCommandOptionData,
-  CommandInteraction,
-  CommandInteractionOption,
-  Interaction,
-  Message,
-} from 'discord.js'
-import {
-  command,
-  ownerOnly,
-  rest,
-  slashCommand,
-  CommandClient,
-  listener,
-  Module,
-} from '../src'
+import path from 'path'
 
-class TestModule extends Module {
-  constructor(private client: CommandClient) {
-    super(__filename)
-  }
-
-  @listener('ready')
-  async ready() {
-    console.log(`Logged in as ${this.client.user!.tag}`)
-  }
-
-  @listener('commandError')
-  async commandError(err: Error) {
-    console.error(err)
-  }
-
-  @command()
-  @ownerOnly
-  async eval(msg: Message, @rest code: string) {
-    await msg.reply({
-      content: await new Promise((resolve) => resolve(eval(code)))
-        .then((value) => require('util').inspect(value))
-        .catch((e) => e.message),
-    })
-  }
-
-  @slashCommand({
-    name: 'test',
-    description: '테스트',
-    options: [
-      {
-        type: 'STRING',
-        name: 'test',
-        description: '와! <test>',
-        required: true,
-      },
-    ],
-  })
-  async test(i: CommandInteraction, test: CommandInteractionOption) {
-    await i.reply({
-      content: `와! ${test.value}!`,
-    })
-  }
-
-  // @command()
-  // async test(msg: Message, @rest test: string) {
-  //   await msg.reply(test, {
-  //     allowedMentions: {
-  //       repliedUser: false,
-  //     },
-  //   })
-  // }
-  //
-  // @command()
-  // async test2(msg: Message, test: User) {
-  //   await msg.reply(test.tag, {
-  //     allowedMentions: {
-  //       repliedUser: false,
-  //     },
-  //   })
-  // }
-}
+const config = require('./config.json')
+import { CommandClient } from '../src'
 
 const client = new CommandClient(
   {
@@ -101,14 +25,12 @@ const client = new CommandClient(
     partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'USER', 'REACTION'],
   },
   {
-    prefix: '!test ',
-    slashCommands: {
-      guild: '866250605815136276',
-      autoRegister: true,
-    },
+    prefix: '1',
   },
 )
 
-client.registry.registerModule(new TestModule(client))
+// client.registry.registerModule(new TestModule(client))
+
+client.registry.loadModule(path.join(__dirname, 'test'))
 
 client.login(config.token)
