@@ -1,5 +1,5 @@
 import commands, { Default } from './commands'
-import { Context } from '../..'
+import { Context } from '../index'
 
 export class DebugModule {
   static async run(ctx: Context) {
