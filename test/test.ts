@@ -60,13 +60,14 @@ export class TestModule extends Module {
   @command()
   @ownerOnly
   test(msg: Message) {
-    DebugModule.run(msg)
+    return DebugModule.run(msg)
   }
 
   unload() {
     delete require.cache[require.resolve('../src/debugTool/DebugModule')]
     delete require.cache[require.resolve('../src/debugTool/commands')]
     delete require.cache[require.resolve('../src/debugTool/commands/default')]
+    delete require.cache[require.resolve('../src/debugTool/commands/eval')]
   }
 
   // @command()
