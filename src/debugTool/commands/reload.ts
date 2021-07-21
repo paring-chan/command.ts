@@ -9,16 +9,25 @@ export default {
     let result = '```\n'
     let success = 0
     let failed = 0
+    let all = false
+    if (args[0] === '~') {
+      args = client.registry.modules
+        .filter((x) => require(x.__path).loaded)
+        .map((x) => x.__path)
+      all = true
+    }
     for (const arg of args) {
-      const module = client.registry.modules.find(
-        (x) => x.__path === require.resolve(path.join(client.rootPath, arg)),
-      )
-      if (!module) {
-        result += `🚫 ${arg} - Not Found\n`
-        failed++
-        continue
-      }
       try {
+        const module = client.registry.modules.find(
+          (x) =>
+            x.__path ===
+            require.resolve(all ? arg : path.join(client.rootPath, arg)),
+        )
+        if (!module) {
+          result += `🚫 ${arg} - Not Found\n`
+          failed++
+          continue
+        }
         await client.registry.reloadModule(module)
         result += `✅ ${module.constructor.name}(${arg}) - Successful\n`
         success++

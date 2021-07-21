@@ -47,16 +47,23 @@ export class Registry {
     const installResult = module.install(this.client)
     if (!(installResult instanceof Module))
       throw new Error('install function returned invalid result.')
+    module.loaded = true
     await this.registerModule(installResult)
   }
 
   async unloadModule(module: Module) {
+    if (!require(module.__path).loaded) {
+      throw new Error('Not loaded with loadModule.')
+    }
     await this.unregisterModule(module)
     delete require.cache[module.__path]
   }
 
   async reloadModule(module: Module) {
     const path = module.__path
+    if (!require(path).loaded) {
+      throw new Error('Not loaded with loadModule.')
+    }
     await this.unloadModule(module)
     await this.loadModule(path, true)
   }

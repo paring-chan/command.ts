@@ -11,6 +11,10 @@ export class DebugModule {
       await Default.execute(ctx.msg)
       return
     }
-    return command.execute(ctx.msg, args)
+    try {
+      await command.execute(ctx.msg, args)
+    } catch {
+      await ctx.msg.reply('Command failed.')
+    }
   }
 }
