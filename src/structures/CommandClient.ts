@@ -17,12 +17,19 @@ export class CommandClient extends Client {
   registry = new Registry(this)
   commandOptions: CommandClientOptions
   owners: string[] = []
+  rootPath: string
 
   constructor(
     clientOptions: ClientOptions,
-    commandOptions: Partial<CommandClientOptions>,
+    {
+      rootPath,
+      ...commandOptions
+    }: Partial<CommandClientOptions> & {
+      rootPath: string
+    },
   ) {
     super(clientOptions)
+    this.rootPath = rootPath
     this.commandOptions = Util.mergeDefault(
       {
         owners: commandOptions.owners || 'auto',

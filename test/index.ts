@@ -26,11 +26,12 @@ const client = new CommandClient(
   },
   {
     prefix: '1',
+    rootPath: __dirname,
   },
 )
 
 // client.registry.registerModule(new TestModule(client))
 
-client.registry.loadModule(path.join(__dirname, 'test'))
+client.registry.loadModule('test')
 
 client.login(config.token)

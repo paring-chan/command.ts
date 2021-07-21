@@ -70,7 +70,11 @@ export class TestModule extends Module {
     delete require.cache[require.resolve('../src/debugTool')]
     delete require.cache[require.resolve('../src/debugTool/commands')]
     delete require.cache[require.resolve('../src/debugTool/commands/default')]
+    delete require.cache[require.resolve('../src/debugTool/commands')]
     delete require.cache[require.resolve('../src/debugTool/commands/eval')]
+    delete require.cache[require.resolve('../src/debugTool/commands/load')]
+    delete require.cache[require.resolve('../src/debugTool/commands/reload')]
+    delete require.cache[require.resolve('../src/debugTool/commands/unload')]
   }
 
   // @command()

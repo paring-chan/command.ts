@@ -4,6 +4,7 @@ import { CommandManager } from '../command'
 import { CommandClient } from './CommandClient'
 import { ListenerManager } from '../listener'
 import { SlashCommandManager } from '../slashCommand'
+import path from 'path'
 
 export class Registry {
   constructor(public client: CommandClient) {}
@@ -37,8 +38,10 @@ export class Registry {
     this.modules.delete(key)
   }
 
-  async loadModule(pathToModule: string) {
-    const module = await import(pathToModule)
+  async loadModule(pathToModule: string, absolute = false) {
+    const module = await import(
+      absolute ? pathToModule : path.join(this.client.rootPath, pathToModule)
+    )
     if (typeof module.install !== 'function')
       throw new Error('install function not found.')
     const installResult = module.install(this.client)
@@ -55,6 +58,6 @@ export class Registry {
   async reloadModule(module: Module) {
     const path = module.__path
     await this.unloadModule(module)
-    await this.loadModule(path)
+    await this.loadModule(path, true)
   }
 }
