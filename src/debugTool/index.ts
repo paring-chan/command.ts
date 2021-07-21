@@ -1,1 +1,3 @@
-export * from './DebugModule'
+import { DebugModule } from './DebugModule'
+
+export { DebugModule }

@@ -1,16 +1,16 @@
-import { Message } from 'discord.js'
 import commands, { Default } from './commands'
+import { Context } from '../..'
 
 export class DebugModule {
-  static async run(msg: Message) {
-    const args = msg.content.split(' ')
+  static async run(ctx: Context) {
+    const args = ctx.msg.content.slice(ctx.prefix.length).split(' ')
     args.shift()
     const commandName = args.shift()
     const command = commands.find((x) => x.name === commandName)
     if (!commandName || !command) {
-      await Default.execute(msg)
+      await Default.execute(ctx.msg)
       return
     }
-    return command.execute(msg, args)
+    return command.execute(ctx.msg, args)
   }
 }

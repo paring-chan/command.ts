@@ -5,9 +5,10 @@ import {
   Module,
   ownerOnly,
   rest,
+  DebugModule,
+  Context,
 } from '../src'
 import { Message } from 'discord.js'
-import { DebugModule } from '../src/debugTool/DebugModule'
 
 export class TestModule extends Module {
   constructor(private client: CommandClient) {
@@ -59,12 +60,14 @@ export class TestModule extends Module {
 
   @command()
   @ownerOnly
-  test(msg: Message) {
+  test(msg: Context) {
     return DebugModule.run(msg)
   }
 
   unload() {
+    delete require.cache[require.resolve('../src')]
     delete require.cache[require.resolve('../src/debugTool/DebugModule')]
+    delete require.cache[require.resolve('../src/debugTool')]
     delete require.cache[require.resolve('../src/debugTool/commands')]
     delete require.cache[require.resolve('../src/debugTool/commands/default')]
     delete require.cache[require.resolve('../src/debugTool/commands/eval')]
