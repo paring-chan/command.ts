@@ -9,7 +9,6 @@ const client = new CommandClient(
       'GUILDS',
       'GUILD_MEMBERS',
       'GUILD_BANS',
-      'GUILD_EMOJIS',
       'GUILD_INTEGRATIONS',
       'GUILD_WEBHOOKS',
       'GUILD_INVITES',
@@ -27,6 +26,10 @@ const client = new CommandClient(
   {
     prefix: '1',
     rootPath: __dirname,
+    slashCommands: {
+      autoRegister: true,
+      guild: '841691775987089418',
+    },
   },
 )
 

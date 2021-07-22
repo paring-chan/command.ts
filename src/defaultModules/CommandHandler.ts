@@ -109,6 +109,6 @@ export class CommandHandler extends Module {
       (x) => x.name === cmd.name,
     )
     if (!command) return
-    command.execute(i, ...i.options.map((x) => x))
+    command.execute(i, i.options)
   }
 }

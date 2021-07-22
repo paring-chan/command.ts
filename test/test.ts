@@ -7,8 +7,14 @@ import {
   rest,
   DebugModule,
   Context,
+  slashCommand,
 } from '../src'
-import { Message } from 'discord.js'
+import {
+  CommandInteraction,
+  CommandInteractionOptionResolver,
+  Interaction,
+  Message,
+} from 'discord.js'
 
 export class TestModule extends Module {
   constructor(private client: CommandClient) {
@@ -62,6 +68,22 @@ export class TestModule extends Module {
   @ownerOnly
   test(msg: Context) {
     return DebugModule.run(msg)
+  }
+
+  @slashCommand({
+    name: 'sans',
+    options: [
+      {
+        name: 'wa',
+        description: '샌즈!',
+        type: 'STRING',
+        required: true,
+      },
+    ],
+    description: '와 샌즈!',
+  })
+  sans(i: CommandInteraction, options: CommandInteractionOptionResolver) {
+    i.reply(`와! ${options.getString('wa')}! 아시는구나!`)
   }
 
   unload() {
