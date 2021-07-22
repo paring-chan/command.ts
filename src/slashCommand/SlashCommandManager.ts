@@ -37,19 +37,23 @@ export class SlashCommandManager {
           )
         for (const command of this.commandList) {
           console.log(`[command.ts] Registering command: ${command.name}`)
-          const c = guild.commands.cache.find((x) => x.name === command.name)
-          if (!c) {
-            await guild.commands.create({
-              name: command.name,
-              description: command.description,
-              options: command.options,
-            })
-          } else {
-            await guild.commands.edit(c, {
-              name: command.name,
-              description: command.description,
-              options: command.options,
-            })
+          try {
+            const c = guild.commands.cache.find((x) => x.name === command.name)
+            if (!c) {
+              await guild.commands.create({
+                name: command.name,
+                description: command.description,
+                options: command.options,
+              })
+            } else {
+              await guild.commands.edit(c, {
+                name: command.name,
+                description: command.description,
+                options: command.options,
+              })
+            }
+          } catch (e) {
+            console.log(`[command.ts] Command register failed: ${e.message}`)
           }
         }
       } else {

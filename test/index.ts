@@ -28,7 +28,7 @@ const client = new CommandClient(
     rootPath: __dirname,
     slashCommands: {
       autoRegister: true,
-      guild: '841691775987089418',
+      guild: '457841749197586438',
     },
   },
 )

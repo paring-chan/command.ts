@@ -10,7 +10,7 @@ export default {
     let success = 0
     let failed = 0
     let all = false
-    if (args[0] === '~') {
+    if (args[0] === '~' || !args.length) {
       args = client.registry.modules
         .filter((x) => require(x.__path).loaded)
         .map((x) => x.__path)

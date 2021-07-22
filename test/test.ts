@@ -12,7 +12,6 @@ import {
 import {
   CommandInteraction,
   CommandInteractionOptionResolver,
-  Interaction,
   Message,
 } from 'discord.js'
 
@@ -83,7 +82,10 @@ export class TestModule extends Module {
     description: '와 샌즈!',
   })
   sans(i: CommandInteraction, options: CommandInteractionOptionResolver) {
-    i.reply(`와! ${options.getString('wa')}! 아시는구나!`)
+    i.reply({
+      content: `와! ${options.getString('wa')}! 아시는구나!`,
+      ephemeral: true,
+    })
   }
 
   unload() {
@@ -97,6 +99,7 @@ export class TestModule extends Module {
     delete require.cache[require.resolve('../src/debugTool/commands/load')]
     delete require.cache[require.resolve('../src/debugTool/commands/reload')]
     delete require.cache[require.resolve('../src/debugTool/commands/unload')]
+    delete require.cache[require.resolve('../src/debugTool/commands/shell')]
   }
 
   // @command()
