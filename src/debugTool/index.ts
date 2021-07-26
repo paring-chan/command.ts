@@ -3,7 +3,6 @@ import load from './commands/load'
 import unload from './commands/unload'
 import reload from './commands/reload'
 import eval from './commands/eval'
-import shell from './commands/shell'
 
 export { DebugModule }
 
@@ -12,5 +11,4 @@ export const debugCommands = {
   unload,
   reload,
   eval,
-  shell,
 }

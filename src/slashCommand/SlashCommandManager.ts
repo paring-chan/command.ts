@@ -35,46 +35,60 @@ export class SlashCommandManager {
           return console.log(
             `[command.ts] ${c.commandOptions.slashCommands.guild} Command creation cancelled.`,
           )
-        for (const command of this.commandList) {
-          console.log(`[command.ts] Registering command: ${command.name}`)
-          try {
-            const c = guild.commands.cache.find((x) => x.name === command.name)
-            if (!c) {
-              await guild.commands.create({
-                name: command.name,
-                description: command.description,
-                options: command.options,
-              })
-            } else {
-              await guild.commands.edit(c, {
-                name: command.name,
-                description: command.description,
-                options: command.options,
-              })
-            }
-          } catch (e) {
-            console.log(`[command.ts] Command register failed: ${e.message}`)
-          }
-        }
+        await guild.commands.set(
+          this.commandList.map((x) => ({
+            name: x.name,
+            description: x.description,
+            options: x.options,
+          })),
+        )
+        // for (const command of this.commandList) {
+        //   console.log(`[command.ts] Registering command: ${command.name}`)
+        //   try {
+        //     const c = guild.commands.cache.find((x) => x.name === command.name)
+        //     if (!c) {
+        //       await guild.commands.create({
+        //         name: command.name,
+        //         description: command.description,
+        //         options: command.options,
+        //       })
+        //     } else {
+        //       await guild.commands.edit(c, {
+        //         name: command.name,
+        //         description: command.description,
+        //         options: command.options,
+        //       })
+        //     }
+        //   } catch (e) {
+        //     console.log(`[command.ts] Command register failed: ${e.message}`)
+        //   }
+        // }
       } else {
         console.log(`[command.ts] Target: Global`)
-        for (const command of this.commandList) {
-          console.log(`[command.ts] Registering command: ${command.name}`)
-          const c = app.commands.cache.find((x) => x.name === command.name)
-          if (!c) {
-            await app.commands.create({
-              name: command.name,
-              description: command.description,
-              options: command.options,
-            })
-          } else {
-            await app.commands.edit(c, {
-              name: command.name,
-              description: command.description,
-              options: command.options,
-            })
-          }
-        }
+        await app.commands.set(
+          this.commandList.map((x) => ({
+            name: x.name,
+            description: x.description,
+            options: x.options,
+          })),
+        )
+        // for (const command of this.commandList) {
+        //   console.log(`[command.ts] Registering command: ${command.name}`)
+        //   const c = app.commands.cache.find((x) => x.name === command.name)
+        //   if (!c) {
+        //     await app.commands.create({
+        //       name: command.name,
+        //       description: command.description,
+        //       options: command.options,
+        //     })
+        //   } else {
+        //     await app.commands.edit(c, {
+        //       name: command.name,
+        //       description: command.description,
+        //       options: command.options,
+        //     })
+        //   }
+        // }
       }
     }
   }
