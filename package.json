@@ -7,11 +7,8 @@
   "license": "MIT",
   "devDependencies": {
     "discord.js": "discordjs/discord.js",
-    "discord.js-docgen": "discordjs/discord.js-docgen",
     "prettier": "^2.2.1",
-    "typedoc": "^0.20.35",
-    "typedoc-plugin-markdown": "^3.6.1",
-    "vuepress": "^1.8.2"
+    "typedoc": "^0.20.35"
   },
   "dependencies": {
     "@types/node": "^14.14.37",
@@ -24,7 +21,7 @@
   },
   "scripts": {
     "prepack": "tsc",
-    "docs:dev": "typedoc --out docs/docs/api src/index.ts && vuepress dev docs",
+    "docs:dev": "typedoc",
     "docs:build": "typedoc --out docs/docs/api src/index.ts && vuepress build docs"
   }
 }

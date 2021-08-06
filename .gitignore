@@ -118,5 +118,4 @@ dist
 .pnp.*
 
 .idea
-docs/.vuepress/dist
-docs/*/api
+dist-docs
