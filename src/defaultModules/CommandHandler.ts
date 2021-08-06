@@ -1,4 +1,4 @@
-import { Message } from 'discord.js'
+import { Interaction, Message } from 'discord.js'
 import { CommandClient, Context, Module } from '../structures'
 import { listener } from '../listener'
 
@@ -7,7 +7,7 @@ export class CommandHandler extends Module {
     super(__filename)
   }
 
-  @listener('message')
+  @listener('messageCreate')
   async onMessage(msg: Message) {
     const prefixFunction = this.client.commandOptions.prefix
     const prefix =
@@ -99,5 +99,21 @@ export class CommandHandler extends Module {
     } catch (e) {
       this.client.emit('commandError', e, msg)
     }
+  }
+
+  @listener('interactionCreate')
+  async interaction(i: Interaction) {
+    if (
+      this.client.commandOptions.slashCommands.guild &&
+      this.client.commandOptions.slashCommands.guild !== i.guildId
+    )
+      return
+    if (!i.isCommand()) return
+    const cmd = i.command!
+    const command = this.client.registry.slashCommandManager.commandList.find(
+      (x) => x.name === cmd.name,
+    )
+    if (!command) return
+    command.execute(i, i.options)
   }
 }

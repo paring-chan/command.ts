@@ -6,7 +6,7 @@ export class BuiltInConverters extends Module {
     super(__filename)
   }
 
-  getUserIDByMention(mention: string) {
+  getUserIDByMention(mention: string): `${bigint}` | undefined {
     if (!mention) return
 
     if (mention.startsWith('<@') && mention.endsWith('>')) {
@@ -16,7 +16,7 @@ export class BuiltInConverters extends Module {
         mention = mention.slice(1)
       }
 
-      return mention
+      return mention as `${bigint}`
     }
   }
 

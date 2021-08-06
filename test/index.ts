@@ -1,51 +1,40 @@
-import Discord, { Message, User } from 'discord.js'
-import { command, CommandClient, listener, Module, rest } from '../dist'
-// @ts-ignore
-import config from './config.json'
+import path from 'path'
 
-class TestModule extends Module {
-  constructor(private client: CommandClient) {
-    super(__filename)
-  }
-
-  @listener('ready')
-  async ready() {
-    console.log(`Logged in as ${this.client.user!.tag}`)
-  }
-
-  @listener('commandError')
-  async commandError(err: Error) {
-    console.error(err)
-  }
-
-  @command()
-  async test(msg: Message, @rest test: string) {
-    await msg.reply(test, {
-      allowedMentions: {
-        repliedUser: false,
-      },
-    })
-  }
-
-  @command()
-  async test2(msg: Message, test: User) {
-    await msg.reply(test.tag, {
-      allowedMentions: {
-        repliedUser: false,
-      },
-    })
-  }
-}
+const config = require('./config.json')
+import { CommandClient } from '../src'
 
 const client = new CommandClient(
   {
-    intents: Discord.Intents.ALL,
+    intents: [
+      'GUILDS',
+      'GUILD_MEMBERS',
+      'GUILD_BANS',
+      'GUILD_INTEGRATIONS',
+      'GUILD_WEBHOOKS',
+      'GUILD_INVITES',
+      'GUILD_VOICE_STATES',
+      'GUILD_PRESENCES',
+      'GUILD_MESSAGES',
+      'GUILD_MESSAGE_REACTIONS',
+      'GUILD_MESSAGE_TYPING',
+      'DIRECT_MESSAGES',
+      'DIRECT_MESSAGE_REACTIONS',
+      'DIRECT_MESSAGE_TYPING',
+    ],
+    partials: ['CHANNEL', 'GUILD_MEMBER', 'MESSAGE', 'USER', 'REACTION'],
   },
   {
-    prefix: '!test ',
+    prefix: '1',
+    rootPath: __dirname,
+    slashCommands: {
+      autoRegister: true,
+      guild: '841691775987089418',
+    },
   },
 )
 
-client.registry.registerModule(new TestModule(client))
+// client.registry.registerModule(new TestModule(client))
+
+client.registry.loadModule('test')
 
 client.login(config.token)

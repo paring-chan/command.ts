@@ -3,12 +3,15 @@ import { Collection } from 'discord.js'
 import { CommandManager } from '../command'
 import { CommandClient } from './CommandClient'
 import { ListenerManager } from '../listener'
+import { SlashCommandManager } from '../slashCommand'
+import path from 'path'
 
 export class Registry {
-  constructor(private client: CommandClient) {}
+  constructor(public client: CommandClient) {}
 
   modules: Collection<string, Module> = new Collection<string, Module>()
   commandManager = new CommandManager()
+  slashCommandManager = new SlashCommandManager(this)
   listenerManager = new ListenerManager(this.client)
 
   async registerModule(module: Module) {
@@ -18,6 +21,7 @@ export class Registry {
     this.modules.set(module.__path, module)
     this.listenerManager.register(module)
     this.commandManager.register(module)
+    this.slashCommandManager.register(module)
   }
 
   async unregisterModule(modOrID: string | Module) {
@@ -30,27 +34,37 @@ export class Registry {
     await module.unload()
     this.listenerManager.unregister(module)
     this.commandManager.unregister(module)
+    this.slashCommandManager.unregister(module)
     this.modules.delete(key)
   }
 
-  async loadModule(pathToModule: string) {
-    const module = await import(pathToModule)
+  async loadModule(pathToModule: string, absolute = false) {
+    const module = await import(
+      absolute ? pathToModule : path.join(this.client.rootPath, pathToModule)
+    )
     if (typeof module.install !== 'function')
       throw new Error('install function not found.')
     const installResult = module.install(this.client)
     if (!(installResult instanceof Module))
       throw new Error('install function returned invalid result.')
+    module.loaded = true
     await this.registerModule(installResult)
   }
 
   async unloadModule(module: Module) {
+    if (!require(module.__path).loaded) {
+      throw new Error('Not loaded with loadModule.')
+    }
     await this.unregisterModule(module)
     delete require.cache[module.__path]
   }
 
   async reloadModule(module: Module) {
     const path = module.__path
+    if (!require(path).loaded) {
+      throw new Error('Not loaded with loadModule.')
+    }
     await this.unloadModule(module)
-    await this.loadModule(path)
+    await this.loadModule(path, true)
   }
 }

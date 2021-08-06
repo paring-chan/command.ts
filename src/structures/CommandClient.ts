@@ -4,6 +4,7 @@ import {
   ClientOptions,
   Team,
   User,
+  Util,
 } from 'discord.js'
 import {
   CommandClientOptions,
@@ -16,16 +17,29 @@ export class CommandClient extends Client {
   registry = new Registry(this)
   commandOptions: CommandClientOptions
   owners: string[] = []
+  rootPath: string
 
   constructor(
     clientOptions: ClientOptions,
-    commandOptions: Partial<CommandClientOptions>,
+    {
+      rootPath,
+      ...commandOptions
+    }: Partial<CommandClientOptions> & {
+      rootPath: string
+    },
   ) {
     super(clientOptions)
-    this.commandOptions = {
-      owners: commandOptions.owners || 'auto',
-      prefix: commandOptions.prefix || '!',
-    }
+    this.rootPath = rootPath
+    this.commandOptions = Util.mergeDefault(
+      {
+        owners: commandOptions.owners || 'auto',
+        prefix: commandOptions.prefix || '!',
+        slashCommands: {
+          autoRegister: false,
+        },
+      },
+      commandOptions,
+    ) as any
     this.registry.registerModule(new CommandHandler(this))
     this.registry.registerModule(new BuiltInConverters(this))
   }
@@ -33,19 +47,19 @@ export class CommandClient extends Client {
   async login(token?: string): Promise<string> {
     const res = await super.login(token)
     if (this.commandOptions.owners === 'auto') {
-      const app =
-        // @ts-ignore
-        this.application! ||
-        //@ts-ignore
-        (await this.fetchApplication())
-      if (app.owner instanceof Team) {
-        this.owners = app.owner.members.map((x) => x.id)
-      } else if (app.owner instanceof User) {
-        this.owners = [app.owner.id]
+      const app = this.application
+      await app?.fetch()
+      if (app) {
+        if (app.owner instanceof Team) {
+          this.owners = app.owner.members.map((x) => x.id)
+        } else if (app.owner instanceof User) {
+          this.owners = [app.owner.id]
+        }
       }
     } else {
       this.owners = this.commandOptions.owners
     }
+    await this.registry.slashCommandManager.refreshCommands()
     return res
   }
 }
