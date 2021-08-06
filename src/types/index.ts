@@ -8,6 +8,10 @@ export type CommandClientOptions = {
     autoRegister: boolean
     guild?: Snowflake
   }
+  commands: {
+    allowSelf: boolean
+    allowBots: boolean
+  }
 }
 
 export interface ICommandDecoratorOptions {

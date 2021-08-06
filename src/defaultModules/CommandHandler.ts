@@ -9,6 +9,8 @@ export class CommandHandler extends Module {
 
   @listener('messageCreate')
   async onMessage(msg: Message) {
+    if (!this.client.commandOptions.commands.allowSelf && msg.author.id === this.client.user!.id) return
+    if (!this.client.commandOptions.commands.allowBots && msg.author.bot) return
     const prefixFunction = this.client.commandOptions.prefix
     const prefix =
       typeof prefixFunction === 'function'

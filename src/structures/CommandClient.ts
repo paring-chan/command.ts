@@ -37,6 +37,10 @@ export class CommandClient extends Client {
         slashCommands: {
           autoRegister: false,
         },
+        commands: {
+          allowSelf: false,
+          allowBots: false
+        }
       },
       commandOptions,
     ) as any
