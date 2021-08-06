@@ -22,6 +22,6 @@
   "scripts": {
     "prepack": "tsc",
     "docs:dev": "typedoc",
-    "docs:build": "typedoc --out docs/docs/api src/index.ts && vuepress build docs"
+    "docs:build": "typedoc"
   }
 }
