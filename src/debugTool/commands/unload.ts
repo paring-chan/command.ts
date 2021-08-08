@@ -2,6 +2,9 @@ import { Message } from 'discord.js'
 import { CommandClient } from '../../structures'
 import path from 'path'
 
+/**
+ * Unload module
+ */
 export default {
   name: 'unload',
   execute: async (msg: Message, args: string[]) => {

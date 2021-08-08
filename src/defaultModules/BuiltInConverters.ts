@@ -1,6 +1,9 @@
 import { argConverter, CommandClient, Module } from '..'
 import { GuildMember, Message, User } from 'discord.js'
 
+/**
+ * Built-In module which is enabled by default.
+ */
 export class BuiltInConverters extends Module {
   constructor(private client: CommandClient) {
     super(__filename)

@@ -8,6 +8,10 @@ import {
   COMMANDS_REST_KEY,
 } from '../constants'
 
+/**
+ * Command Decorator
+ * @param opts
+ */
 export function command(
   opts: Partial<ICommandDecoratorOptions> = {},
 ): MethodDecorator {

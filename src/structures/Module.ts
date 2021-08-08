@@ -1,3 +1,6 @@
+/**
+ * Command.TS Module
+ */
 export class Module {
   load() {}
 

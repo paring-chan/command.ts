@@ -2,6 +2,9 @@ import { Message } from 'discord.js'
 import { CommandClient } from '../../structures'
 import path from 'path'
 
+/**
+ * Reload module
+ */
 export default {
   name: 'reload',
   execute: async (msg: Message, args: string[]) => {

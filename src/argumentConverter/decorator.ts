@@ -2,6 +2,10 @@ import { Module } from '../structures'
 import { IArgConverterDecorator } from '../types'
 import { ARG_CONVERTER_KEY } from '../constants'
 
+/**
+ * Argument Converter decorator
+ * @param type
+ */
 export function argConverter(type: Function): MethodDecorator {
   return (target, propertyKey) => {
     if (!(target instanceof Module)) {

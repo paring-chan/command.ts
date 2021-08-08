@@ -2,6 +2,10 @@ import { Context, Module } from '../structures'
 import { ISlashCommandDecorator, ISlashCommandDecoratorOptions } from '..'
 import { SLASH_COMMANDS_KEY } from '../constants'
 
+/**
+ * Slash Command Decorator
+ * @param opts
+ */
 export function slashCommand(
   opts: ISlashCommandDecoratorOptions,
 ): MethodDecorator {

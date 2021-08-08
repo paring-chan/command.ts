@@ -4,11 +4,21 @@ import { Listener, ListenerDecorator } from '../types'
 import { LISTENERS_KEY } from '../constants'
 import { CommandClient } from '../structures'
 
+/**
+ * Listener handler
+ */
 export class ListenerManager {
+  /**
+   * Collection of listeners.
+   */
   listeners: Collection<Module, Listener[]> = new Collection()
 
   constructor(private client: CommandClient) {}
 
+  /**
+   * This method is run by Registry. You don't have to run it manually.
+   * @param module
+   */
   register(module: Module) {
     const meta: ListenerDecorator[] | undefined = Reflect.getMetadata(
       LISTENERS_KEY,
@@ -37,6 +47,10 @@ export class ListenerManager {
     this.listeners.set(module, listeners)
   }
 
+  /**
+   * This method is run by Registry. You don't have to run it manually.
+   * @param module
+   */
   unregister(module: Module) {
     const listeners = this.listeners.get(module)
 

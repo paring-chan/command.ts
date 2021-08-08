@@ -14,6 +14,9 @@ import {
   COMMANDS_OWNER_ONLY_KEY,
 } from '../constants'
 
+/**
+ * Command Manager
+ */
 export class CommandManager {
   commands: Collection<Module, Command[]> = new Collection()
   argumentConverters: Collection<Module, ArgConverter[]> = new Collection()

@@ -2,6 +2,9 @@ import { Module } from '../structures'
 import { IListener, ListenerDecorator } from '..'
 import { LISTENERS_KEY } from '../constants'
 
+/**
+ * Decorator to watch for events
+ */
 export function listener(event: string): MethodDecorator {
   return (target, propertyKey) => {
     if (!(target instanceof Module)) {

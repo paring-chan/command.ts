@@ -7,6 +7,9 @@ import {
 import ts from 'typescript'
 import * as util from 'util'
 
+/**
+ * Evaluate javascript/typescript code
+ */
 export default {
   name: 'eval',
   execute: async (msg: Message, args: string[]) => {

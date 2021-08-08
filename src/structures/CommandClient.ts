@@ -13,12 +13,33 @@ import {
   BuiltInConverters,
 } from '..'
 
+/**
+ * The command.ts client class.
+ */
 export class CommandClient extends Client {
+  /**
+   * Command/Listener Registry
+   */
   registry = new Registry(this)
+  /**
+   * Command.TS Options
+   */
   commandOptions: CommandClientOptions
+  /**
+   * Bot Owner List
+   */
   owners: string[] = []
+
+  /**
+   * root path to load modules in relative path
+   */
   rootPath: string
 
+  /**
+   * @param clientOptions Discord.js Client Options
+   * @param rootPath Code Root Path
+   * @param commandOptions Command.ts Options
+   */
   constructor(
     clientOptions: ClientOptions,
     {

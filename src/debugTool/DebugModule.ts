@@ -1,6 +1,9 @@
 import commands, { Default } from './commands'
 import { Context } from '../index'
 
+/**
+ * Debug Module
+ */
 export class DebugModule {
   static async run(ctx: Context) {
     const args = ctx.msg.content.slice(ctx.prefix.length).split(' ')

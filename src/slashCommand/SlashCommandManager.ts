@@ -8,17 +8,29 @@ import {
   SLASH_COMMANDS_KEY,
 } from '../constants'
 
+/**
+ * Slash Command Manager.
+ */
 export class SlashCommandManager {
   constructor(private registry: Registry) {}
 
+  /**
+   * Collection of slash commands
+   */
   commands: Collection<Module, SlashCommand[]> = new Collection()
 
+  /**
+   * Get List of slash commands
+   */
   get commandList(): SlashCommand[] {
     const result: SlashCommand[] = []
     this.commands.forEach((x) => result.push(...x))
     return result
   }
 
+  /**
+   * Auto-Refresh slash command list if `autoRegister` config enabled on client
+   */
   async refreshCommands() {
     const c = this.registry.client
 
@@ -42,27 +54,6 @@ export class SlashCommandManager {
             options: x.options,
           })),
         )
-        // for (const command of this.commandList) {
-        //   console.log(`[command.ts] Registering command: ${command.name}`)
-        //   try {
-        //     const c = guild.commands.cache.find((x) => x.name === command.name)
-        //     if (!c) {
-        //       await guild.commands.create({
-        //         name: command.name,
-        //         description: command.description,
-        //         options: command.options,
-        //       })
-        //     } else {
-        //       await guild.commands.edit(c, {
-        //         name: command.name,
-        //         description: command.description,
-        //         options: command.options,
-        //       })
-        //     }
-        //   } catch (e) {
-        //     console.log(`[command.ts] Command register failed: ${e.message}`)
-        //   }
-        // }
       } else {
         console.log(`[command.ts] Target: Global`)
         await app.commands.set(
@@ -72,23 +63,6 @@ export class SlashCommandManager {
             options: x.options,
           })),
         )
-        // for (const command of this.commandList) {
-        //   console.log(`[command.ts] Registering command: ${command.name}`)
-        //   const c = app.commands.cache.find((x) => x.name === command.name)
-        //   if (!c) {
-        //     await app.commands.create({
-        //       name: command.name,
-        //       description: command.description,
-        //       options: command.options,
-        //     })
-        //   } else {
-        //     await app.commands.edit(c, {
-        //       name: command.name,
-        //       description: command.description,
-        //       options: command.options,
-        //     })
-        //   }
-        // }
       }
     }
   }
@@ -109,10 +83,18 @@ export class SlashCommandManager {
     this.commands.set(module, commands)
   }
 
+  /**
+   * This method is run by Registry. You don't have to run it manually.
+   * @param module
+   */
   register(module: Module) {
     this.registerCommands(module)
   }
 
+  /**
+   * This method is run by Registry. You don't have to run it manually.
+   * @param module
+   */
   unregister(module: Module) {
     this.commands.delete(module)
   }

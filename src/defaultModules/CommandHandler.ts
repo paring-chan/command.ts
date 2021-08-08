@@ -2,6 +2,9 @@ import { Interaction, Message } from 'discord.js'
 import { CommandClient, Context, Module } from '../structures'
 import { listener } from '../listener'
 
+/**
+ * Built-In module which is enabled by default.
+ */
 export class CommandHandler extends Module {
   constructor(private client: CommandClient) {
     super(__filename)
