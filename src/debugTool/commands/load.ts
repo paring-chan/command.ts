@@ -16,7 +16,7 @@ export default {
         await client.registry.loadModule(arg)
         result += `✅ ${module.constructor.name}(${arg}) - Successful\n`
         success++
-      } catch (e) {
+      } catch (e: any) {
         result += `🚫 ${arg} - ${e.message}\n`
         failed++
       }
