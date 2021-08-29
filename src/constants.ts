@@ -40,3 +40,5 @@ export const COMMANDS_REST_KEY = CLASSIFIER + 'rest'
  * Metadata key to store command checks data
  */
 export const COMMANDS_CHECK_KEY = CLASSIFIER + 'checks'
+
+export const COMMANDS_PERMISSIONS_KEY = CLASSIFIER + 'requiredPermissions'

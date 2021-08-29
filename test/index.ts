@@ -1,5 +1,3 @@
-import path from 'path'
-
 const config = require('./config.json')
 import { CommandClient } from '../src'
 
@@ -28,7 +26,7 @@ const client = new CommandClient(
     rootPath: __dirname,
     slashCommands: {
       autoRegister: true,
-      guild: '841691775987089418',
+      guild: '866250605815136276',
     },
   },
 )

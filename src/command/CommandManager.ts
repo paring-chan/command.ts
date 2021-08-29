@@ -40,21 +40,24 @@ export class CommandManager {
     )
     const ownerOnlyKeys: Set<string> =
       Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, module) || new Set()
-    const checks: CheckFunction[] =
-      Reflect.getMetadata(COMMANDS_CHECK_KEY, module) || []
     if (!decorators) return
-    const commands: Command[] = decorators.map((v) => ({
-      usesCtx: v.usesCtx,
-      args: v.args,
-      brief: v.brief,
-      description: v.description,
-      module: module,
-      name: v.name,
-      execute: Reflect.get(module, v.key),
-      aliases: v.aliases,
-      ownerOnly: ownerOnlyKeys.has(v.key),
-      checks,
-    }))
+    const commands: Command[] = decorators.map((v) => {
+      const checks: CheckFunction[] =
+        Reflect.getMetadata(COMMANDS_CHECK_KEY, module, v.key) || []
+
+      return {
+        usesCtx: v.usesCtx,
+        args: v.args,
+        brief: v.brief,
+        description: v.description,
+        module: module,
+        name: v.name,
+        execute: Reflect.get(module, v.key),
+        aliases: v.aliases,
+        ownerOnly: ownerOnlyKeys.has(v.key),
+        checks,
+      }
+    })
     this.commands.set(module, commands)
   }
 

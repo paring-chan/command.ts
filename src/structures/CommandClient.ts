@@ -60,8 +60,8 @@ export class CommandClient extends Client {
         },
         commands: {
           allowSelf: false,
-          allowBots: false
-        }
+          allowBots: false,
+        },
       },
       commandOptions,
     ) as any

@@ -1,12 +1,19 @@
 import { Context, Module } from '../structures'
-import { CheckFunction, ICommandDecorator, ICommandDecoratorOptions } from '..'
+import type {
+  CheckFunction,
+  ICommandDecorator,
+  ICommandDecoratorOptions,
+  RequiredPermissions,
+} from '..'
 import {
   COMMANDS_CHECK_KEY,
   COMMANDS_KEY,
   COMMANDS_OPTIONAL_KEY,
   COMMANDS_OWNER_ONLY_KEY,
   COMMANDS_REST_KEY,
+  COMMANDS_PERMISSIONS_KEY,
 } from '../constants'
+import { PermissionResolvable } from 'discord.js'
 
 /**
  * Command Decorator
@@ -17,7 +24,7 @@ export function command(
 ): MethodDecorator {
   return (target, propertyKey) => {
     if (!(target instanceof Module)) {
-      throw new TypeError('Class does not extends `Module` class.')
+      throw new TypeError('Class does not extend `Module` class.')
     }
     const types: Function[] = Reflect.getMetadata(
       'design:paramtypes',
@@ -70,23 +77,24 @@ export function command(
 export function check(...checks: CheckFunction[]): MethodDecorator {
   return (target, propertyKey) => {
     if (!(target instanceof Module)) {
-      throw new TypeError('Class does not extends `Module` class.')
+      throw new TypeError('Class does not extend `Module` class.')
     }
     const list: CheckFunction[] =
-      Reflect.getMetadata(COMMANDS_CHECK_KEY, target) || []
+      Reflect.getMetadata(COMMANDS_CHECK_KEY, target, propertyKey) || []
     list.push(...checks)
-    Reflect.defineMetadata(COMMANDS_CHECK_KEY, list, target)
+    Reflect.defineMetadata(COMMANDS_CHECK_KEY, list, target, propertyKey)
   }
 }
 
 export const ownerOnly: MethodDecorator = (target, propertyKey) => {
   if (!(target instanceof Module)) {
-    throw new TypeError('Class does not extends `Module` class.')
+    throw new TypeError('Class does not extend `Module` class.')
   }
   const list: Set<string> =
-    Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, target) || new Set()
+    Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, target, propertyKey) ||
+    new Set()
   list.add(propertyKey as string)
-  Reflect.defineMetadata(COMMANDS_OWNER_ONLY_KEY, list, target)
+  Reflect.defineMetadata(COMMANDS_OWNER_ONLY_KEY, list, target, propertyKey)
 }
 
 export const optional = (
@@ -95,7 +103,7 @@ export const optional = (
   parameterIndex: number,
 ) => {
   if (!(target instanceof Module)) {
-    throw new TypeError('Class does not extends `Module` class.')
+    throw new TypeError('Class does not extend `Module` class.')
   }
   const indexes: number[] =
     Reflect.getMetadata(COMMANDS_OPTIONAL_KEY, target, propertyKey) || []
@@ -109,7 +117,33 @@ export const rest = (
   parameterIndex: number,
 ) => {
   if (!(target instanceof Module)) {
-    throw new TypeError('Class does not extends `Module` class.')
+    throw new TypeError('Class does not extend `Module` class.')
   }
   Reflect.defineMetadata(COMMANDS_REST_KEY, parameterIndex, target, propertyKey)
+}
+
+export function requirePermissions(
+  permissions: PermissionResolvable,
+): MethodDecorator {
+  return (target, propertyKey) => {
+    if (!(target instanceof Module)) {
+      throw new TypeError('Class does not extend `Module` class.')
+    }
+    const data: RequiredPermissions = Reflect.getMetadata(
+      COMMANDS_PERMISSIONS_KEY,
+      target,
+      propertyKey,
+    )
+
+    if (data) throw new Error('requirePermissions already defined.')
+
+    Reflect.defineMetadata(
+      COMMANDS_KEY,
+      target,
+      {
+        permissions,
+      } as RequiredPermissions,
+      propertyKey,
+    )
+  }
 }

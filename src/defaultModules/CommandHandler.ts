@@ -1,6 +1,7 @@
 import { Interaction, Message } from 'discord.js'
 import { CommandClient, Context, Module } from '../structures'
 import { listener } from '../listener'
+import { CheckFailedError } from '../error'
 
 /**
  * Built-In module which is enabled by default.
@@ -12,7 +13,11 @@ export class CommandHandler extends Module {
 
   @listener('messageCreate')
   async onMessage(msg: Message) {
-    if (!this.client.commandOptions.commands.allowSelf && msg.author.id === this.client.user!.id) return
+    if (
+      !this.client.commandOptions.commands.allowSelf &&
+      msg.author.id === this.client.user!.id
+    )
+      return
     if (!this.client.commandOptions.commands.allowBots && msg.author.bot) return
     const prefixFunction = this.client.commandOptions.prefix
     const prefix =
@@ -37,7 +42,9 @@ export class CommandHandler extends Module {
     const checks = cmd.checks
     for (const check of checks) {
       try {
-        if (!(await check(msg))) return
+        if (!(await check(msg))) {
+          return this.client.emit('commandError', new CheckFailedError(cmd))
+        }
       } catch {
         return
       }

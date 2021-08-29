@@ -1,5 +1,10 @@
 import { Module } from '../structures'
-import { ApplicationCommandOptionData, Message, Snowflake } from 'discord.js'
+import {
+  ApplicationCommandOptionData,
+  Message,
+  PermissionResolvable,
+  Snowflake,
+} from 'discord.js'
 
 export type CommandClientOptions = {
   owners: Snowflake[] | 'auto'
@@ -107,3 +112,7 @@ export interface ArgConverter {
 }
 
 export type CheckFunction = (msg: Message) => boolean | Promise<boolean>
+
+export type RequiredPermissions = {
+  permissions: PermissionResolvable
+}

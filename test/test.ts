@@ -88,20 +88,6 @@ export class TestModule extends Module {
     })
   }
 
-  unload() {
-    delete require.cache[require.resolve('../src')]
-    delete require.cache[require.resolve('../src/debugTool/DebugModule')]
-    delete require.cache[require.resolve('../src/debugTool')]
-    delete require.cache[require.resolve('../src/debugTool/commands')]
-    delete require.cache[require.resolve('../src/debugTool/commands/default')]
-    delete require.cache[require.resolve('../src/debugTool/commands')]
-    delete require.cache[require.resolve('../src/debugTool/commands/eval')]
-    delete require.cache[require.resolve('../src/debugTool/commands/load')]
-    delete require.cache[require.resolve('../src/debugTool/commands/reload')]
-    delete require.cache[require.resolve('../src/debugTool/commands/unload')]
-    delete require.cache[require.resolve('../src/debugTool/commands/shell')]
-  }
-
   // @command()
   // async test(msg: Message, @rest test: string) {
   //   await msg.reply(test, {
