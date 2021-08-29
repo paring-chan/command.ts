@@ -41,4 +41,5 @@ export const COMMANDS_REST_KEY = CLASSIFIER + 'rest'
  */
 export const COMMANDS_CHECK_KEY = CLASSIFIER + 'checks'
 
-export const COMMANDS_PERMISSIONS_KEY = CLASSIFIER + 'requiredPermissions'
+export const COMMANDS_USER_PERMISSIONS_KEY = CLASSIFIER + 'userPermissions'
+export const COMMANDS_CLIENT_PERMISSIONS_KEY = CLASSIFIER + 'clientPermissions'

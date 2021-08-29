@@ -76,6 +76,8 @@ export interface Command {
   module: Module
   ownerOnly: boolean
   checks: CheckFunction[]
+  userPermissions?: PermissionResolvable
+  clientPermissions?: PermissionResolvable
 }
 
 export interface SlashCommand {

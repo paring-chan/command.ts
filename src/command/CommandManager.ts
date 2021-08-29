@@ -6,12 +6,15 @@ import {
   Command,
   IArgConverterDecorator,
   ICommandDecorator,
+  RequiredPermissions,
 } from '../types'
 import {
   ARG_CONVERTER_KEY,
   COMMANDS_CHECK_KEY,
+  COMMANDS_CLIENT_PERMISSIONS_KEY,
   COMMANDS_KEY,
   COMMANDS_OWNER_ONLY_KEY,
+  COMMANDS_USER_PERMISSIONS_KEY,
 } from '../constants'
 
 /**
@@ -44,6 +47,17 @@ export class CommandManager {
     const commands: Command[] = decorators.map((v) => {
       const checks: CheckFunction[] =
         Reflect.getMetadata(COMMANDS_CHECK_KEY, module, v.key) || []
+      const userPerms: RequiredPermissions = Reflect.getMetadata(
+        COMMANDS_USER_PERMISSIONS_KEY,
+        module,
+        v.key,
+      ) || { permissions: [] }
+
+      const clientPerms: RequiredPermissions = Reflect.getMetadata(
+        COMMANDS_CLIENT_PERMISSIONS_KEY,
+        module,
+        v.key,
+      ) || { permissions: [] }
 
       return {
         usesCtx: v.usesCtx,
@@ -56,6 +70,8 @@ export class CommandManager {
         aliases: v.aliases,
         ownerOnly: ownerOnlyKeys.has(v.key),
         checks,
+        userPermissions: userPerms.permissions,
+        clientPermissions: clientPerms.permissions,
       }
     })
     this.commands.set(module, commands)

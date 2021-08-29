@@ -7,11 +7,12 @@ import type {
 } from '..'
 import {
   COMMANDS_CHECK_KEY,
+  COMMANDS_CLIENT_PERMISSIONS_KEY,
   COMMANDS_KEY,
   COMMANDS_OPTIONAL_KEY,
   COMMANDS_OWNER_ONLY_KEY,
   COMMANDS_REST_KEY,
-  COMMANDS_PERMISSIONS_KEY,
+  COMMANDS_USER_PERMISSIONS_KEY,
 } from '../constants'
 import { PermissionResolvable } from 'discord.js'
 
@@ -122,7 +123,7 @@ export const rest = (
   Reflect.defineMetadata(COMMANDS_REST_KEY, parameterIndex, target, propertyKey)
 }
 
-export function requirePermissions(
+export function userPermissions(
   permissions: PermissionResolvable,
 ): MethodDecorator {
   return (target, propertyKey) => {
@@ -130,15 +131,41 @@ export function requirePermissions(
       throw new TypeError('Class does not extend `Module` class.')
     }
     const data: RequiredPermissions = Reflect.getMetadata(
-      COMMANDS_PERMISSIONS_KEY,
+      COMMANDS_USER_PERMISSIONS_KEY,
       target,
       propertyKey,
     )
 
-    if (data) throw new Error('requirePermissions already defined.')
+    if (data) throw new Error('userPermissions is already defined.')
 
     Reflect.defineMetadata(
-      COMMANDS_KEY,
+      COMMANDS_USER_PERMISSIONS_KEY,
+      target,
+      {
+        permissions,
+      } as RequiredPermissions,
+      propertyKey,
+    )
+  }
+}
+
+export function clientPermissions(
+  permissions: PermissionResolvable,
+): MethodDecorator {
+  return (target, propertyKey) => {
+    if (!(target instanceof Module)) {
+      throw new TypeError('Class does not extend `Module` class.')
+    }
+    const data: RequiredPermissions = Reflect.getMetadata(
+      COMMANDS_CLIENT_PERMISSIONS_KEY,
+      target,
+      propertyKey,
+    )
+
+    if (data) throw new Error('clientPermissions is already defined.')
+
+    Reflect.defineMetadata(
+      COMMANDS_CLIENT_PERMISSIONS_KEY,
       target,
       {
         permissions,

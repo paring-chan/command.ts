@@ -1,7 +1,11 @@
 import { Interaction, Message } from 'discord.js'
 import { CommandClient, Context, Module } from '../structures'
 import { listener } from '../listener'
-import { CheckFailedError } from '../error'
+import {
+  CheckFailedError,
+  MissingClientPermissions,
+  MissingUserPermissions,
+} from '../error'
 
 /**
  * Built-In module which is enabled by default.
@@ -39,6 +43,29 @@ export class CommandHandler extends Module {
       if (!this.client.owners.includes(msg.author.id))
         return this.client.emit('ownerOnlyCommand', msg, cmd)
     }
+
+    if (
+      !msg.guild?.me?.permissionsIn(msg.channel.id).has(cmd.clientPermissions!)
+    ) {
+      return this.client.emit(
+        'commandError',
+        new MissingClientPermissions(cmd, cmd.clientPermissions!),
+        msg,
+        cmd,
+      )
+    }
+
+    if (
+      !msg.member?.permissionsIn(msg.channel.id).has(cmd.clientPermissions!)
+    ) {
+      return this.client.emit(
+        'commandError',
+        new MissingUserPermissions(cmd, cmd.clientPermissions!),
+        msg,
+        cmd,
+      )
+    }
+
     const checks = cmd.checks
     for (const check of checks) {
       try {
