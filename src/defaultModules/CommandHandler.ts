@@ -43,7 +43,12 @@ export class CommandHandler extends Module {
     for (const check of checks) {
       try {
         if (!(await check(msg))) {
-          return this.client.emit('commandError', new CheckFailedError(cmd))
+          return this.client.emit(
+            'commandError',
+            new CheckFailedError(cmd),
+            msg,
+            cmd,
+          )
         }
       } catch {
         return
@@ -62,6 +67,8 @@ export class CommandHandler extends Module {
         return this.client.emit(
           'commandError',
           new Error(`An argument is required but not provided.`),
+          msg,
+          cmd,
         )
       }
       if (arg.optional && !v) {
@@ -85,10 +92,11 @@ export class CommandHandler extends Module {
               'commandError',
               new Error('Argument converter returned no result.'),
               msg,
+              cmd,
             )
           }
         } catch (e) {
-          return this.client.emit('commandError', e, msg)
+          return this.client.emit('commandError', e, msg, cmd)
         }
       } else {
         return this.client.emit(
@@ -96,6 +104,8 @@ export class CommandHandler extends Module {
           new Error(
             `No converter found for type ${arg.type.constructor.name}.`,
           ),
+          msg,
+          cmd,
         )
       }
     }
@@ -109,7 +119,7 @@ export class CommandHandler extends Module {
     try {
       cmd.execute.apply(cmd.module, executeArgs)
     } catch (e) {
-      this.client.emit('commandError', e, msg)
+      this.client.emit('commandError', e, msg, cmd)
     }
   }
 
