@@ -86,6 +86,10 @@ export interface SlashCommand {
   description: string
   module: Module
   options: ApplicationCommandOptionData[]
+  ownerOnly: boolean
+  checks: CheckFunction[]
+  userPermissions?: PermissionResolvable
+  clientPermissions?: PermissionResolvable
 }
 
 export interface IListener {

@@ -1,9 +1,11 @@
-import { Interaction, Message } from 'discord.js'
+import { GuildMember, Interaction, Message } from 'discord.js'
 import { CommandClient, Context, Module } from '../structures'
 import { listener } from '../listener'
 import {
   CheckFailedError,
   MissingClientPermissions,
+  MissingSlashClientPermissions,
+  MissingSlashUserPermissions,
   MissingUserPermissions,
 } from '../error'
 
@@ -163,6 +165,37 @@ export class CommandHandler extends Module {
       (x) => x.name === cmd.name,
     )
     if (!command) return
+
+    if (
+      !i.guild?.me?.permissionsIn(i.channel!.id).has(command.clientPermissions!)
+    ) {
+      return this.client.emit(
+        'commandError',
+        new MissingSlashClientPermissions(command, command.clientPermissions!),
+        i,
+        cmd,
+      )
+    }
+
+    if (
+      !(i.member as GuildMember | null)
+        ?.permissionsIn(i.channel!.id)
+        .has(command.clientPermissions!)
+    ) {
+      return this.client.emit(
+        'commandError',
+        new MissingSlashUserPermissions(command, command.clientPermissions!),
+        i,
+        cmd,
+      )
+    }
+
+    if (command.ownerOnly) {
+      if (!this.client.owners.includes(i.user.id))
+        return this.client.emit('ownerOnlyCommand', i, cmd)
+      return this.client.emit('ownerOnlyCommand', i, cmd)
+    }
+
     command.execute.apply(command.module, [i, i.options])
   }
 }
