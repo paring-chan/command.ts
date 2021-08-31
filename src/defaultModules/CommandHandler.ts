@@ -7,6 +7,8 @@ import {
   MissingSlashClientPermissions,
   MissingSlashUserPermissions,
   MissingUserPermissions,
+  OwnerOnlyCommand,
+  OwnerOnlySlashCommand,
 } from '../error'
 
 /**
@@ -43,7 +45,12 @@ export class CommandHandler extends Module {
     if (!cmd) return
     if (cmd.ownerOnly) {
       if (!this.client.owners.includes(msg.author.id))
-        return this.client.emit('ownerOnlyCommand', msg, cmd)
+        return this.client.emit(
+          'commandError',
+          new OwnerOnlyCommand(cmd, msg),
+          msg,
+          cmd,
+        )
     }
 
     if (
@@ -51,7 +58,7 @@ export class CommandHandler extends Module {
     ) {
       return this.client.emit(
         'commandError',
-        new MissingClientPermissions(cmd, cmd.clientPermissions!),
+        new MissingClientPermissions(cmd, cmd.clientPermissions!, msg),
         msg,
         cmd,
       )
@@ -62,7 +69,7 @@ export class CommandHandler extends Module {
     ) {
       return this.client.emit(
         'commandError',
-        new MissingUserPermissions(cmd, cmd.clientPermissions!),
+        new MissingUserPermissions(cmd, cmd.clientPermissions!, msg),
         msg,
         cmd,
       )
@@ -170,8 +177,12 @@ export class CommandHandler extends Module {
       !i.guild?.me?.permissionsIn(i.channel!.id).has(command.clientPermissions!)
     ) {
       return this.client.emit(
-        'commandError',
-        new MissingSlashClientPermissions(command, command.clientPermissions!),
+        'slashCommandError',
+        new MissingSlashClientPermissions(
+          command,
+          command.clientPermissions!,
+          i,
+        ),
         i,
         cmd,
       )
@@ -183,8 +194,8 @@ export class CommandHandler extends Module {
         .has(command.clientPermissions!)
     ) {
       return this.client.emit(
-        'commandError',
-        new MissingSlashUserPermissions(command, command.clientPermissions!),
+        'slashCommandError',
+        new MissingSlashUserPermissions(command, command.clientPermissions!, i),
         i,
         cmd,
       )
@@ -192,10 +203,18 @@ export class CommandHandler extends Module {
 
     if (command.ownerOnly) {
       if (!this.client.owners.includes(i.user.id))
-        return this.client.emit('ownerOnlyCommand', i, cmd)
-      return this.client.emit('ownerOnlyCommand', i, cmd)
+        return this.client.emit(
+          'slashCommandError',
+          new OwnerOnlySlashCommand(command, i),
+          i,
+          cmd,
+        )
     }
 
-    command.execute.apply(command.module, [i, i.options])
+    try {
+      await command.execute.apply(command.module, [i, i.options])
+    } catch (e: any) {
+      return this.client.emit('slashCommandError', e, i, cmd)
+    }
   }
 }
