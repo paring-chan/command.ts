@@ -1,5 +1,5 @@
 {
-  "name": "@pikostudio/command.ts",
+  "name": "@pikokr/command.ts",
   "description": "Discord.js command framework for typescript.",
   "version": "2.1.1",
   "main": "dist/index.js",
