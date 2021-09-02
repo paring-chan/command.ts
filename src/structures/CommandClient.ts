@@ -44,5 +44,6 @@ export class CommandClient {
         owners: 'auto',
       },
     )
+    adapter.init(this)
   }
 }
