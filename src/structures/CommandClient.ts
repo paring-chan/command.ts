@@ -6,6 +6,11 @@ export interface CommandOptions {
 }
 
 export interface CommandClientOptions {
+  command: CommandOptions
+  owners: 'auto' | string[]
+}
+
+export interface CommandClientOptionsParam {
   command: Partial<CommandOptions>
   owners: 'auto' | string[]
 }
@@ -15,8 +20,12 @@ export class CommandClient {
   options: CommandClientOptions
   owners: string[] = []
 
-  handle(msg: any) {
+  async handle(msg: any) {
     const data = this.adapter.getCommandData(msg)
+    const prefix =
+      typeof this.options.command.prefix === 'string'
+        ? this.options.command.prefix
+        : await this.options.command.prefix(msg)
   }
 
   private _isReady = false
@@ -33,17 +42,17 @@ export class CommandClient {
   constructor({
     adapter,
     ...options
-  }: Partial<CommandClientOptions> & { adapter: HandlerAdapter<any> }) {
+  }: Partial<CommandClientOptionsParam> & { adapter: HandlerAdapter<any> }) {
     this.adapter = adapter
-    this.options = _.merge<Partial<CommandClientOptions>, CommandClientOptions>(
-      options,
-      {
-        command: {
-          prefix: '!',
-        },
-        owners: 'auto',
+    this.options = _.merge<
+      Partial<CommandClientOptionsParam>,
+      CommandClientOptions
+    >(options, {
+      command: {
+        prefix: '!',
       },
-    )
+      owners: 'auto',
+    })
     adapter.init(this)
   }
 }
