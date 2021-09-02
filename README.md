@@ -16,6 +16,7 @@ Command framework for discord.js
   - [ ] 슬래시 커맨드 데코레이터 개선
   - [ ] 슬래시 커맨드 빌더 사용
 - [ ] 모듈
+  - [ ] 기존 라이프사이클 이벤트(`load`, `unload`)
   - [ ] `beforeReload`, `afterReload` 라이프사이클 이벤트 추가
 
 ~~으악 너무마나~~
