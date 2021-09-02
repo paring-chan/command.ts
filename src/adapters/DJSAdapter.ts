@@ -1,5 +1,5 @@
 import { HandlerAdapter } from '../interface'
-import { Client, Message, Team, User } from 'discord.js'
+import { Client, Message, User } from 'discord.js'
 import { CommandClient } from '../structures'
 
 export class DJSAdapter implements HandlerAdapter<Message> {
