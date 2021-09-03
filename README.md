@@ -15,6 +15,7 @@ Command framework for discord.js
   - [ ] 샤딩 사용 시 첫번째 샤드에서만 커맨드 등록
   - [ ] 슬래시 커맨드 데코레이터 개선
   - [ ] 슬래시 커맨드 빌더 사용
+  - [ ] 슬래시 커맨드 
 - [ ] 모듈
   - [ ] 기존 라이프사이클 이벤트(`load`, `unload`)
   - [ ] `beforeReload`, `afterReload` 라이프사이클 이벤트 추가
