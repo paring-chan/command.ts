@@ -2,7 +2,10 @@ import { HandlerAdapter } from '../interface'
 import _ from 'lodash'
 
 export interface CommandOptions {
-  prefix: string | ((msg: any) => string)
+  prefix:
+    | string
+    | ((msg: any) => string | Promise<string | string[]> | string[])
+    | string[]
 }
 
 export interface CommandClientOptions {
@@ -22,10 +25,23 @@ export class CommandClient {
 
   async handle(msg: any) {
     const data = this.adapter.getCommandData(msg)
-    const prefix =
+    const prefixList: string[] | string =
       typeof this.options.command.prefix === 'string'
         ? this.options.command.prefix
-        : await this.options.command.prefix(msg)
+        : typeof this.options.command.prefix === 'function'
+        ? await this.options.command.prefix(msg)
+        : this.options.command.prefix
+    let prefix: string
+    if (typeof prefixList === 'object') {
+      const res = prefixList.find((x) => data.content.includes(x))
+
+      if (!res) return
+
+      prefix = res
+    } else {
+      if (!data.content.includes(prefixList)) return
+      prefix = prefixList
+    }
   }
 
   private _isReady = false
