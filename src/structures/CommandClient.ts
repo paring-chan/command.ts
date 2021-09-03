@@ -42,6 +42,14 @@ export class CommandClient {
       if (!data.content.includes(prefixList)) return
       prefix = prefixList
     }
+
+    const args = data.content.slice(prefix.length).split(' ')
+
+    const command = args.shift()
+
+    if (!command) return
+
+    console.log(args)
   }
 
   private _isReady = false
