@@ -1,5 +1,6 @@
 import { HandlerAdapter } from '../interface'
 import _ from 'lodash'
+import { Registry } from './Registry'
 
 export interface CommandOptions {
   prefix:
@@ -22,6 +23,7 @@ export class CommandClient {
   adapter: HandlerAdapter<any>
   options: CommandClientOptions
   owners: string[] = []
+  registry = new Registry(this)
 
   async handle(msg: any) {
     const data = this.adapter.getCommandData(msg)
@@ -49,6 +51,7 @@ export class CommandClient {
 
     if (!command) return
 
+    console.log(command)
     console.log(args)
   }
 
