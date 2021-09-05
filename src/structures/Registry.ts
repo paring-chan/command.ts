@@ -9,11 +9,19 @@ export class Registry {
 
   commands: Command[] = []
 
-  registerModule() {
+  registerModule(module: Module) {
     // TODO
   }
 
-  loadModule() {
+  loadModule(path: string, absolute: boolean = false) {
+    // TODO
+  }
+
+  unregisterModule(module: Module) {
+    // TODO
+  }
+
+  unloadModule(module: Module) {
     // TODO
   }
 }
