@@ -1,1 +1,1 @@
-export const KCommands = Symbol('command')
+export const KCommands = Symbol('Command.TS Command')
