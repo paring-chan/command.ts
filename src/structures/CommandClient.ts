@@ -51,6 +51,8 @@ export class CommandClient {
 
     if (!command) return
 
+    this.registry.commands
+
     console.log(command)
     console.log(args)
   }
