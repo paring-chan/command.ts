@@ -9,7 +9,6 @@ import {
 import {
   COMMANDS_CHECK_KEY,
   COMMANDS_CLIENT_PERMISSIONS_KEY,
-  COMMANDS_KEY,
   COMMANDS_OWNER_ONLY_KEY,
   COMMANDS_USER_PERMISSIONS_KEY,
   SLASH_COMMANDS_KEY,
@@ -59,8 +58,22 @@ export class SlashCommandManager {
             name: x.name,
             description: x.description,
             options: x.options,
+            defaultPermission: !x.ownerOnly,
           })),
         )
+
+        for (const [, command] of guild.commands.cache.filter(
+          (x) =>
+            this.commandList.find((y) => x.name === y.name)?.ownerOnly || false,
+        )) {
+          await command.permissions.set({
+            permissions: this.registry.client.owners.map((x) => ({
+              type: 'USER',
+              id: x,
+              permission: true,
+            })),
+          })
+        }
       } else {
         console.log(`[command.ts] Target: Global`)
         await app.commands.set(
@@ -68,6 +81,7 @@ export class SlashCommandManager {
             name: x.name,
             description: x.description,
             options: x.options,
+            defaultPermission: !x.ownerOnly,
           })),
         )
       }
