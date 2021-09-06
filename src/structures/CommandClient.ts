@@ -1,6 +1,6 @@
-import { HandlerAdapter } from '../interface'
 import _ from 'lodash'
 import { Registry } from './Registry'
+import { Client, Message, User } from 'discord.js'
 
 export interface CommandOptions {
   prefix:
@@ -20,13 +20,12 @@ export interface CommandClientOptionsParam {
 }
 
 export class CommandClient {
-  adapter: HandlerAdapter<any>
   options: CommandClientOptions
   owners: string[] = []
   registry = new Registry(this)
+  client: Client
 
-  async handle(msg: any) {
-    const data = this.adapter.getCommandData(msg)
+  private async handle(msg: Message) {
     const prefixList: string[] | string =
       typeof this.options.command.prefix === 'string'
         ? this.options.command.prefix
@@ -35,17 +34,17 @@ export class CommandClient {
         : this.options.command.prefix
     let prefix: string
     if (typeof prefixList === 'object') {
-      const res = prefixList.find((x) => data.content.includes(x))
+      const res = prefixList.find((x) => msg.content.includes(x))
 
       if (!res) return
 
       prefix = res
     } else {
-      if (!data.content.includes(prefixList)) return
+      if (!msg.content.includes(prefixList)) return
       prefix = prefixList
     }
 
-    const args = data.content.slice(prefix.length).split(' ')
+    const args = msg.content.slice(prefix.length).split(' ')
 
     const command = args.shift()
 
@@ -59,20 +58,27 @@ export class CommandClient {
 
   private _isReady = false
 
+  private fetchOwners(): string[] {
+    const o = this.client.application?.owner
+    if (!o) return []
+    if (o instanceof User) return [o.id]
+    else return o.members.map((x) => x.id)
+  }
+
   async ready() {
     if (this._isReady) return
     this._isReady = true
     if (this.options.owners === 'auto') {
-      const owners = await this.adapter.fetchOwners()
+      const owners = this.fetchOwners()
       this.owners.push(...owners)
     }
   }
 
   constructor({
-    adapter,
+    client,
     ...options
-  }: Partial<CommandClientOptionsParam> & { adapter: HandlerAdapter<any> }) {
-    this.adapter = adapter
+  }: Partial<CommandClientOptionsParam> & { client: Client }) {
+    this.client = client
     this.options = _.merge<
       Partial<CommandClientOptionsParam>,
       CommandClientOptions
@@ -82,6 +88,8 @@ export class CommandClient {
       },
       owners: 'auto',
     })
-    adapter.init(this)
+
+    this.client.on('messageCreate', (msg) => this.handle(msg))
+    this.client.once('ready', this.ready)
   }
 }

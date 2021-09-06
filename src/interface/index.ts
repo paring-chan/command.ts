@@ -1,1 +1,3 @@
-export type { HandlerAdapter } from './HandlerAdapter'
+// export type { HandlerAdapter } from './HandlerAdapter'
+
+export {}
