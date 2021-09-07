@@ -92,10 +92,9 @@ export const ownerOnly: MethodDecorator = (target, propertyKey) => {
     throw new TypeError('Class does not extend `Module` class.')
   }
   const list: Set<string> =
-    Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, target, propertyKey) ||
-    new Set()
+    Reflect.getMetadata(COMMANDS_OWNER_ONLY_KEY, target) || new Set()
   list.add(propertyKey as string)
-  Reflect.defineMetadata(COMMANDS_OWNER_ONLY_KEY, list, target, propertyKey)
+  Reflect.defineMetadata(COMMANDS_OWNER_ONLY_KEY, list, target)
 }
 
 export const optional = (
