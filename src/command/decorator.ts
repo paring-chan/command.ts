@@ -12,7 +12,7 @@ const checkTarget = (target: Object) => {
   if (!(target instanceof Module)) throw new InvalidTargetError()
 }
 
-export const command = (options: Partial<CommandOptions>) => {
+export const command = (options: Partial<CommandOptions> = {}) => {
   return (
     target: Object,
     propertyKey: string,
