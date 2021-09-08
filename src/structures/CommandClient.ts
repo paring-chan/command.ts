@@ -44,13 +44,15 @@ export class CommandClient {
       prefix = prefixList
     }
 
+    if (!msg.content.startsWith(prefix)) return
+
     const args = msg.content.slice(prefix.length).split(' ')
 
     const command = args.shift()
 
     if (!command) return
 
-    this.registry.commands
+    console.log(this.registry.commands)
 
     console.log(command)
     console.log(args)
