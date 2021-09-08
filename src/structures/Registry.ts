@@ -8,25 +8,28 @@ import {
   InvalidTargetError,
   ModuleLoadError,
 } from '../error'
+import { Collection } from 'discord.js'
 
 export class Registry {
   constructor(private client: CommandClient) {}
 
-  modules: Module[] = []
+  modules: Collection<symbol, Module> = new Collection()
 
   get commands(): Command[] {
     const result: Command[] = []
 
-    for (const module of this.modules) {
-      const commands = Reflect.getMetadata(KCommands, module)
-      result.push(...commands)
+    for (const [, module] of this.modules) {
+      result.push(...module.commands)
     }
 
     return result
   }
 
   registerModule(module: Module) {
-    // TODO
+    this.modules.set(Symbol(module.constructor.name), module)
+    return module
+  }
+
   }
 
   loadModule(file: string, absolute: boolean = false) {
@@ -40,22 +43,40 @@ export class Registry {
       throw new ModuleLoadError(p)
     }
 
+    if (m.loaded) throw new Error('MODULE_ALREADY_LOADED')
+
     if (!m.install) throw new InvalidModuleError('Install function not found.')
 
-    const mod = m.install()
+    const mod = m.install(this.client)
 
     if (!(mod instanceof Module)) throw new InvalidTargetError()
 
     Reflect.defineMetadata(KModulePath, require.resolve(p), mod)
 
-    this.registerModule(m)
+    this.registerModule(mod)
+
+    mod.load()
+
+    m.loaded = true
+
+    return mod
   }
 
   unregisterModule(module: Module) {
-    // TODO
+    const symbol = this.modules.findKey((x) => x === module)
+    if (!symbol) return module
+    module.unload()
+    this.modules.delete(symbol)
+    return module
   }
 
   unloadModule(module: Module) {
-    // TODO
+    const p = Reflect.getMetadata(KModulePath, module)
+
+    if (!p)
+      throw new InvalidModuleError('This module is not loaded by loadModule.')
+
+    this.unregisterModule(module)
+    delete require.cache[p]
   }
 }
