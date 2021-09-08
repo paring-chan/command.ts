@@ -9,6 +9,7 @@ import {
   ModuleLoadError,
 } from '../error'
 import { Collection } from 'discord.js'
+import walkSync from 'walk-sync'
 
 export class Registry {
   constructor(private client: CommandClient) {}
@@ -30,6 +31,12 @@ export class Registry {
     return module
   }
 
+  loadModulesIn(dir: string, absolute = false) {
+    let p = absolute ? dir : path.join(require.main!.path, dir)
+
+    for (const i of walkSync(p)) {
+      this.loadModule(path.join(p, i), true)
+    }
   }
 
   loadModule(file: string, absolute: boolean = false) {
