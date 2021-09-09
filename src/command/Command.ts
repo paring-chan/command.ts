@@ -10,6 +10,6 @@ export class Command {
     private run: Function,
     public argTypes: any[],
     public name: string,
-    public aliases: string[],
+    public aliases: string[] | ((msg: string) => string[]),
   ) {}
 }
