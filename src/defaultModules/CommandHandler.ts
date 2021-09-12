@@ -162,8 +162,12 @@ export class CommandHandler extends Module {
   @listener('interactionCreate')
   async interaction(i: Interaction) {
     if (
-      this.client.commandOptions.slashCommands.guild &&
-      this.client.commandOptions.slashCommands.guild !== i.guildId
+      ((this.client.commandOptions.slashCommands as any).guild &&
+        (this.client.commandOptions.slashCommands as any).guild !==
+          i.guildId) ||
+      !(this.client.commandOptions.slashCommands as any).guild.includes(
+        i.guildId,
+      )
     )
       return
     if (!i.isCommand()) return
