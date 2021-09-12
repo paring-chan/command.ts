@@ -11,8 +11,14 @@ export type CommandClientOptions = {
   prefix: string | ((msg: Message) => string | Promise<string>)
   slashCommands: {
     autoRegister: boolean
-    guild?: Snowflake
-  }
+  } & (
+    | {
+        guild: Snowflake | Snowflake[]
+      }
+    | {
+        ownerCommandGuild: Snowflake
+      }
+  )
   commands: {
     allowSelf: boolean
     allowBots: boolean

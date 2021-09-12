@@ -1,5 +1,5 @@
 import { Module, Registry } from '../structures'
-import { Collection } from 'discord.js'
+import { Collection, Guild, Snowflake } from 'discord.js'
 import {
   CheckFunction,
   ISlashCommandDecorator,
@@ -44,35 +44,36 @@ export class SlashCommandManager {
 
     if (c.commandOptions.slashCommands.autoRegister) {
       console.log('[command.ts] Updating commands...')
-      if (c.commandOptions.slashCommands.guild) {
-        console.log(
-          `[command.ts] Target Guild ID: ${c.commandOptions.slashCommands.guild}`,
-        )
-        const guild = c.guilds.cache.get(c.commandOptions.slashCommands.guild)
-        if (!guild)
-          return console.log(
-            `[command.ts] ${c.commandOptions.slashCommands.guild} Command creation cancelled.`,
-          )
-        await guild.commands.set(
-          this.commandList.map((x) => ({
-            name: x.name,
-            description: x.description,
-            options: x.options,
-            defaultPermission: !x.ownerOnly,
-          })),
-        )
-
-        for (const [, command] of guild.commands.cache.filter(
-          (x) =>
-            this.commandList.find((y) => x.name === y.name)?.ownerOnly || false,
-        )) {
-          await command.permissions.set({
-            permissions: this.registry.client.owners.map((x) => ({
-              type: 'USER',
-              id: x,
-              permission: true,
+      if ('guild' in c.commandOptions.slashCommands) {
+        const processForGuild = async (guildID: Snowflake) => {
+          console.log(`[command.ts] Target Guild ID: ${guildID}`)
+          const guild = c.guilds.cache.get(guildID)
+          if (!guild)
+            return console.log(
+              `[command.ts] ${guildID} Command creation cancelled.`,
+            )
+          await guild.commands.set(
+            this.commandList.map((x) => ({
+              name: x.name,
+              description: x.description,
+              options: x.options,
+              defaultPermission: !x.ownerOnly,
             })),
-          })
+          )
+
+          for (const [, command] of guild.commands.cache.filter(
+            (x) =>
+              this.commandList.find((y) => x.name === y.name)?.ownerOnly ||
+              false,
+          )) {
+            await command.permissions.set({
+              permissions: this.registry.client.owners.map((x) => ({
+                type: 'USER',
+                id: x,
+                permission: true,
+              })),
+            })
+          }
         }
       } else {
         console.log(`[command.ts] Target: Global`)
@@ -84,6 +85,20 @@ export class SlashCommandManager {
             defaultPermission: !x.ownerOnly,
           })),
         )
+        for (const [, command] of app.commands.cache.filter(
+          (x) =>
+            this.commandList.find((y) => x.name === y.name)?.ownerOnly || false,
+        )) {
+          await command.permissions.set({
+            permissions: this.registry.client.owners.map((x) => ({
+              type: 'USER',
+              id: x,
+              permission: true,
+            })),
+            guild: (this.registry.client.commandOptions.slashCommands as any)
+              .ownerCommandGuild,
+          })
+        }
       }
     }
   }
