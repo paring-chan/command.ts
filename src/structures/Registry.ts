@@ -1,7 +1,7 @@
 import { CommandClient } from './CommandClient'
 import { Module } from './Module'
 import { Command } from '../command'
-import { KCommands, KModulePath } from '../constants'
+import { KListenerExecuteCache, KModulePath } from '../constants'
 import path from 'path'
 import {
   InvalidModuleError,
@@ -10,6 +10,11 @@ import {
 } from '../error'
 import { Collection } from 'discord.js'
 import walkSync from 'walk-sync'
+
+type ListenerExecutor = {
+  event: string
+  execute: any
+}
 
 export class Registry {
   constructor(private client: CommandClient) {}
@@ -28,6 +33,17 @@ export class Registry {
 
   registerModule(module: Module) {
     this.modules.set(Symbol(module.constructor.name), module)
+
+    const list: ListenerExecutor[] = []
+
+    for (const listener of module.listeners) {
+      const bound = listener.execute.bind(module)
+      list.push({ event: listener.name, execute: bound })
+      this.client.client.on(listener.name, bound)
+    }
+
+    Reflect.defineMetadata(KListenerExecuteCache, list, module)
+
     return module
   }
 
@@ -73,6 +89,13 @@ export class Registry {
     const symbol = this.modules.findKey((x) => x === module)
     if (!symbol) return module
     module.unload()
+    const list: ListenerExecutor[] = Reflect.getMetadata(
+      KListenerExecuteCache,
+      module,
+    )
+    for (const listener of list) {
+      this.client.client.removeListener(listener.event, listener.execute)
+    }
     this.modules.delete(symbol)
     return module
   }

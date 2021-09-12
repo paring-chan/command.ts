@@ -1,7 +1,11 @@
-import { command, CommandClient, Module } from '../../src'
+import { command, CommandClient, Module, listener } from '../../src'
 import { Message } from 'discord.js'
 
 class Test extends Module {
+  constructor(private client: CommandClient) {
+    super()
+  }
+
   load() {
     console.log('load')
   }
@@ -18,6 +22,11 @@ class Test extends Module {
     console.log('after reload')
   }
 
+  @listener('ready')
+  ready() {
+    console.log(`Logged in as ${this.client.client.user!.tag}`)
+  }
+
   @command()
   test(msg: Message) {
     msg.reply('test')
@@ -25,5 +34,5 @@ class Test extends Module {
 }
 
 export function install(client: CommandClient) {
-  return new Test()
+  return new Test(client)
 }
