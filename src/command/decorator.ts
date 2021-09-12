@@ -1,15 +1,11 @@
 import { KCommands } from '../constants'
 import { Module } from '../structures'
-import { InvalidTargetError } from '../error'
 import { Command } from './Command'
+import { checkTarget } from '../utils'
 
 type CommandOptions = {
   name: string
   aliases: string[]
-}
-
-const checkTarget = (target: Object) => {
-  if (!(target instanceof Module)) throw new InvalidTargetError()
 }
 
 export const command = (options: Partial<CommandOptions> = {}) => {
