@@ -28,8 +28,8 @@ class Test extends Module {
   }
 
   @command()
-  test(msg: Message) {
-    msg.reply('test')
+  test(msg: Message, asdf: string = 'wa sans') {
+    msg.reply(asdf)
   }
 }
 

@@ -1,7 +1,11 @@
 import { CommandClient } from './CommandClient'
 import { Module } from './Module'
 import { Command } from '../command'
-import { KListenerExecuteCache, KModulePath } from '../constants'
+import {
+  KBuiltInModule,
+  KListenerExecuteCache,
+  KModulePath,
+} from '../constants'
 import path from 'path'
 import {
   InvalidModuleError,
@@ -17,7 +21,7 @@ type ListenerExecutor = {
 }
 
 export class Registry {
-  constructor(private client: CommandClient) {}
+  constructor(public client: CommandClient) {}
 
   modules: Collection<symbol, Module> = new Collection()
 
@@ -86,6 +90,8 @@ export class Registry {
   }
 
   unregisterModule(module: Module) {
+    if (Reflect.getMetadata(KBuiltInModule, module))
+      throw new Error('Built-in modules cannot be unloaded')
     const symbol = this.modules.findKey((x) => x === module)
     if (!symbol) return module
     module.unload()

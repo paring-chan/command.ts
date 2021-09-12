@@ -1,4 +1,10 @@
 import { Module } from '../structures'
+import { Message } from 'discord.js'
+
+type Argument = {
+  optional: boolean
+  type: any
+}
 
 export class Command {
   execute(args: string[]) {
@@ -8,8 +14,8 @@ export class Command {
   constructor(
     public module: Module,
     private run: Function,
-    public argTypes: any[],
+    public argTypes: Argument[],
     public name: string,
-    public aliases: string[] | ((msg: string) => string[]),
+    public aliases: string[] | ((msg: Message) => string[]),
   ) {}
 }

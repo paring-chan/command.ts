@@ -1,6 +1,7 @@
 import _ from 'lodash'
 import { Registry } from './Registry'
 import { Client, Message, User } from 'discord.js'
+import { CommandHandler } from '../builtinModules'
 
 export interface CommandOptions {
   prefix:
@@ -24,39 +25,6 @@ export class CommandClient {
   owners: string[] = []
   registry = new Registry(this)
   client: Client
-
-  private async handle(msg: Message) {
-    const prefixList: string[] | string =
-      typeof this.options.command.prefix === 'string'
-        ? this.options.command.prefix
-        : typeof this.options.command.prefix === 'function'
-        ? await this.options.command.prefix(msg)
-        : this.options.command.prefix
-    let prefix: string
-    if (typeof prefixList === 'object') {
-      const res = prefixList.find((x) => msg.content.includes(x))
-
-      if (!res) return
-
-      prefix = res
-    } else {
-      if (!msg.content.includes(prefixList)) return
-      prefix = prefixList
-    }
-
-    if (!msg.content.startsWith(prefix)) return
-
-    const args = msg.content.slice(prefix.length).split(' ')
-
-    const command = args.shift()
-
-    if (!command) return
-
-    console.log(this.registry.commands)
-
-    console.log(command)
-    console.log(args)
-  }
 
   private _isReady = false
 
@@ -90,8 +58,7 @@ export class CommandClient {
       },
       owners: 'auto',
     })
-
-    this.client.on('messageCreate', (msg) => this.handle(msg))
     this.client.once('ready', this.ready)
+    this.registry.registerModule(new CommandHandler(this.registry))
   }
 }
