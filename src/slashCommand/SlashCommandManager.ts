@@ -1,5 +1,5 @@
 import { Module, Registry } from '../structures'
-import { Collection, Guild, Snowflake } from 'discord.js'
+import { Collection, Snowflake } from 'discord.js'
 import {
   CheckFunction,
   ISlashCommandDecorator,
@@ -74,6 +74,14 @@ export class SlashCommandManager {
               })),
             })
           }
+        }
+
+        const g = c.commandOptions.slashCommands.guild
+
+        if (typeof g === 'string') {
+          await processForGuild(g)
+        } else {
+          await Promise.all(g.map((x) => processForGuild(x)))
         }
       } else {
         console.log(`[command.ts] Target: Global`)
