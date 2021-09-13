@@ -6,7 +6,7 @@ import path from 'path'
 import { InvalidModuleError, InvalidTargetError, ModuleLoadError } from '../error'
 import { Collection } from 'discord.js'
 import walkSync from 'walk-sync'
-import { ArgumentConverter } from '../command/ArgumentConverter'
+import { ArgumentConverter } from '../command'
 
 type ListenerExecutor = {
   event: string
@@ -54,15 +54,15 @@ export class Registry {
     return module
   }
 
-  loadModulesIn(dir: string, absolute = false) {
+  async loadModulesIn(dir: string, absolute = false) {
     let p = absolute ? dir : path.join(require.main!.path, dir)
 
     for (const i of walkSync(p)) {
-      this.loadModule(path.join(p, i), true)
+      await this.loadModule(path.join(p, i), true)
     }
   }
 
-  loadModule(file: string, absolute: boolean = false) {
+  async loadModule(file: string, absolute: boolean = false) {
     let p = absolute ? file : path.join(require.main!.path, file)
 
     let m
@@ -85,18 +85,18 @@ export class Registry {
 
     this.registerModule(mod)
 
-    mod.load()
+    await mod.load()
 
     m.loaded = true
 
     return mod
   }
 
-  unregisterModule(module: Module) {
+  async unregisterModule(module: Module) {
     if (Reflect.getMetadata(KBuiltInModule, module)) throw new Error('Built-in modules cannot be unloaded')
     const symbol = this.modules.findKey((x) => x === module)
     if (!symbol) return module
-    module.unload()
+    await module.unload()
     const list: ListenerExecutor[] = Reflect.getMetadata(KListenerExecuteCache, module)
     for (const listener of list) {
       this.client.client.removeListener(listener.event, listener.execute)
@@ -105,12 +105,46 @@ export class Registry {
     return module
   }
 
-  unloadModule(module: Module) {
+  async unloadModule(module: Module) {
     const p = Reflect.getMetadata(KModulePath, module)
 
     if (!p) throw new InvalidModuleError('This module is not loaded by loadModule.')
 
-    this.unregisterModule(module)
+    await this.unregisterModule(module)
     delete require.cache[p]
+  }
+
+  async reloadModule(module: Module) {
+    await module.beforeReload()
+    const p = Reflect.getMetadata(KModulePath, module)
+    await this.unloadModule(module)
+    const mod = await this.loadModule(p, true)
+    await mod.afterReload()
+    return true
+  }
+
+  async reloadAll() {
+    const results: {
+      path: string
+      success: boolean
+      error?: Error
+    }[] = []
+
+    for (const [, module] of this.modules.filter((x) => !!x.path)) {
+      try {
+        await this.reloadModule(module)
+        results.push({
+          path: module.path!,
+          success: false,
+        })
+      } catch (e: any) {
+        results.push({
+          error: e,
+          path: module.path!,
+          success: false,
+        })
+      }
+    }
+    return results
   }
 }

@@ -1,4 +1,4 @@
-import { KArgumentConverters, KCommands, KListeners } from '../constants'
+import { KArgumentConverters, KCommands, KListeners, KModulePath } from '../constants'
 import type { Command } from '../command'
 import { Listener } from '../listener'
 import { ArgumentConverter } from '../command'
@@ -14,6 +14,10 @@ export abstract class Module {
 
   get argumentConverters(): ArgumentConverter[] {
     return Reflect.getMetadata(KArgumentConverters, this) || []
+  }
+
+  get path(): string | undefined {
+    return Reflect.getMetadata(KModulePath, this)
   }
 
   load() {}
