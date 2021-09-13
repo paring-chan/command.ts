@@ -52,6 +52,6 @@ export class CommandClient {
     })
     this.client.once('ready', () => this.ready())
     this.registry.registerModule(new CommandHandler(this.registry))
-    this.registry.registerModule(new BuiltinCommandConverters())
+    this.registry.registerModule(new BuiltinCommandConverters(this))
   }
 }
