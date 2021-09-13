@@ -4,12 +4,12 @@ import { checkTarget } from '../utils'
 import { ArgumentConverter } from './ArgumentConverter'
 import { Module } from '../structures'
 import { createCheckDecorator } from './utils'
-import { PermissionResolvable, Permissions, TextChannel } from 'discord.js'
+import { Message, PermissionResolvable, Permissions, TextChannel } from 'discord.js'
 import { ClientPermissionRequired, UserPermissionRequired } from '../error'
 
 type CommandOptions = {
   name: string
-  aliases: string[]
+  aliases: string[] | ((msg: Message) => string[])
 }
 
 export const command = (options: Partial<CommandOptions> = {}) => {
