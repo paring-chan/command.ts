@@ -2,6 +2,8 @@ import { KArgumentConverters, KCommands, KOptionals } from '../constants'
 import { Command } from './Command'
 import { checkTarget } from '../utils'
 import { ArgumentConverter } from './ArgumentConverter'
+import { Module } from '../structures'
+import { createCheckDecorator } from './utils'
 
 type CommandOptions = {
   name: string
@@ -18,14 +20,9 @@ export const command = (options: Partial<CommandOptions> = {}) => {
 
     let properties: Command[] = Reflect.getMetadata(KCommands, target)
 
-    const params: any[] = Reflect.getMetadata(
-      'design:paramtypes',
-      target,
-      propertyKey,
-    )
+    const params: any[] = Reflect.getMetadata('design:paramtypes', target, propertyKey)
 
-    const optionals: number =
-      Reflect.getMetadata(KOptionals, target, propertyKey) || -1
+    const optionals: number = Reflect.getMetadata(KOptionals, target, propertyKey) || -1
 
     const command = new Command(
       Reflect.get(target, propertyKey),
@@ -35,6 +32,8 @@ export const command = (options: Partial<CommandOptions> = {}) => {
       })),
       options.name || propertyKey,
       options.aliases || [],
+      target as Module,
+      propertyKey,
     )
 
     if (properties) {
@@ -54,16 +53,9 @@ export const argumentConverter = (type: object, requireParameter = true) => {
   ) => {
     checkTarget(target)
 
-    let properties: ArgumentConverter[] = Reflect.getMetadata(
-      KArgumentConverters,
-      target,
-    )
+    let properties: ArgumentConverter[] = Reflect.getMetadata(KArgumentConverters, target)
 
-    const converter = new ArgumentConverter(
-      type,
-      Reflect.get(target, propertyKey),
-      !requireParameter,
-    )
+    const converter = new ArgumentConverter(type, Reflect.get(target, propertyKey), !requireParameter)
 
     if (properties) {
       properties.push(converter)
@@ -74,11 +66,9 @@ export const argumentConverter = (type: object, requireParameter = true) => {
   }
 }
 
-export const optional: ParameterDecorator = (
-  target,
-  propertyKey,
-  parameterIndex,
-) => {
+export const optional: ParameterDecorator = (target, propertyKey, parameterIndex) => {
   checkTarget(target)
   Reflect.defineMetadata(KOptionals, parameterIndex, target, propertyKey)
 }
+
+export const ownerOnly = createCheckDecorator((msg) => msg.data.cts.owners.includes(msg.author.id))

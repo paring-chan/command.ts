@@ -1,4 +1,5 @@
 import 'reflect-metadata'
+import './typings'
 
 export * from './interface'
 export * from './structures'

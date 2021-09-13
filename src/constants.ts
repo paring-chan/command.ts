@@ -11,3 +11,5 @@ export const KBuiltInModule = Symbol('Command.TS Built-In Module')
 export const KOptionals = Symbol('Command.TS Optional Parameters')
 
 export const KArgumentConverters = Symbol('Command.TS Argument Converter')
+
+export const KCommandChecks = Symbol('Command.TS Command Checks')

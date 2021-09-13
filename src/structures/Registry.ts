@@ -1,17 +1,9 @@
 import { CommandClient } from './CommandClient'
 import { Module } from './Module'
 import { Command } from '../command'
-import {
-  KBuiltInModule,
-  KListenerExecuteCache,
-  KModulePath,
-} from '../constants'
+import { KBuiltInModule, KListenerExecuteCache, KModulePath } from '../constants'
 import path from 'path'
-import {
-  InvalidModuleError,
-  InvalidTargetError,
-  ModuleLoadError,
-} from '../error'
+import { InvalidModuleError, InvalidTargetError, ModuleLoadError } from '../error'
 import { Collection } from 'discord.js'
 import walkSync from 'walk-sync'
 import { ArgumentConverter } from '../command/ArgumentConverter'
@@ -101,15 +93,11 @@ export class Registry {
   }
 
   unregisterModule(module: Module) {
-    if (Reflect.getMetadata(KBuiltInModule, module))
-      throw new Error('Built-in modules cannot be unloaded')
+    if (Reflect.getMetadata(KBuiltInModule, module)) throw new Error('Built-in modules cannot be unloaded')
     const symbol = this.modules.findKey((x) => x === module)
     if (!symbol) return module
     module.unload()
-    const list: ListenerExecutor[] = Reflect.getMetadata(
-      KListenerExecuteCache,
-      module,
-    )
+    const list: ListenerExecutor[] = Reflect.getMetadata(KListenerExecuteCache, module)
     for (const listener of list) {
       this.client.client.removeListener(listener.event, listener.execute)
     }
@@ -120,8 +108,7 @@ export class Registry {
   unloadModule(module: Module) {
     const p = Reflect.getMetadata(KModulePath, module)
 
-    if (!p)
-      throw new InvalidModuleError('This module is not loaded by loadModule.')
+    if (!p) throw new InvalidModuleError('This module is not loaded by loadModule.')
 
     this.unregisterModule(module)
     delete require.cache[p]

@@ -1,4 +1,4 @@
-import { command, CommandClient, Module, listener, optional } from '../../src'
+import { command, CommandClient, Module, listener, optional, ownerOnly } from '../../src'
 import { Message } from 'discord.js'
 
 class Test extends Module {
@@ -33,6 +33,7 @@ class Test extends Module {
   }
 
   @command()
+  @ownerOnly
   test(msg: Message, @optional asdf: string = 'wa sans') {
     console.log(asdf)
     msg.reply(asdf)

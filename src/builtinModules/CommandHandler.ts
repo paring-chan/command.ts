@@ -4,7 +4,7 @@ import { listener } from '../listener'
 import { Message } from 'discord.js'
 import { CommandClient } from '../structures'
 import { Command } from '../command'
-import { ArgumentConverterNotFound, ArgumentNotProvided } from '../error'
+import { ArgumentConverterNotFound, ArgumentNotProvided, CommandCheckFailed } from '../error'
 import { CommandNotFound } from '../error/CommandNotFound'
 
 export class CommandHandler extends BuiltInModule {
@@ -17,8 +17,7 @@ export class CommandHandler extends BuiltInModule {
 
   @listener('messageCreate')
   async message(msg: Message) {
-    const error = (error: Error) =>
-      this.client.client.emit('commandError', error, msg)
+    const error = (error: Error) => this.client.client.emit('commandError', error, msg)
 
     const prefixList: string[] | string =
       typeof this.client.options.command.prefix === 'string'
@@ -53,12 +52,7 @@ export class CommandHandler extends BuiltInModule {
         cmd = c
         break
       }
-      if (
-        (typeof c.aliases === 'function'
-          ? await c.aliases(msg)
-          : c.aliases
-        ).includes(command)
-      ) {
+      if ((typeof c.aliases === 'function' ? await c.aliases(msg) : c.aliases).includes(command)) {
         cmd = c
         break
       }
@@ -66,17 +60,25 @@ export class CommandHandler extends BuiltInModule {
 
     if (!cmd) return error(new CommandNotFound(command))
 
+    msg.data = {
+      cts: this.client,
+      command: cmd,
+      prefix: prefix,
+    }
+
     const module = this.registry.modules.find((x) => x.commands.includes(cmd!))
 
     if (!module) return
 
     const argList: any[] = []
 
+    for (const check of cmd.checks) {
+      if (!(await check(msg))) return error(new CommandCheckFailed(msg, cmd))
+    }
+
     for (let i = 0; i < cmd.argTypes.length; i++) {
       const argType = cmd.argTypes[i]
-      const converter = this.registry.argumentConverters.find(
-        (x) => x.type === argType.type,
-      )
+      const converter = this.registry.argumentConverters.find((x) => x.type === argType.type)
 
       if (!converter) return error(new ArgumentConverterNotFound(argType, msg))
 
@@ -89,7 +91,7 @@ export class CommandHandler extends BuiltInModule {
         break
       }
       if (!arg) {
-        return error(new ArgumentNotProvided(i, msg))
+        return error(new ArgumentNotProvided(i, cmd, msg))
       }
       argList.push(await converter.execute(module, msg, arg))
     }

@@ -6,9 +6,5 @@ export class ArgumentConverter {
     return this.run.apply(module, [msg, arg])
   }
 
-  constructor(
-    public type: object,
-    private run: Function,
-    public withoutParameter: boolean,
-  ) {}
+  constructor(public type: object, private run: Function, public withoutParameter: boolean) {}
 }
