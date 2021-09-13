@@ -1,4 +1,4 @@
-import { command, CommandClient, Module, listener } from '../../src'
+import { command, CommandClient, Module, listener, optional } from '../../src'
 import { Message } from 'discord.js'
 
 class Test extends Module {
@@ -27,8 +27,14 @@ class Test extends Module {
     console.log(`Logged in as ${this.client.client.user!.tag}`)
   }
 
+  @listener('commandError')
+  error(err: Error) {
+    console.error(err)
+  }
+
   @command()
-  test(msg: Message, asdf: string = 'wa sans') {
+  test(msg: Message, @optional asdf: string = 'wa sans') {
+    console.log(asdf)
     msg.reply(asdf)
   }
 }

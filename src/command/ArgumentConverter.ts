@@ -2,13 +2,13 @@ import { Module } from '../structures'
 import { Message } from 'discord.js'
 
 export class ArgumentConverter {
-  execute(msg: Message, arg: string) {
-    return this.run.call(this.module, [arg, msg])
+  execute(module: Module, msg: Message, arg?: string) {
+    return this.run.apply(module, [msg, arg])
   }
 
   constructor(
-    public module: Module,
     public type: object,
     private run: Function,
+    public withoutParameter: boolean,
   ) {}
 }

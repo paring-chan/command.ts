@@ -1,7 +1,7 @@
 import { KArgumentConverters, KCommands, KListeners } from '../constants'
 import type { Command } from '../command'
 import { Listener } from '../listener'
-import { ArgumentConverter } from '../command/ArgumentConverter'
+import { ArgumentConverter } from '../command'
 
 export abstract class Module {
   get commands(): Command[] {

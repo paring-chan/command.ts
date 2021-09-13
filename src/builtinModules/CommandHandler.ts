@@ -4,6 +4,8 @@ import { listener } from '../listener'
 import { Message } from 'discord.js'
 import { CommandClient } from '../structures'
 import { Command } from '../command'
+import { ArgumentConverterNotFound, ArgumentNotProvided } from '../error'
+import { CommandNotFound } from '../error/CommandNotFound'
 
 export class CommandHandler extends BuiltInModule {
   private client: CommandClient
@@ -15,6 +17,9 @@ export class CommandHandler extends BuiltInModule {
 
   @listener('messageCreate')
   async message(msg: Message) {
+    const error = (error: Error) =>
+      this.client.client.emit('commandError', error, msg)
+
     const prefixList: string[] | string =
       typeof this.client.options.command.prefix === 'string'
         ? this.client.options.command.prefix
@@ -43,8 +48,6 @@ export class CommandHandler extends BuiltInModule {
 
     let cmd: Command | null = null
 
-    console.log(command)
-
     for (const c of this.registry.commands) {
       if (c.name === command) {
         cmd = c
@@ -61,8 +64,40 @@ export class CommandHandler extends BuiltInModule {
       }
     }
 
-    if (!cmd) return
+    if (!cmd) return error(new CommandNotFound(command))
 
-    console.log(command, cmd, args)
+    const module = this.registry.modules.find((x) => x.commands.includes(cmd!))
+
+    if (!module) return
+
+    const argList: any[] = []
+
+    for (let i = 0; i < cmd.argTypes.length; i++) {
+      const argType = cmd.argTypes[i]
+      const converter = this.registry.argumentConverters.find(
+        (x) => x.type === argType.type,
+      )
+
+      if (!converter) return error(new ArgumentConverterNotFound(argType, msg))
+
+      if (converter.withoutParameter) {
+        argList.push(await converter.execute(module, msg))
+        continue
+      }
+      const arg = args.shift()
+      if (argType.optional && !arg) {
+        break
+      }
+      if (!arg) {
+        return error(new ArgumentNotProvided(i, msg))
+      }
+      argList.push(await converter.execute(module, msg, arg))
+    }
+
+    try {
+      cmd.execute(module, argList)
+    } catch (e: any) {
+      return error(e)
+    }
   }
 }

@@ -15,6 +15,8 @@ const cts = new CommandClient({
   },
 })
 
+require('./modules/test')
+
 cts.registry.loadModulesIn('modules')
 
 client.login(config.token)

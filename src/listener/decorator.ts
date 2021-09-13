@@ -1,10 +1,11 @@
 import { checkTarget } from '../utils'
 import { KListeners } from '../constants'
 import { Listener } from './Listener'
+import { Module } from '../structures'
 
 export const listener = (event: string) => {
   return (
-    target: Object,
+    target: Module,
     propertyKey: string,
     // descriptor: TypedPropertyDescriptor<any>,
   ) => {

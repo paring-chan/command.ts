@@ -1,18 +1,17 @@
 import { Module } from '../structures'
 import { Message } from 'discord.js'
 
-type Argument = {
+export type Argument = {
   optional: boolean
   type: any
 }
 
 export class Command {
-  execute(args: string[]) {
-    return this.run.call(this.module, args)
+  execute(module: Module, args: any[]) {
+    return this.run.apply(module, args)
   }
 
   constructor(
-    public module: Module,
     private run: Function,
     public argTypes: Argument[],
     public name: string,

@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { Registry } from './Registry'
 import { Client, Message, User } from 'discord.js'
-import { CommandHandler } from '../builtinModules'
+import { BuiltinCommandConverters, CommandHandler } from '../builtinModules'
 
 export interface CommandOptions {
   prefix:
@@ -60,5 +60,6 @@ export class CommandClient {
     })
     this.client.once('ready', this.ready)
     this.registry.registerModule(new CommandHandler(this.registry))
+    this.registry.registerModule(new BuiltinCommandConverters())
   }
 }

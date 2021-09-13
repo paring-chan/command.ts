@@ -1,5 +1,4 @@
 import { KArgumentConverters, KCommands, KOptionals } from '../constants'
-import { Module } from '../structures'
 import { Command } from './Command'
 import { checkTarget } from '../utils'
 import { ArgumentConverter } from './ArgumentConverter'
@@ -29,7 +28,6 @@ export const command = (options: Partial<CommandOptions> = {}) => {
       Reflect.getMetadata(KOptionals, target, propertyKey) || []
 
     const command = new Command(
-      target as Module,
       Reflect.get(target, propertyKey),
       params.map((x, i) => ({
         type: x,
@@ -48,7 +46,7 @@ export const command = (options: Partial<CommandOptions> = {}) => {
   }
 }
 
-export const argumentConverter = (type: object) => {
+export const argumentConverter = (type: object, requireParameter = true) => {
   return (
     target: Object,
     propertyKey: string,
@@ -60,13 +58,11 @@ export const argumentConverter = (type: object) => {
       KArgumentConverters,
       target,
     )
-    const optionals: number[] =
-      Reflect.getMetadata(KOptionals, target, propertyKey) || []
 
     const converter = new ArgumentConverter(
-      target as Module,
       type,
       Reflect.get(target, propertyKey),
+      !requireParameter,
     )
 
     if (properties) {
