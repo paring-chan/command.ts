@@ -9,3 +9,5 @@ export const KListenerExecuteCache = Symbol('Command.TS Module Identifier')
 export const KBuiltInModule = Symbol('Command.TS Built-In Module')
 
 export const KOptionals = Symbol('Command.TS Optional Parameters')
+
+export const KArgumentConverters = Symbol('Command.TS Argument Converter')

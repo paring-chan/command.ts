@@ -14,6 +14,7 @@ import {
 } from '../error'
 import { Collection } from 'discord.js'
 import walkSync from 'walk-sync'
+import { ArgumentConverter } from '../command/ArgumentConverter'
 
 type ListenerExecutor = {
   event: string
@@ -30,6 +31,16 @@ export class Registry {
 
     for (const [, module] of this.modules) {
       result.push(...module.commands)
+    }
+
+    return result
+  }
+
+  get argumentConverters(): ArgumentConverter[] {
+    const result: ArgumentConverter[] = []
+
+    for (const [, module] of this.modules) {
+      result.push(...module.argumentConverters)
     }
 
     return result

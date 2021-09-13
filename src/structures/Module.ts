@@ -1,6 +1,7 @@
-import { KCommands, KListeners } from '../constants'
+import { KArgumentConverters, KCommands, KListeners } from '../constants'
 import type { Command } from '../command'
 import { Listener } from '../listener'
+import { ArgumentConverter } from '../command/ArgumentConverter'
 
 export abstract class Module {
   get commands(): Command[] {
@@ -9,6 +10,10 @@ export abstract class Module {
 
   get listeners(): Listener[] {
     return Reflect.getMetadata(KListeners, this) || []
+  }
+
+  get argumentConverters(): ArgumentConverter[] {
+    return Reflect.getMetadata(KArgumentConverters, this) || []
   }
 
   load() {}

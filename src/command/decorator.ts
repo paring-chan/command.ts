@@ -1,7 +1,8 @@
-import { KCommands, KOptionals } from '../constants'
+import { KArgumentConverters, KCommands, KOptionals } from '../constants'
 import { Module } from '../structures'
 import { Command } from './Command'
 import { checkTarget } from '../utils'
+import { ArgumentConverter } from './ArgumentConverter'
 
 type CommandOptions = {
   name: string
@@ -43,6 +44,36 @@ export const command = (options: Partial<CommandOptions> = {}) => {
     } else {
       properties = [command]
       Reflect.defineMetadata(KCommands, properties, target)
+    }
+  }
+}
+
+export const argumentConverter = (type: object) => {
+  return (
+    target: Object,
+    propertyKey: string,
+    // descriptor: TypedPropertyDescriptor<any>,
+  ) => {
+    checkTarget(target)
+
+    let properties: ArgumentConverter[] = Reflect.getMetadata(
+      KArgumentConverters,
+      target,
+    )
+    const optionals: number[] =
+      Reflect.getMetadata(KOptionals, target, propertyKey) || []
+
+    const converter = new ArgumentConverter(
+      target as Module,
+      type,
+      Reflect.get(target, propertyKey),
+    )
+
+    if (properties) {
+      properties.push(converter)
+    } else {
+      properties = [converter]
+      Reflect.defineMetadata(KArgumentConverters, properties, target)
     }
   }
 }

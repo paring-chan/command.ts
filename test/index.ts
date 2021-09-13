@@ -17,6 +17,4 @@ const cts = new CommandClient({
 
 cts.registry.loadModulesIn('modules')
 
-console.log(cts.registry.commands)
-
-// client.login(config.token)
+client.login(config.token)
