@@ -82,6 +82,8 @@ export const rest: ParameterDecorator = (target, propertyKey, parameterIndex) =>
 
   if (params.length - 1 !== parameterIndex) throw new Error('Rest decorator must be used at last argument.')
 
+  if (params[parameterIndex] !== String) throw new Error('Rest argument type must be "String"')
+
   Reflect.defineMetadata(KRest, parameterIndex, target, propertyKey)
 }
 

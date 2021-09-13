@@ -1,4 +1,4 @@
-import { command, CommandClient, Module, listener, ownerOnly, rest } from '../../src'
+import { command, CommandClient, Module, listener, rest } from '../../src'
 import { Message } from 'discord.js'
 
 class Test extends Module {
