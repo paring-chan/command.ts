@@ -80,6 +80,13 @@ export class CommandHandler extends BuiltInModule {
       const argType = cmd.argTypes[i]
       const converter = this.registry.argumentConverters.find((x) => x.type === argType.type)
 
+      if (argType.rest) {
+        const i = args.join(' ')
+        if (!i) break
+        argList.push(i)
+        break
+      }
+
       if (!converter) return error(new ArgumentConverterNotFound(argType, msg))
 
       if (converter.withoutParameter) {

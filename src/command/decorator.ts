@@ -1,4 +1,4 @@
-import { KArgumentConverters, KCommands, KOptionals } from '../constants'
+import { KArgumentConverters, KCommands, KOptionals, KRest } from '../constants'
 import { Command } from './Command'
 import { checkTarget } from '../utils'
 import { ArgumentConverter } from './ArgumentConverter'
@@ -24,11 +24,14 @@ export const command = (options: Partial<CommandOptions> = {}) => {
 
     const optionals: number = Reflect.getMetadata(KOptionals, target, propertyKey) || -1
 
+    const rest = Reflect.getMetadata(KRest, target, propertyKey) || -1
+
     const command = new Command(
       Reflect.get(target, propertyKey),
       params.map((x, i) => ({
         type: x,
         optional: optionals === -1 ? false : optionals <= i,
+        rest: rest === -1 ? false : rest === i,
       })),
       options.name || propertyKey,
       options.aliases || [],
@@ -68,7 +71,18 @@ export const argumentConverter = (type: object, requireParameter = true) => {
 
 export const optional: ParameterDecorator = (target, propertyKey, parameterIndex) => {
   checkTarget(target)
+
   Reflect.defineMetadata(KOptionals, parameterIndex, target, propertyKey)
+}
+
+export const rest: ParameterDecorator = (target, propertyKey, parameterIndex) => {
+  checkTarget(target)
+
+  const params: any[] = Reflect.getMetadata('design:paramtypes', target, propertyKey)
+
+  if (params.length - 1 !== parameterIndex) throw new Error('Rest decorator must be used at last argument.')
+
+  Reflect.defineMetadata(KRest, parameterIndex, target, propertyKey)
 }
 
 export const ownerOnly = createCheckDecorator((msg) => msg.data.cts.owners.includes(msg.author.id))

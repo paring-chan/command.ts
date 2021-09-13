@@ -5,6 +5,7 @@ import { KCommandChecks } from '../constants'
 export type Argument = {
   optional: boolean
   type: any
+  rest: boolean
 }
 
 export type CheckFunction = (msg: Message) => boolean | Promise<boolean>
