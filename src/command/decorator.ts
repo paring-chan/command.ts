@@ -24,14 +24,14 @@ export const command = (options: Partial<CommandOptions> = {}) => {
       propertyKey,
     )
 
-    const optionals: number[] =
-      Reflect.getMetadata(KOptionals, target, propertyKey) || []
+    const optionals: number =
+      Reflect.getMetadata(KOptionals, target, propertyKey) || -1
 
     const command = new Command(
       Reflect.get(target, propertyKey),
       params.map((x, i) => ({
         type: x,
-        optional: optionals.includes(i),
+        optional: optionals === -1 ? false : optionals <= i,
       })),
       options.name || propertyKey,
       options.aliases || [],
@@ -80,17 +80,5 @@ export const optional: ParameterDecorator = (
   parameterIndex,
 ) => {
   checkTarget(target)
-
-  let properties: number[] = Reflect.getMetadata(
-    KOptionals,
-    target,
-    propertyKey,
-  )
-
-  if (properties) {
-    properties.push(parameterIndex)
-  } else {
-    properties = [parameterIndex]
-    Reflect.defineMetadata(KOptionals, properties, target, propertyKey)
-  }
+  Reflect.defineMetadata(KOptionals, parameterIndex, target, propertyKey)
 }
