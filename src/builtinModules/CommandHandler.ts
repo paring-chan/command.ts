@@ -8,7 +8,7 @@ import { ArgumentConverterNotFound, ArgumentNotProvided, CommandCheckFailed } fr
 import { CommandNotFound } from '../error/CommandNotFound'
 
 export class CommandHandler extends BuiltInModule {
-  private client: CommandClient
+  private readonly client: CommandClient
 
   constructor(private registry: Registry) {
     super()

@@ -1,4 +1,4 @@
-import { command, CommandClient, Module, listener, rest } from '../../src'
+import { command, CommandClient, coolDown, CoolDownError, CoolDownType, listener, Module, rest } from '../../src'
 import { Message } from 'discord.js'
 
 class Test extends Module {
@@ -28,13 +28,16 @@ class Test extends Module {
   }
 
   @listener('commandError')
-  error(err: Error) {
+  error(err: Error, msg: Message) {
+    if (err instanceof CoolDownError) {
+      return msg.reply(`쿨다운: <t:${(err.endsAt.getTime() / 1000).toFixed(0)}:R>`)
+    }
     console.error(err)
   }
 
   @command()
+  @coolDown(CoolDownType.USER, 10)
   test(msg: Message, @rest asdf: string = 'wa sans') {
-    console.log(asdf)
     msg.reply(asdf)
   }
 }

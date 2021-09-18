@@ -2,7 +2,7 @@ import _ from 'lodash'
 import { Registry } from './Registry'
 import { Client, Message, User } from 'discord.js'
 import { BuiltinCommandConverters, CommandHandler } from '../builtinModules'
-import { CoolDownAdapter, DefaultCoolDownAdapter } from '../command/cooldown/adapter'
+import { CoolDownAdapter, DefaultCoolDownAdapter } from '../command'
 
 export interface CommandOptions {
   prefix: string | ((msg: any) => string | Promise<string | string[]> | string[]) | string[]
