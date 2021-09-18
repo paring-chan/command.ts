@@ -13,6 +13,10 @@ const cts = new CommandClient({
   command: {
     prefix: '!',
   },
+  slashCommands: {
+    autoSync: true,
+    guild: '832938554438844438',
+  },
 })
 
 require('./modules/test')

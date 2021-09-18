@@ -2,7 +2,7 @@ import { KArgumentConverters, KCommands, KListeners, KModulePath, KSlashCommands
 import type { Command } from '../command'
 import { Listener } from '../listener'
 import { ArgumentConverter } from '../command'
-import { SlashCommand } from '../slashCommand/SlashCommand'
+import { SlashCommand } from '../slashCommand'
 
 export abstract class Module {
   get commands(): Command[] {

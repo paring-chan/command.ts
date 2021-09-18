@@ -9,7 +9,7 @@ type SlashOptions = {
   guild: Snowflake | Snowflake[]
 }
 
-export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashCommandBuilder }) => {
+export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashCommandBuilder | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'> }) => {
   return (
     target: Object,
     propertyKey: string,

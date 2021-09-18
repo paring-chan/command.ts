@@ -4,10 +4,10 @@ import { Snowflake } from 'discord.js'
 
 export class SlashCommand {
   constructor(
-    public commandBuilder: SlashCommandBuilder,
+    public commandBuilder: SlashCommandBuilder | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>,
     public execute: Function,
     public module: Module,
-    params: {
+    public params: {
       type: any
       name?: string
     }[],

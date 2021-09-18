@@ -1,5 +1,6 @@
-import { command, CommandClient, coolDown, CoolDownError, CoolDownType, listener, Module, rest } from '../../src'
-import { Message } from 'discord.js'
+import { command, CommandClient, coolDown, CoolDownError, CoolDownType, listener, Module, rest, slashCommand } from '../../src'
+import { CommandInteraction, Message } from 'discord.js'
+import { SlashCommandBuilder } from '@discordjs/builders'
 
 class Test extends Module {
   constructor(private client: CommandClient) {
@@ -39,6 +40,16 @@ class Test extends Module {
   @coolDown(CoolDownType.USER, 10)
   test(msg: Message, @rest asdf: string = 'wa sans') {
     msg.reply(asdf)
+  }
+
+  @slashCommand({
+    command: new SlashCommandBuilder()
+      .setName('test')
+      .setDescription('test command')
+      .addStringOption((builder) => builder.setName('test').setDescription('test option').setRequired(false)),
+  })
+  async testSlash(i: CommandInteraction) {
+    return i.reply('test')
   }
 }
 

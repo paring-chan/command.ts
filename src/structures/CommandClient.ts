@@ -1,27 +1,29 @@
 import _ from 'lodash'
 import { Registry } from './Registry'
-import { Client, User } from 'discord.js'
+import { Client, Snowflake, User } from 'discord.js'
 import { BuiltinCommandConverters, CommandHandler } from '../builtinModules'
 import { CoolDownAdapter, DefaultCoolDownAdapter } from '../command'
+import { REST } from '@discordjs/rest'
 
 export interface CommandOptions {
   prefix: string | ((msg: any) => string | Promise<string | string[]> | string[]) | string[]
 }
 
 export interface SlashCommandOptions {
-  guild?: string | string[]
+  guild?: Snowflake | Snowflake[]
   autoSync: boolean
 }
 
 export interface CommandClientOptions {
   command: CommandOptions
-  owners: 'auto' | string[]
+  owners: 'auto' | Snowflake[]
   slashCommands: SlashCommandOptions
 }
 
 export interface CommandClientOptionsParam {
   command: Partial<CommandOptions>
   owners: 'auto' | string[]
+  slashCommands: Partial<SlashCommandOptions>
 }
 
 export class CommandClient {
@@ -30,6 +32,9 @@ export class CommandClient {
   registry = new Registry(this)
   client: Client
   coolDownAdapter: CoolDownAdapter
+  rest = new REST({
+    version: '9',
+  })
 
   private _isReady = false
 
@@ -43,11 +48,13 @@ export class CommandClient {
 
   async ready() {
     if (this._isReady) return
+    this.rest.setToken(this.client.token!)
     this._isReady = true
     if (this.options.owners === 'auto') {
       const owners = await this.fetchOwners()
       this.owners.push(...owners)
     }
+    await this.registry.syncCommands()
   }
 
   constructor({ client, coolDownAdapter, ...options }: Partial<CommandClientOptionsParam> & { client: Client; coolDownAdapter?: CoolDownAdapter }) {

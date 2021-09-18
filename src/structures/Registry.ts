@@ -4,10 +4,11 @@ import { Command } from '../command'
 import { KBuiltInModule, KListenerExecuteCache, KModulePath } from '../constants'
 import path from 'path'
 import { InvalidModuleError, InvalidTargetError, ModuleLoadError } from '../error'
-import { Collection } from 'discord.js'
+import { Collection, Guild } from 'discord.js'
 import walkSync from 'walk-sync'
 import { ArgumentConverter } from '../command'
 import { SlashCommand } from '../slashCommand'
+import { Routes } from 'discord-api-types/v9'
 
 type ListenerExecutor = {
   event: string
@@ -103,7 +104,29 @@ export class Registry {
     return mod
   }
 
-  async syncCommands() {}
+  async syncCommands() {
+    const commands = this.slashCommands.filter((x) => !x.guild)
+    const guild = this.client.options.slashCommands.guild
+    if (guild) {
+      const syncForGuild = async (g: Guild) => {
+        await this.client.rest.put(Routes.applicationGuildCommands(this.client.client.application!.id, g.id) as any, {
+          body: commands.map((x) => x.commandBuilder.toJSON()),
+        })
+      }
+
+      if (typeof guild === 'string') {
+        await syncForGuild(await this.client.client.guilds.fetch(guild))
+      } else {
+        for (const g of guild) {
+          await syncForGuild(await this.client.client.guilds.fetch(g))
+        }
+      }
+    } else {
+      await this.client.rest.put(Routes.applicationCommands(this.client.client.application!.id) as any, {
+        body: commands.map((x) => x.commandBuilder.toJSON()),
+      })
+    }
+  }
 
   async unregisterModule(module: Module) {
     if (Reflect.getMetadata(KBuiltInModule, module)) throw new Error('Built-in modules cannot be unloaded')
