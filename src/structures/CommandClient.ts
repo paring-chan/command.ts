@@ -2,6 +2,7 @@ import _ from 'lodash'
 import { Registry } from './Registry'
 import { Client, Message, User } from 'discord.js'
 import { BuiltinCommandConverters, CommandHandler } from '../builtinModules'
+import { CoolDownAdapter, DefaultCoolDownAdapter } from '../command/cooldown/adapter'
 
 export interface CommandOptions {
   prefix: string | ((msg: any) => string | Promise<string | string[]> | string[]) | string[]
@@ -22,6 +23,7 @@ export class CommandClient {
   owners: string[] = []
   registry = new Registry(this)
   client: Client
+  coolDownAdapter: CoolDownAdapter
 
   private _isReady = false
 
@@ -42,8 +44,9 @@ export class CommandClient {
     }
   }
 
-  constructor({ client, ...options }: Partial<CommandClientOptionsParam> & { client: Client }) {
+  constructor({ client, coolDownAdapter, ...options }: Partial<CommandClientOptionsParam> & { client: Client; coolDownAdapter?: CoolDownAdapter }) {
     this.client = client
+    this.coolDownAdapter = coolDownAdapter || new DefaultCoolDownAdapter()
     this.options = _.merge<Partial<CommandClientOptionsParam>, CommandClientOptions>(options, {
       command: {
         prefix: '!',
