@@ -1,7 +1,8 @@
-import { KArgumentConverters, KCommands, KListeners, KModulePath } from '../constants'
+import { KArgumentConverters, KCommands, KListeners, KModulePath, KSlashCommands } from '../constants'
 import type { Command } from '../command'
 import { Listener } from '../listener'
 import { ArgumentConverter } from '../command'
+import { SlashCommand } from '../slashCommand/SlashCommand'
 
 export abstract class Module {
   get commands(): Command[] {
@@ -14,6 +15,10 @@ export abstract class Module {
 
   get argumentConverters(): ArgumentConverter[] {
     return Reflect.getMetadata(KArgumentConverters, this) || []
+  }
+
+  get slashCommands(): SlashCommand[] {
+    return Reflect.getMetadata(KSlashCommands, this) || []
   }
 
   get path(): string | undefined {

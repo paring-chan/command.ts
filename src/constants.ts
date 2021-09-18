@@ -1,5 +1,9 @@
 export const KCommands = Symbol('Command.TS Commands')
 
+export const KSlashCommands = Symbol('Command.TS Slash Commands')
+
+export const KSlashCommandOptions = Symbol('Command.TS Slash Command Options')
+
 export const KListeners = Symbol('Command.TS Listeners')
 
 export const KModulePath = Symbol('Command.TS Module Path')
