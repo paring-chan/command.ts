@@ -5,11 +5,9 @@ import { Module } from '../structures'
 import { SlashCommand } from './SlashCommand'
 import { SlashCommandBuilder } from '@discordjs/builders'
 
-type SlashOptions = {
-  command: SlashCommandBuilder
-}
+type SlashOptions = {}
 
-export const slashCommand = (opt: Partial<SlashOptions> = {}) => {
+export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashCommandBuilder }) => {
   return (
     target: Object,
     propertyKey: string,
@@ -24,6 +22,7 @@ export const slashCommand = (opt: Partial<SlashOptions> = {}) => {
     const options: Collection<number, string> = Reflect.getMetadata(KSlashCommandOptions, target, propertyKey) || new Collection<number, string>()
 
     const command = new SlashCommand(
+      opt.command,
       Reflect.get(target, propertyKey),
       target as Module,
       params.map((x, i) => ({
