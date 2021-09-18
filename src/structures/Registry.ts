@@ -7,6 +7,7 @@ import { InvalidModuleError, InvalidTargetError, ModuleLoadError } from '../erro
 import { Collection } from 'discord.js'
 import walkSync from 'walk-sync'
 import { ArgumentConverter } from '../command'
+import { SlashCommand } from '../slashCommand'
 
 type ListenerExecutor = {
   event: string
@@ -33,6 +34,16 @@ export class Registry {
 
     for (const [, module] of this.modules) {
       result.push(...module.argumentConverters)
+    }
+
+    return result
+  }
+
+  get slashCommands(): SlashCommand[] {
+    const result: SlashCommand[] = []
+
+    for (const [, module] of this.modules) {
+      result.push(...module.slashCommands)
     }
 
     return result
@@ -91,6 +102,8 @@ export class Registry {
 
     return mod
   }
+
+  async syncCommands() {}
 
   async unregisterModule(module: Module) {
     if (Reflect.getMetadata(KBuiltInModule, module)) throw new Error('Built-in modules cannot be unloaded')
