@@ -1,11 +1,13 @@
-import { ApplicationCommandPermissionData, Collection } from 'discord.js'
+import { Collection, Snowflake } from 'discord.js'
 import { checkTarget } from '../utils'
 import { KOptionals, KSlashCommandOptions, KSlashCommands } from '../constants'
 import { Module } from '../structures'
 import { SlashCommand } from './SlashCommand'
 import { SlashCommandBuilder } from '@discordjs/builders'
 
-type SlashOptions = {}
+type SlashOptions = {
+  guild: Snowflake
+}
 
 export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashCommandBuilder }) => {
   return (
