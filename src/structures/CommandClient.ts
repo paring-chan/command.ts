@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { Registry } from './Registry'
-import { Client, Message, User } from 'discord.js'
+import { Client, User } from 'discord.js'
 import { BuiltinCommandConverters, CommandHandler } from '../builtinModules'
 import { CoolDownAdapter, DefaultCoolDownAdapter } from '../command'
 
@@ -8,9 +8,14 @@ export interface CommandOptions {
   prefix: string | ((msg: any) => string | Promise<string | string[]> | string[]) | string[]
 }
 
+export interface SlashCommandOptions {
+  guild?: string | string[]
+}
+
 export interface CommandClientOptions {
   command: CommandOptions
   owners: 'auto' | string[]
+  slashCommands: Partial<SlashCommandOptions>
 }
 
 export interface CommandClientOptionsParam {
@@ -52,6 +57,7 @@ export class CommandClient {
         prefix: '!',
       },
       owners: 'auto',
+      slashCommands: {},
     })
     this.client.once('ready', () => this.ready())
     this.registry.registerModule(new CommandHandler(this.registry))
