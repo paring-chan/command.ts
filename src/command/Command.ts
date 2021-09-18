@@ -1,5 +1,5 @@
 import { Module } from '../structures'
-import { Message } from 'discord.js'
+import { CommandInteraction, Message } from 'discord.js'
 import { KCommandChecks } from '../constants'
 
 export type Argument = {
@@ -9,6 +9,7 @@ export type Argument = {
 }
 
 export type CheckFunction = (msg: Message) => boolean | Promise<boolean>
+export type SlashCheckFunction = (i: CommandInteraction) => boolean | Promise<boolean>
 
 export class Command {
   execute(module: Module, args: any[]) {

@@ -4,7 +4,7 @@ import { checkTarget } from '../utils'
 import { ArgumentConverter } from './ArgumentConverter'
 import { Module } from '../structures'
 import { createCheckDecorator } from './utils'
-import { Message, PermissionResolvable, Permissions, TextChannel } from 'discord.js'
+import { GuildMember, Message, PermissionResolvable, Permissions, TextChannel } from 'discord.js'
 import { ClientPermissionRequired, UserPermissionRequired } from '../error'
 
 type CommandOptions = {
@@ -89,26 +89,53 @@ export const rest: ParameterDecorator = (target, propertyKey, parameterIndex) =>
   Reflect.defineMetadata(KRest, parameterIndex, target, propertyKey)
 }
 
-export const ownerOnly = createCheckDecorator((msg) => msg.data.cts.owners.includes(msg.author.id))
+export const ownerOnly = createCheckDecorator(
+  (msg) => msg.data.cts.owners.includes(msg.author.id),
+  (i) => i.data.cts.owners.includes(i.user.id),
+)
 
-export const guildOnly = createCheckDecorator((msg) => !!msg.guild)
+export const guildOnly = createCheckDecorator(
+  (msg) => !!msg.guild,
+  (i) => !!i.guildId,
+)
 
-export const dmOnly = createCheckDecorator((msg) => !msg.guild)
+export const dmOnly = createCheckDecorator(
+  (msg) => !msg.guild,
+  (i) => !i.guildId,
+)
 
 export const requireUserPermissions = (permission: PermissionResolvable) =>
-  createCheckDecorator((msg) => {
-    if (!msg.guild || !msg.member) throw new Error('This command must be used in serer.')
-    if (msg.member.permissionsIn(msg.channel as TextChannel).has(permission)) {
-      return true
-    }
-    throw new UserPermissionRequired(msg.member, new Permissions(permission))
-  })
+  createCheckDecorator(
+    (msg) => {
+      if (!msg.guild || !msg.member) throw new Error('This command must be used in guild.')
+      if (msg.member.permissionsIn(msg.channel as TextChannel).has(permission)) {
+        return true
+      }
+      throw new UserPermissionRequired(msg.member, new Permissions(permission))
+    },
+    (i) => {
+      if (!i.guild || !i.member) throw new Error('This command must be used in serer.')
+      if (!(i.member instanceof GuildMember) || i.member.permissionsIn(i.channel as TextChannel).has(permission)) {
+        return true
+      }
+      throw new UserPermissionRequired(i.member, new Permissions(permission))
+    },
+  )
 
 export const requireClientPermissions = (permission: PermissionResolvable) =>
-  createCheckDecorator((msg) => {
-    if (!msg.guild) throw new Error('This command must be used in serer.')
-    if (msg.guild.me!.permissionsIn(msg.channel as TextChannel).has(permission)) {
-      return true
-    }
-    throw new ClientPermissionRequired(new Permissions(permission))
-  })
+  createCheckDecorator(
+    (msg) => {
+      if (!msg.guild) throw new Error('This command must be used in guild.')
+      if (msg.guild.me!.permissionsIn(msg.channel as TextChannel).has(permission)) {
+        return true
+      }
+      throw new ClientPermissionRequired(new Permissions(permission))
+    },
+    (i) => {
+      if (!i.guild) throw new Error('This command must be used in guild.')
+      if (i.guild.me!.permissionsIn(i.channel as TextChannel).has(permission)) {
+        return true
+      }
+      throw new ClientPermissionRequired(new Permissions(permission))
+    },
+  )
