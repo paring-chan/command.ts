@@ -1,5 +1,6 @@
 import { SlashCommandBuilder } from '@discordjs/builders'
 import { Module } from '../structures'
+import { Snowflake } from 'discord.js'
 
 export class SlashCommand {
   constructor(
@@ -10,5 +11,6 @@ export class SlashCommand {
       type: any
       name?: string
     }[],
+    public guild: Snowflake | Snowflake[] | undefined,
   ) {}
 }

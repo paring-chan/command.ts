@@ -6,7 +6,7 @@ import { SlashCommand } from './SlashCommand'
 import { SlashCommandBuilder } from '@discordjs/builders'
 
 type SlashOptions = {
-  guild: Snowflake
+  guild: Snowflake | Snowflake[]
 }
 
 export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashCommandBuilder }) => {
@@ -31,6 +31,7 @@ export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashComman
         type: x,
         name: options.get(i),
       })),
+      opt.guild,
     )
 
     if (properties) {
