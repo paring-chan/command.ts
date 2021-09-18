@@ -1,10 +1,10 @@
 import { BuiltInModule } from './BuiltInModule'
 import { Registry } from '../structures'
 import { listener } from '../listener'
-import { Message } from 'discord.js'
+import { CommandInteraction, GuildMember, Interaction, Message, Role, User } from 'discord.js'
 import { CommandClient } from '../structures'
 import { Command } from '../command'
-import { ArgumentConverterNotFound, ArgumentNotProvided, CommandCheckFailed } from '../error'
+import { ArgumentConverterNotFound, ArgumentNotProvided, CommandCheckFailed, SlashArgumentConverterNotFound, SlashCommandCheckFailed } from '../error'
 import { CommandNotFound } from '../error/CommandNotFound'
 
 export class CommandHandler extends BuiltInModule {
@@ -109,12 +109,87 @@ export class CommandHandler extends BuiltInModule {
       }
 
       try {
-        cmd.execute(module, argList)
+        await cmd.execute(module, argList)
       } catch (e: any) {
         return error(e)
       }
     } catch (e) {
       return error(e)
+    }
+  }
+
+  private async command(i: CommandInteraction) {
+    const error = (error: Error) => this.client.client.emit('slashCommandError', error, i)
+    try {
+      const cmd = this.registry.slashCommands.find((x) => x.commandBuilder.name === i.commandName)
+
+      const module = this.registry.modules.find((x) => x.slashCommands.includes(cmd!))
+
+      if (!module) return
+
+      const argList: any[] = []
+
+      if (!cmd)
+        return i.reply({
+          content: 'Unknown command.',
+          ephemeral: true,
+        })
+
+      i.data = {
+        cts: this.client,
+        command: cmd,
+      }
+
+      for (const check of cmd.checks) {
+        if (!(await check(i))) return error(new SlashCommandCheckFailed(i, cmd))
+      }
+
+      for (let j = 0; j < cmd.params.length; j++) {
+        const argType = cmd.params[j]
+        const converter = this.registry.slashArgumentConverters.find((x) => x.type === argType.type)
+
+        if (argType.name) {
+          switch (argType.type) {
+            case String:
+              argList.push(i.options.getString(argType.name, false) || undefined)
+              break
+            case Role:
+              argList.push(i.options.getRole(argType.name, false) || undefined)
+              break
+            case User:
+              argList.push(i.options.getUser(argType.name, false) || undefined)
+              break
+            case GuildMember:
+              argList.push(i.options.getMember(argType.name, false) || undefined)
+              break
+            case Boolean:
+              argList.push(i.options.getBoolean(argType.name, false) || undefined)
+              break
+            case Number:
+              argList.push(i.options.getNumber(argType.name, false) || i.options.getInteger(argType.name, false) || undefined)
+          }
+          continue
+        }
+
+        if (!converter) return error(new SlashArgumentConverterNotFound(argType, i))
+
+        argList.push(await converter.execute(module, i))
+      }
+
+      try {
+        await cmd.execute(module, argList)
+      } catch (e: any) {
+        return error(e)
+      }
+    } catch (e) {
+      return error(e)
+    }
+  }
+
+  @listener('interactionCreate')
+  async interaction(i: Interaction) {
+    if (i.isCommand()) {
+      await this.command(i)
     }
   }
 }

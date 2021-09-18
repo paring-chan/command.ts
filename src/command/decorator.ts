@@ -1,7 +1,7 @@
-import { KArgumentConverters, KCommands, KOptionals, KRest } from '../constants'
+import { KArgumentConverters, KCommands, KOptionals, KRest, KSlashArgumentConverters } from '../constants'
 import { Command } from './Command'
 import { checkTarget } from '../utils'
-import { ArgumentConverter } from './ArgumentConverter'
+import { ArgumentConverter, SlashArgumentConverter } from './ArgumentConverter'
 import { Module } from '../structures'
 import { createCheckDecorator } from './utils'
 import { GuildMember, Message, PermissionResolvable, Permissions, TextChannel } from 'discord.js'
@@ -67,6 +67,27 @@ export const argumentConverter = (type: object, requireParameter = true) => {
     } else {
       properties = [converter]
       Reflect.defineMetadata(KArgumentConverters, properties, target)
+    }
+  }
+}
+
+export const slashArgumentConverter = (type: object) => {
+  return (
+    target: Object,
+    propertyKey: string,
+    // descriptor: TypedPropertyDescriptor<any>,
+  ) => {
+    checkTarget(target)
+
+    let properties: SlashArgumentConverter[] = Reflect.getMetadata(KSlashArgumentConverters, target)
+
+    const converter = new SlashArgumentConverter(type, Reflect.get(target, propertyKey))
+
+    if (properties) {
+      properties.push(converter)
+    } else {
+      properties = [converter]
+      Reflect.defineMetadata(KSlashArgumentConverters, properties, target)
     }
   }
 }

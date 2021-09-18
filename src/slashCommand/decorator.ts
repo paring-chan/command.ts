@@ -1,6 +1,6 @@
 import { Collection, Snowflake } from 'discord.js'
 import { checkTarget } from '../utils'
-import { KOptionals, KSlashCommandOptions, KSlashCommands } from '../constants'
+import { KSlashCommandOptions, KSlashCommands } from '../constants'
 import { Module } from '../structures'
 import { SlashCommand } from './SlashCommand'
 import { SlashCommandBuilder } from '@discordjs/builders'
@@ -32,6 +32,7 @@ export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashComman
         name: options.get(i),
       })),
       opt.guild,
+      propertyKey,
     )
 
     if (properties) {
@@ -50,7 +51,7 @@ export const option = (key: string): ParameterDecorator => (target, propertyKey,
 
   if (!properties) {
     properties = new Collection<number, string>()
-    Reflect.defineMetadata(KOptionals, properties, target, propertyKey)
+    Reflect.defineMetadata(KSlashCommandOptions, properties, target, propertyKey)
   }
 
   properties.set(parameterIndex, key)

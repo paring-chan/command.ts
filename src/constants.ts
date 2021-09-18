@@ -18,6 +18,8 @@ export const KRest = Symbol('Command.TS Rest Parameter')
 
 export const KArgumentConverters = Symbol('Command.TS Argument Converter')
 
+export const KSlashArgumentConverters = Symbol('Command.TS Slash Argument Converter')
+
 export const KCommandChecks = Symbol('Command.TS Command Checks')
 
-export const KSlashCommandChecks = Symbol('Command.TS Command Checks')
+export const KSlashCommandChecks = Symbol('Command.TS Slash Command Checks')

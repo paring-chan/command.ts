@@ -1,4 +1,4 @@
-import { command, CommandClient, coolDown, CoolDownError, CoolDownType, listener, Module, rest, slashCommand } from '../../src'
+import { command, CommandClient, coolDown, CoolDownError, CoolDownType, listener, Module, option, rest, slashCommand } from '../../src'
 import { CommandInteraction, Message } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
 
@@ -35,6 +35,16 @@ class Test extends Module {
     }
     console.error(err)
   }
+  @listener('slashCommandError')
+  slashCommandError(err: Error, msg: CommandInteraction) {
+    if (err instanceof CoolDownError) {
+      return msg.reply({
+        content: `쿨다운: <t:${(err.endsAt.getTime() / 1000).toFixed(0)}:R>`,
+        ephemeral: true,
+      })
+    }
+    console.error(err)
+  }
 
   @command()
   @coolDown(CoolDownType.USER, 10)
@@ -48,8 +58,11 @@ class Test extends Module {
       .setDescription('test command')
       .addStringOption((builder) => builder.setName('test').setDescription('test option').setRequired(false)),
   })
-  async testSlash(i: CommandInteraction) {
-    return i.reply('test')
+  @coolDown(CoolDownType.USER, 10)
+  async testSlash(i: CommandInteraction, @option('test') test: string = 'wa sans') {
+    return i.reply({
+      content: test,
+    })
   }
 }
 
