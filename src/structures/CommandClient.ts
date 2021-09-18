@@ -10,12 +10,13 @@ export interface CommandOptions {
 
 export interface SlashCommandOptions {
   guild?: string | string[]
+  autoSync: boolean
 }
 
 export interface CommandClientOptions {
   command: CommandOptions
   owners: 'auto' | string[]
-  slashCommands: Partial<SlashCommandOptions>
+  slashCommands: SlashCommandOptions
 }
 
 export interface CommandClientOptionsParam {
@@ -57,7 +58,9 @@ export class CommandClient {
         prefix: '!',
       },
       owners: 'auto',
-      slashCommands: {},
+      slashCommands: {
+        autoSync: true,
+      },
     })
     this.client.once('ready', () => this.ready())
     this.registry.registerModule(new CommandHandler(this.registry))
