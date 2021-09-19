@@ -185,7 +185,7 @@ export class Registry {
         await this.reloadModule(module)
         results.push({
           path: module.path!,
-          success: false,
+          success: true,
         })
       } catch (e: any) {
         results.push({

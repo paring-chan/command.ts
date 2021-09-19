@@ -1,6 +1,7 @@
 import { command, CommandClient, coolDown, CoolDownError, CoolDownType, listener, Module, option, rest, slashCommand } from '../../src'
 import { CommandInteraction, Message } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
+import { ownerOnly } from '../../dist'
 
 class Test extends Module {
   constructor(private client: CommandClient) {
@@ -62,6 +63,19 @@ class Test extends Module {
   async testSlash(i: CommandInteraction, @option('test') test: string = 'wa sans') {
     return i.reply({
       content: test,
+    })
+  }
+
+  @slashCommand({
+    command: new SlashCommandBuilder().setName('reload').setDescription('리로드 커맨드'),
+  })
+  @ownerOnly
+  async reload(i: CommandInteraction) {
+    const data = await this.client.registry.reloadAll()
+    console.log(data)
+    await i.reply({
+      ephemeral: true,
+      content: '```\n' + data.map((x) => (x.success ? `✅ ${x.path}` : `❌ ${x.path}\n${x.error}`)).join('\n') + '```',
     })
   }
 }
