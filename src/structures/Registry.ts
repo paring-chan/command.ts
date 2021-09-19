@@ -9,6 +9,7 @@ import walkSync from 'walk-sync'
 import { ArgumentConverter } from '../command'
 import { SlashCommand } from '../slashCommand'
 import { Routes } from 'discord-api-types/v9'
+import * as fs from 'fs'
 
 type ListenerExecutor = {
   event: string
@@ -80,7 +81,9 @@ export class Registry {
     let p = absolute ? dir : path.join(require.main!.path, dir)
 
     for (const i of walkSync(p)) {
-      await this.loadModule(path.join(p, i), true)
+      if (fs.lstatSync(path.join(p, i)).isFile()) {
+        await this.loadModule(path.join(p, i), true)
+      }
     }
   }
 
