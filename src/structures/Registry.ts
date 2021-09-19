@@ -10,6 +10,7 @@ import { ArgumentConverter } from '../command'
 import { SlashCommand } from '../slashCommand'
 import { Routes } from 'discord-api-types/v9'
 import * as fs from 'fs'
+import { BuiltInModule } from '../builtinModules/BuiltInModule'
 
 type ListenerExecutor = {
   event: string
@@ -179,7 +180,7 @@ export class Registry {
       error?: Error
     }[] = []
 
-    for (const [, module] of this.modules.filter((x) => !!x.path)) {
+    for (const [, module] of this.modules.filter((x) => !!x.path || !(x instanceof BuiltInModule))) {
       try {
         await this.reloadModule(module)
         results.push({
