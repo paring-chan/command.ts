@@ -1,10 +1,21 @@
-import { BuiltInModule, CommandClient, ownerOnly, slashCommand } from '../../src'
+import { BuiltInModule, CommandClient, ownerOnly, slashCommand, listener, SlashCommandCheckFailed } from '../../src'
 import { CommandInteraction } from 'discord.js'
 import { SlashCommandBuilder } from '@discordjs/builders'
 
 export class Dev extends BuiltInModule {
   constructor(private cts: CommandClient) {
     super()
+  }
+
+  @listener('slashCommandError')
+  async slashError(e: Error, i: CommandInteraction) {
+    if (e instanceof SlashCommandCheckFailed) {
+      return i.reply({
+        content: 'Command before-run check failed',
+        ephemeral: true,
+      })
+    }
+    console.error(e.message)
   }
 
   @slashCommand({
