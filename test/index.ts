@@ -8,7 +8,7 @@ const client = new Client({
 })
 
 const cts = new CommandClient({
-  owners: 'auto',
+  owners: [],
   client,
   command: {
     prefix: '!',

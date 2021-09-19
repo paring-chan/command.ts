@@ -60,15 +60,18 @@ export class CommandClient {
   constructor({ client, coolDownAdapter, ...options }: Partial<CommandClientOptionsParam> & { client: Client; coolDownAdapter?: CoolDownAdapter }) {
     this.client = client
     this.coolDownAdapter = coolDownAdapter || new DefaultCoolDownAdapter()
-    this.options = _.merge<Partial<CommandClientOptionsParam>, CommandClientOptions>(options, {
-      command: {
-        prefix: '!',
+    this.options = _.merge<CommandClientOptions, Partial<CommandClientOptionsParam>>(
+      {
+        command: {
+          prefix: '!',
+        },
+        owners: 'auto',
+        slashCommands: {
+          autoSync: true,
+        },
       },
-      owners: 'auto',
-      slashCommands: {
-        autoSync: true,
-      },
-    })
+      options,
+    )
     this.client.once('ready', () => this.ready())
     this.registry.registerModule(new CommandHandler(this.registry))
     this.registry.registerModule(new BuiltinCommandConverters(this))
