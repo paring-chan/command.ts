@@ -135,7 +135,7 @@ export const requireUserPermissions = (permission: PermissionResolvable) =>
       throw new UserPermissionRequired(msg.member, new Permissions(permission))
     },
     (i) => {
-      if (!i.guild || !i.member) throw new Error('This command must be used in serer.')
+      if (!i.guild || !i.member) throw new Error('This command must be used in guild.')
       if (!(i.member instanceof GuildMember) || i.member.permissionsIn(i.channel as TextChannel).has(permission)) {
         return true
       }
