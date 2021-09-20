@@ -1,4 +1,4 @@
-import { Collection, Guild, GuildChannel, GuildMember, Message, Role, TextChannel, ThreadChannel, User } from 'discord.js'
+import { Collection } from 'discord.js'
 
 export interface CoolDownAdapter {
   get(id: string): Promise<number | undefined>

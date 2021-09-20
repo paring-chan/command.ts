@@ -33,7 +33,7 @@ export class BuiltinCommandConverters extends BuiltInModule {
   }
 
   @argumentConverter(User)
-  user(value: string): User | null {
+  user(msg: Message, value: string): User | null {
     const id = this.getUserIDByMention(value)
     if (!id) return null
     const user = this.client.users.cache.get(id)
@@ -41,7 +41,7 @@ export class BuiltinCommandConverters extends BuiltInModule {
   }
 
   @argumentConverter(GuildMember)
-  member(value: string, msg: Message): GuildMember | undefined {
+  member(msg: Message, value: string): GuildMember | undefined {
     const id = this.getUserIDByMention(value)
     if (!id) return
     const user = msg.guild?.members.cache.get(id)
@@ -49,7 +49,7 @@ export class BuiltinCommandConverters extends BuiltInModule {
   }
 
   @argumentConverter(Number)
-  number(value: string) {
+  number(msg: Message, value: string) {
     const n = Number(value)
     return isNaN(n) ? undefined : n
   }

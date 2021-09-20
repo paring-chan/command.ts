@@ -90,8 +90,12 @@ export class CommandHandler extends BuiltInModule {
 
         if (!converter) return error(new ArgumentConverterNotFound(argType, msg))
 
+        const converterModule = this.registry.modules.find((x) => x.argumentConverters.includes(converter))
+
+        if (!converterModule) return error(new ArgumentConverterNotFound(argType, msg))
+
         if (converter.withoutParameter) {
-          argList.push(await converter.execute(module, msg))
+          argList.push(await converter.execute(converterModule, msg))
           continue
         }
         const arg = args.shift()
@@ -101,7 +105,7 @@ export class CommandHandler extends BuiltInModule {
         if (!arg) {
           return error(new ArgumentNotProvided(i, cmd, msg))
         }
-        const executed = await converter.execute(module, msg, arg)
+        const executed = await converter.execute(converterModule, msg, arg)
         if (!executed === undefined) {
           return error(new ArgumentNotProvided(i, cmd, msg))
         }
