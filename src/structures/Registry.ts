@@ -126,7 +126,7 @@ export class Registry {
         console.log(`Syncing for guild ${g.name}(${g.id})`)
         console.log(`Command List: ${commands.map((x) => x.commandBuilder.name)}`)
         await this.client.rest.put(Routes.applicationGuildCommands(this.client.client.application!.id, g.id) as any, {
-          body: commands.map((x) => x.commandBuilder.toJSON()),
+          body: [...commands.map((x) => x.commandBuilder.toJSON()), ...this.slashCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false)],
         })
       }
 
