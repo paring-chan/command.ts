@@ -5,7 +5,7 @@ import { ArgumentConverter, SlashArgumentConverter } from './ArgumentConverter'
 import { Module } from '../structures'
 import { createCheckDecorator } from './utils'
 import { GuildMember, Message, PermissionResolvable, Permissions, TextChannel } from 'discord.js'
-import { ClientPermissionRequired, UserPermissionRequired } from '../error'
+import { ClientPermissionRequired, DMOnlyCommandError, GuildOnlyCommandError, OwnerOnlyCommandError, UserPermissionRequired } from '../error'
 
 type CommandOptions = {
   name: string
@@ -111,18 +111,36 @@ export const rest: ParameterDecorator = (target, propertyKey, parameterIndex) =>
 }
 
 export const ownerOnly = createCheckDecorator(
-  (msg) => msg.data.cts.owners.includes(msg.author.id),
-  (i) => i.data.cts.owners.includes(i.user.id),
+  (msg) => {
+    if (msg.data.cts.owners.includes(msg.author.id)) return true
+    throw new OwnerOnlyCommandError()
+  },
+  (i) => {
+    if (i.data.cts.owners.includes(i.user.id)) return true
+    throw new OwnerOnlyCommandError()
+  },
 )
 
 export const guildOnly = createCheckDecorator(
-  (msg) => !!msg.guild,
-  (i) => !!i.guildId,
+  (msg) => {
+    if (!!msg.guild) return true
+    throw new GuildOnlyCommandError()
+  },
+  (i) => {
+    if (!!i.guildId) return true
+    throw new GuildOnlyCommandError()
+  },
 )
 
 export const dmOnly = createCheckDecorator(
-  (msg) => !msg.guild,
-  (i) => !i.guildId,
+  (msg) => {
+    if (!msg.guild) return true
+    throw new DMOnlyCommandError()
+  },
+  (i) => {
+    if (!i.guildId) return true
+    throw new DMOnlyCommandError()
+  },
 )
 
 export const requireUserPermissions = (permission: PermissionResolvable) =>
