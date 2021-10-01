@@ -124,12 +124,13 @@ export class Registry {
     if (guild) {
       const syncForGuild = async (g: Guild) => {
         console.log(`Syncing for guild ${g.name}(${g.id})`)
-        console.log(`Command List: ${commands.map((x) => x.commandBuilder.name)}`)
+        const commandsToRegister = [
+          ...commands.map((x) => x.commandBuilder),
+          ...this.slashCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false).map((x) => x.commandBuilder),
+        ]
+        console.log(`Command List: ${commandsToRegister.map((x) => x.name).join(', ')}`)
         await this.client.rest.put(Routes.applicationGuildCommands(this.client.client.application!.id, g.id) as any, {
-          body: [
-            ...commands.map((x) => x.commandBuilder.toJSON()),
-            ...this.slashCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false).map((x) => x.commandBuilder.toJSON()),
-          ],
+          body: commandsToRegister.map((x) => x.toJSON()),
         })
       }
 
