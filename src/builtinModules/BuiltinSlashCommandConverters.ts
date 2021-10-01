@@ -1,6 +1,6 @@
 import { BuiltInModule } from './BuiltInModule'
 import { slashArgumentConverter } from '../command'
-import { Client, CommandInteraction } from 'discord.js'
+import { Client, CommandInteraction, CommandInteractionOptionResolver } from 'discord.js'
 import { CommandClient } from '../structures'
 
 export class BuiltinSlashCommandConverters extends BuiltInModule {
@@ -14,5 +14,10 @@ export class BuiltinSlashCommandConverters extends BuiltInModule {
   @slashArgumentConverter(CommandInteraction)
   message(interaction: CommandInteraction) {
     return interaction
+  }
+
+  @slashArgumentConverter(CommandInteractionOptionResolver)
+  optionResolver(interaction: CommandInteraction): CommandInteractionOptionResolver {
+    return interaction.options
   }
 }
