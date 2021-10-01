@@ -118,10 +118,12 @@ export class Registry {
   }
 
   async syncCommands() {
+    console.log(`[Command.TS] Syncing commands...`)
     const commands = this.slashCommands.filter((x) => !x.guild)
     const guild = this.client.options.slashCommands.guild
     if (guild) {
       const syncForGuild = async (g: Guild) => {
+        console.log(`Syncing for guild (${g.name})${g.id}`)
         await this.client.rest.put(Routes.applicationGuildCommands(this.client.client.application!.id, g.id) as any, {
           body: commands.map((x) => x.commandBuilder.toJSON()),
         })
@@ -135,10 +137,12 @@ export class Registry {
         }
       }
     } else {
+      console.log('Syncing global...')
       await this.client.rest.put(Routes.applicationCommands(this.client.client.application!.id) as any, {
         body: commands.map((x) => x.commandBuilder.toJSON()),
       })
     }
+    console.log('Syncing ended.')
   }
 
   async unregisterModule(module: Module) {
