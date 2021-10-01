@@ -95,7 +95,7 @@ export class Registry {
     try {
       m = require(p)
     } catch (e: any) {
-      throw new ModuleLoadError(p)
+      throw new ModuleLoadError(p, e)
     }
 
     if (m.loaded) throw new Error('MODULE_ALREADY_LOADED')

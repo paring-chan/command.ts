@@ -1,5 +1,5 @@
 export class ModuleLoadError extends Error {
-  constructor(file: string) {
+  constructor(file: string, public error: Error) {
     super('Failed to load module ' + file)
   }
 }
