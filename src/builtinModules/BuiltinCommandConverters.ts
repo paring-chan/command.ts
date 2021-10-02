@@ -1,6 +1,6 @@
 import { BuiltInModule } from './BuiltInModule'
 import { argumentConverter } from '../command'
-import { Client, GuildMember, Message, User } from 'discord.js'
+import { Client, GuildMember, Message, User, Role } from 'discord.js'
 import { CommandClient } from '../structures'
 
 export class BuiltinCommandConverters extends BuiltInModule {
@@ -53,4 +53,24 @@ export class BuiltinCommandConverters extends BuiltInModule {
     const n = Number(value)
     return isNaN(n) ? undefined : n
   }
+
+  getRoleIDByMention(mention: string): `${bigint}` | undefined {
+    if (!mention) return
+    if (mention.startsWith('<@') && mention.endsWith('>')) {
+        mention = mention.slice(2, -1)
+        if (mention.startsWith('&')) {
+            mention = mention.slice(1)
+        }
+        return mention as `${bigint}`
+    }
+  }
+
+  @argumentConverter(Role)
+  role(msg: Message, value: string): Role | undefined{
+      const id = this.getRoleIDByMention(value)
+      if (!id) return
+      const role = msg.guild?.roles.cache.get(id)
+      return role || undefined
+  }
+
 }
