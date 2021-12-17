@@ -17,6 +17,10 @@ export class CommandHandler extends BuiltInModule {
 
   @listener('messageCreate')
   async message(msg: Message) {
+    if (!await this.client.options.command.check(msg)) {
+      return
+    }
+
     const error = (error: Error) => this.client.client.emit('commandError', error, msg)
 
     try {
