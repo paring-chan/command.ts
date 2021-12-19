@@ -34,17 +34,25 @@ export class BuiltinCommandConverters extends BuiltInModule {
 
   @argumentConverter(User)
   user(msg: Message, value: string): User | null {
+    let user = this.client.users.cache.get(value)
+    if (user) return user
+    user = this.client.users.cache.find(x=>x.tag === value)
+    if (user) return user
     const id = this.getUserIDByMention(value)
     if (!id) return null
-    const user = this.client.users.cache.get(id)
+    user = this.client.users.cache.get(id)
     return user || null
   }
 
   @argumentConverter(GuildMember)
   member(msg: Message, value: string): GuildMember | undefined {
+    let user = msg.guild?.members.cache.get(value)
+    if (!user) return user
+    user = msg.guild?.members.cache.find(x=>x.user.tag===value)
+    if (user) return user
     const id = this.getUserIDByMention(value)
     if (!id) return
-    const user = msg.guild?.members.cache.get(id)
+    user = msg.guild?.members.cache.get(id)
     return user || undefined
   }
 
