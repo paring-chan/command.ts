@@ -8,7 +8,7 @@ export class Dev extends BuiltInModule {
   }
 
   @listener('slashCommandError')
-  async slashError(e: Error, i: CommandInteraction) {
+  slashError(e: Error, i: CommandInteraction) {
     if (e instanceof SlashCommandCheckFailed) {
       return i.reply({
         content: 'Command before-run check failed',
