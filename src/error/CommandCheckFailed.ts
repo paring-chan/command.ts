@@ -9,7 +9,7 @@ export class CommandCheckFailed extends Error {
 }
 
 export class SlashCommandCheckFailed extends Error {
-  constructor(public msg: CommandInteraction, public command: SlashCommand) {
+  constructor(public interaction: CommandInteraction, public command: SlashCommand) {
     super()
   }
 }
