@@ -1,13 +1,14 @@
 import _ from 'lodash'
 import { Registry } from './Registry'
-import {Client, Message, Snowflake, User} from 'discord.js'
+import { Client, Message, Snowflake, User } from 'discord.js'
 import { BuiltinCommandConverters, BuiltinSlashCommandConverters, CommandHandler } from '../builtinModules'
 import { CoolDownAdapter, DefaultCoolDownAdapter } from '../command'
 import { REST } from '@discordjs/rest'
+import { Logger } from 'tslog'
 
 export interface CommandOptions {
   prefix: string | ((msg: any) => string | Promise<string | string[]> | string[]) | string[]
-  check: (msg: Message) => boolean|Promise<boolean>
+  check: (msg: Message) => boolean | Promise<boolean>
 }
 
 export interface SlashCommandOptions {
@@ -36,6 +37,7 @@ export class CommandClient {
   rest = new REST({
     version: '9',
   })
+  logger: Logger = new Logger({ name: 'Command.TS' })
 
   private _isReady = false
 
@@ -65,7 +67,7 @@ export class CommandClient {
       {
         command: {
           prefix: '!',
-          check: () => true
+          check: () => true,
         },
         owners: 'auto',
         slashCommands: {

@@ -62,6 +62,8 @@ export class Registry {
   }
 
   registerModule(module: Module) {
+    module.commandClient = this.client
+
     this.modules.set(Symbol(module.constructor.name), module)
 
     const list: ListenerExecutor[] = []

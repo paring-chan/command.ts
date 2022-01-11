@@ -3,8 +3,17 @@ import type { Command } from '../command'
 import { Listener } from '../listener'
 import { ArgumentConverter, SlashArgumentConverter } from '../command'
 import { SlashCommand } from '../slashCommand'
+import { CommandClient } from './CommandClient'
 
 export abstract class Module {
+  commandClient!: CommandClient
+
+  get logger() {
+    return this.commandClient.logger.getChildLogger({
+      name: this.constructor.name,
+    })
+  }
+
   get commands(): Command[] {
     return Reflect.getMetadata(KCommands, this) || []
   }
