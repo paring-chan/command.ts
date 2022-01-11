@@ -21,6 +21,12 @@ export class Registry {
 
   modules: Collection<symbol, Module> = new Collection()
 
+  private get logger() {
+    return this.client.logger.getChildLogger({
+      name: 'Registry',
+    })
+  }
+
   get commands(): Command[] {
     const result: Command[] = []
 
@@ -120,17 +126,17 @@ export class Registry {
   }
 
   async syncCommands() {
-    console.log(`[Command.TS] Syncing commands...`)
+    this.logger.debug(`Syncing commands...`)
     const commands = this.slashCommands.filter((x) => !x.guild)
     const guild = this.client.options.slashCommands.guild
     if (guild) {
       const syncForGuild = async (g: Guild) => {
-        console.log(`Syncing for guild ${g.name}(${g.id})`)
+        this.logger.debug(`Syncing for guild ${g.name}(${g.id})`)
         const commandsToRegister = [
           ...commands.map((x) => x.commandBuilder),
           ...this.slashCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false).map((x) => x.commandBuilder),
         ]
-        console.log(`Command List: ${commandsToRegister.map((x) => x.name).join(', ')}`)
+        this.logger.debug(`Command List: ${commandsToRegister.map((x) => x.name).join(', ')}`)
         await this.client.rest.put(Routes.applicationGuildCommands(this.client.client.application!.id, g.id) as any, {
           body: commandsToRegister.map((x) => x.toJSON()),
         })
@@ -144,12 +150,12 @@ export class Registry {
         }
       }
     } else {
-      console.log('Syncing global...')
+      this.logger.debug('Syncing global...')
       await this.client.rest.put(Routes.applicationCommands(this.client.client.application!.id) as any, {
         body: commands.map((x) => x.commandBuilder.toJSON()),
       })
     }
-    console.log('Syncing ended.')
+    this.logger.debug('Syncing ended.')
   }
 
   async unregisterModule(module: Module) {

@@ -20,6 +20,7 @@ export interface CommandClientOptions {
   command: CommandOptions
   owners: 'auto' | Snowflake[]
   slashCommands: SlashCommandOptions
+  logger: Logger
 }
 
 export interface CommandClientOptionsParam {
@@ -37,7 +38,7 @@ export class CommandClient {
   rest = new REST({
     version: '9',
   })
-  logger: Logger = new Logger({ name: 'Command.TS' })
+  logger: Logger
 
   private _isReady = false
 
@@ -73,9 +74,12 @@ export class CommandClient {
         slashCommands: {
           autoSync: true,
         },
+        logger: new Logger({ name: 'Command.TS' }),
       },
       options,
     )
+
+    this.logger = this.options.logger
 
     if (this.options.owners !== 'auto') {
       this.owners = this.options.owners
