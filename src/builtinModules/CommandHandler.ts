@@ -17,7 +17,7 @@ export class CommandHandler extends BuiltInModule {
 
   @listener('messageCreate')
   async message(msg: Message) {
-    if (!await this.client.options.command.check(msg)) {
+    if (!(await this.client.options.command.check(msg))) {
       return
     }
 
@@ -174,7 +174,7 @@ export class CommandHandler extends BuiltInModule {
               argList.push(i.options.getBoolean(argType.name, false) || undefined)
               break
             case Number:
-              argList.push(i.options.getNumber(argType.name, false) || i.options.getInteger(argType.name, false) || undefined)
+              argList.push(i.options.get(argType.name, false) || undefined)
           }
           continue
         }
