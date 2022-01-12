@@ -174,7 +174,7 @@ export class CommandHandler extends BuiltInModule {
               argList.push(i.options.getBoolean(argType.name, false) || undefined)
               break
             case Number:
-              argList.push(i.options.get(argType.name, false) || undefined)
+              argList.push(i.options.get(argType.name, false)?.value || undefined)
           }
           continue
         }
