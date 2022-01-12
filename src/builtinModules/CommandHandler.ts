@@ -174,7 +174,19 @@ export class CommandHandler extends BuiltInModule {
               argList.push(i.options.getBoolean(argType.name, false) || undefined)
               break
             case Number:
-              argList.push(i.options.get(argType.name, false)?.value || undefined)
+              const opt = i.options.get(argType.name, false)
+              if (!opt) {
+                argList.push(undefined)
+                break
+              }
+              if (opt.type == 'NUMBER') {
+                argList.push(i.options.getNumber(argType.name) || undefined)
+                break
+              }
+              if (opt.type == 'INTEGER') {
+                argList.push(i.options.getInteger(argType.name) || undefined)
+                break
+              }
           }
           continue
         }
