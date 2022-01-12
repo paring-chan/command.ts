@@ -7,3 +7,7 @@
 Command framework for discord.js
 
 [Discord](https://discord.gg/EEhcPzsGHV) / [문서](https://v3.cts.pikokr.dev) / [V2 문서](https://command-ts-docs-ezojnktwv-pikokr.vercel.app/)
+
+## Contributors
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
