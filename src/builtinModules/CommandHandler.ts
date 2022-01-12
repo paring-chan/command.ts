@@ -180,11 +180,11 @@ export class CommandHandler extends BuiltInModule {
                 break
               }
               if (opt.type == 'NUMBER') {
-                argList.push(i.options.getNumber(argType.name) || undefined)
+                argList.push(i.options.getNumber(argType.name, false) ?? undefined)
                 break
               }
               if (opt.type == 'INTEGER') {
-                argList.push(i.options.getInteger(argType.name) || undefined)
+                argList.push(i.options.getInteger(argType.name, false) ?? undefined)
                 break
               }
           }
