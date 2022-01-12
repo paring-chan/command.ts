@@ -3,6 +3,9 @@
 [![.github/workflows/publish.yml](https://github.com/pikokr/command.ts/actions/workflows/publish.yml/badge.svg)](https://github.com/pikokr/command.ts/actions/workflows/publish.yml)
 
 ![cts](https://user-images.githubusercontent.com/68010770/145200458-b14c5e4e-6927-4516-8d48-c68a384d2a20.png)
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 Command framework for discord.js
 
