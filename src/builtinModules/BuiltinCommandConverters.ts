@@ -36,7 +36,7 @@ export class BuiltinCommandConverters extends BuiltInModule {
   user(msg: Message, value: string): User | null {
     let user = this.client.users.cache.get(value)
     if (user) return user
-    user = this.client.users.cache.find(x=>x.tag === value)
+    user = this.client.users.cache.find((x) => x.tag === value || x.username === value)
     if (user) return user
     const id = this.getUserIDByMention(value)
     if (!id) return null
@@ -48,7 +48,7 @@ export class BuiltinCommandConverters extends BuiltInModule {
   member(msg: Message, value: string): GuildMember | undefined {
     let user = msg.guild?.members.cache.get(value)
     if (!user) return user
-    user = msg.guild?.members.cache.find(x=>x.user.tag===value)
+    user = msg.guild?.members.cache.find((x) => x.user.tag === value)
     if (user) return user
     const id = this.getUserIDByMention(value)
     if (!id) return
@@ -65,20 +65,19 @@ export class BuiltinCommandConverters extends BuiltInModule {
   getRoleIDByMention(mention: string): `${bigint}` | undefined {
     if (!mention) return
     if (mention.startsWith('<@') && mention.endsWith('>')) {
-        mention = mention.slice(2, -1)
-        if (mention.startsWith('&')) {
-            mention = mention.slice(1)
-        }
-        return mention as `${bigint}`
+      mention = mention.slice(2, -1)
+      if (mention.startsWith('&')) {
+        mention = mention.slice(1)
+      }
+      return mention as `${bigint}`
     }
   }
 
   @argumentConverter(Role)
-  role(msg: Message, value: string): Role | undefined{
-      const id = this.getRoleIDByMention(value)
-      if (!id) return
-      const role = msg.guild?.roles.cache.get(id)
-      return role || undefined
+  role(msg: Message, value: string): Role | undefined {
+    const id = this.getRoleIDByMention(value)
+    if (!id) return
+    const role = msg.guild?.roles.cache.get(id)
+    return role || undefined
   }
-
 }
