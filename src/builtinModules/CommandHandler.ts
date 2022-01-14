@@ -110,7 +110,7 @@ export class CommandHandler extends BuiltInModule {
           return error(new ArgumentNotProvided(i, cmd, msg))
         }
         const executed = await converter.execute(converterModule, msg, arg)
-        if (executed === undefined && !argType.optional) {
+        if ((executed === undefined || executed === null) && !argType.optional) {
           return error(new ArgumentNotProvided(i, cmd, msg))
         }
         argList.push(executed)
