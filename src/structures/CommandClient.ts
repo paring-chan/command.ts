@@ -20,7 +20,6 @@ export interface CommandClientOptions {
   command: CommandOptions
   owners: 'auto' | Snowflake[]
   slashCommands: SlashCommandOptions
-  logger: Logger
 }
 
 export interface CommandClientOptionsParam {
@@ -63,7 +62,7 @@ export class CommandClient {
     }
   }
 
-  constructor({ client, coolDownAdapter, ...options }: Partial<CommandClientOptionsParam> & { client: Client; coolDownAdapter?: CoolDownAdapter }) {
+  constructor({ client, coolDownAdapter, logger, ...options }: Partial<CommandClientOptionsParam> & { client: Client; coolDownAdapter?: CoolDownAdapter; logger?: Logger }) {
     this.client = client
     this.coolDownAdapter = coolDownAdapter || new DefaultCoolDownAdapter()
     this.options = _.merge<CommandClientOptions, Partial<CommandClientOptionsParam>>(
@@ -76,12 +75,11 @@ export class CommandClient {
         slashCommands: {
           autoSync: true,
         },
-        logger: new Logger({ name: 'Command.TS' }),
       },
       options,
     )
 
-    this.logger = this.options.logger
+    this.logger = logger ?? new Logger({ name: 'Command.TS' })
 
     if (this.options.owners !== 'auto') {
       this.owners = this.options.owners
