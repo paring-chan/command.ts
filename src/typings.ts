@@ -5,7 +5,7 @@ import { SlashCommand } from './slashCommand'
 declare module 'discord.js' {
   interface Message {
     data: {
-      command: Command
+      command: Command | null
       prefix: string
       cts: CommandClient
     }

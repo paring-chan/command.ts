@@ -61,7 +61,7 @@ export class CommandHandler extends BuiltInModule {
 
       msg.data = {
         cts: this.client,
-        command: cmd!,
+        command: cmd,
         prefix: prefix,
       }
 
