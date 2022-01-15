@@ -90,6 +90,7 @@ export class Registry {
 
     for (const i of walkSync(p)) {
       if (fs.lstatSync(path.join(p, i)).isFile()) {
+        if (i.endsWith('.map')) continue
         await this.loadModule(path.join(p, i), true)
       }
     }
