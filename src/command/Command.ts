@@ -24,7 +24,7 @@ export class Command {
     private run: Function,
     public argTypes: Argument[],
     public name: string,
-    public aliases: string[] | ((msg: Message) => string[]),
+    public aliases: string[] | ((msg: Message) => string[] | Promise<string[]>),
     public module: Module,
     public key: symbol | string,
   ) {}
