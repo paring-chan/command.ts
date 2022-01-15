@@ -63,7 +63,7 @@ export class CommandHandler extends BuiltInModule {
         }
       }
 
-      if (!cmd) return error(new CommandNotFound(command, msg))
+      if (!cmd) return error(new CommandNotFound(command, msg, args))
 
       msg.data = {
         cts: this.client,
