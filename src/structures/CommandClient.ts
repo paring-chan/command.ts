@@ -58,7 +58,9 @@ export class CommandClient {
       const owners = await this.fetchOwners()
       this.owners.push(...owners)
     }
-    await this.registry.syncCommands()
+    if (this.options.slashCommands.autoSync) {
+      await this.registry.syncCommands()
+    }
   }
 
   constructor({ client, coolDownAdapter, ...options }: Partial<CommandClientOptionsParam> & { client: Client; coolDownAdapter?: CoolDownAdapter }) {
