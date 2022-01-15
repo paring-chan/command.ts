@@ -59,17 +59,17 @@ export class CommandHandler extends BuiltInModule {
         }
       }
 
-      if (!cmd) return error(new CommandNotFound(command, msg, args))
-
       msg.data = {
         cts: this.client,
-        command: cmd,
+        command: cmd!,
         prefix: prefix,
       }
 
       if (!(await this.client.options.command.check(msg))) {
         return
       }
+
+      if (!cmd) return error(new CommandNotFound(command, msg, args))
 
       const module = this.registry.modules.find((x) => x.commands.includes(cmd!))
 
