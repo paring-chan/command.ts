@@ -18,6 +18,6 @@ export class BuiltinSlashCommandConverters extends BuiltInModule {
 
   @slashArgumentConverter(CommandInteractionOptionResolver)
   optionResolver(interaction: CommandInteraction): CommandInteractionOptionResolver {
-    return interaction.options
+    return interaction.options as CommandInteractionOptionResolver
   }
 }
