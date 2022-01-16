@@ -2,13 +2,14 @@ import _ from 'lodash'
 import { Registry } from './Registry'
 import { Client, Message, Snowflake, User } from 'discord.js'
 import { BuiltinCommandConverters, BuiltinSlashCommandConverters, CommandHandler } from '../builtinModules'
-import { CoolDownAdapter, DefaultCoolDownAdapter } from '../command'
+import { Command, CoolDownAdapter, DefaultCoolDownAdapter } from '../command'
 import { REST } from '@discordjs/rest'
 import { Logger } from 'tslog'
 
 export interface CommandOptions {
   prefix: string | ((msg: any) => string | Promise<string | string[]> | string[]) | string[]
   check: (msg: Message) => boolean | Promise<boolean>
+  globalAliases: (command: Command) => string[] | Promise<string[]>
 }
 
 export interface SlashCommandOptions {
@@ -70,6 +71,7 @@ export class CommandClient {
         command: {
           prefix: '!',
           check: () => true,
+          globalAliases: () => [],
         },
         owners: 'auto',
         slashCommands: {
