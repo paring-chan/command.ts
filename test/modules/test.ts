@@ -54,6 +54,15 @@ class Test extends Module {
 
   @slashCommand({
     command: new SlashCommandBuilder()
+      .setName('sans')
+      .setDescription('test')
+      .addStringOption((builder) => builder.setName('asdf').setDescription('sans')),
+  })
+  @coolDown(CoolDownType.USER, 10)
+  coolDownSlash(i: CommandInteraction, @option('asdf') asdf: string = 'wa sans') {}
+
+  @slashCommand({
+    command: new SlashCommandBuilder()
       .setName('test')
       .setDescription('test command')
       .addStringOption((builder) => builder.setName('test').setDescription('test option').setRequired(false)),
