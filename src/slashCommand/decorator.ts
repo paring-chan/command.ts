@@ -7,6 +7,7 @@ import { SlashCommandBuilder } from '@discordjs/builders'
 
 type SlashOptions = {
   guild: Snowflake | Snowflake[]
+  optionTypes?: any[]
 }
 
 export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashCommandBuilder | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'> }) => {
@@ -19,7 +20,7 @@ export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashComman
 
     let properties: SlashCommand[] = Reflect.getMetadata(KSlashCommands, target)
 
-    const params: any[] = Reflect.getMetadata('design:paramtypes', target, propertyKey)
+    const params: any[] = opt.optionTypes ?? Reflect.getMetadata('design:paramtypes', target, propertyKey)
 
     const options: Collection<number, string> = Reflect.getMetadata(KSlashCommandOptions, target, propertyKey) || new Collection<number, string>()
 

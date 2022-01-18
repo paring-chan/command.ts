@@ -10,6 +10,7 @@ import { ClientPermissionRequired, DMOnlyCommandError, GuildOnlyCommandError, Ow
 type CommandOptions = {
   name: string
   aliases: string[] | ((msg: Message) => string[])
+  optionTypes?: any[]
 }
 
 export const command = (options: Partial<CommandOptions> = {}) => {
@@ -22,7 +23,7 @@ export const command = (options: Partial<CommandOptions> = {}) => {
 
     let properties: Command[] = Reflect.getMetadata(KCommands, target)
 
-    const params: any[] = Reflect.getMetadata('design:paramtypes', target, propertyKey)
+    const params: any[] = options.optionTypes ?? Reflect.getMetadata('design:paramtypes', target, propertyKey)
 
     const optionals: number = Reflect.getMetadata(KOptionals, target, propertyKey) || -1
 
