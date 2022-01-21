@@ -218,8 +218,15 @@ export class CommandHandler extends BuiltInModule {
 
   @listener('interactionCreate')
   async interaction(i: Interaction) {
-    if (i.isCommand()) {
-      await this.command(i)
+    const error = (e: any) => this.client.client.emit('interactionError', e)
+
+    try {
+      await this.client.options.applicationCommands.beforeRunCheck(i)
+      if (i.isCommand()) {
+        await this.command(i)
+      }
+    } catch (e) {
+      return error(e)
     }
   }
 }
