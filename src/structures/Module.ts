@@ -27,7 +27,7 @@ export abstract class Module {
     return Reflect.getMetadata(KArgumentConverters, this) || []
   }
 
-  get slashArgumentConverters(): ApplicationCommandArgumentConverter[] {
+  get applicationCommandArgumentConverters(): ApplicationCommandArgumentConverter[] {
     return Reflect.getMetadata(KSlashArgumentConverters, this) || []
   }
 

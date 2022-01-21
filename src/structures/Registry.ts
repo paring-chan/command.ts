@@ -47,11 +47,11 @@ export class Registry {
     return result
   }
 
-  get slashArgumentConverters(): ApplicationCommandArgumentConverter[] {
+  get applicationCommandArgumentConverters(): ApplicationCommandArgumentConverter[] {
     const result: ApplicationCommandArgumentConverter[] = []
 
     for (const [, module] of this.modules) {
-      result.push(...module.slashArgumentConverters)
+      result.push(...module.applicationCommandArgumentConverters)
     }
 
     return result

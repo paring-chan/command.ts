@@ -173,7 +173,7 @@ export class CommandHandler extends BuiltInModule {
 
       for (let j = 0; j < cmd.params.length; j++) {
         const argType = cmd.params[j]
-        const converter = this.registry.slashArgumentConverters.find((x) => x.type === argType.type)
+        const converter = this.registry.applicationCommandArgumentConverters.find((x) => x.type === argType.type)
 
         if (argType.type === CommandInteraction) {
           argList.push(i)
@@ -278,7 +278,7 @@ export class CommandHandler extends BuiltInModule {
 
       for (let j = 0; j < cmd.params.length; j++) {
         const argType = cmd.params[j]
-        const converter = this.registry.slashArgumentConverters.find((x) => x.type === argType.type)
+        const converter = this.registry.applicationCommandArgumentConverters.find((x) => x.type === argType.type)
 
         if (argType.type === UserContextMenuInteraction) {
           argList.push(i)
@@ -320,7 +320,7 @@ export class CommandHandler extends BuiltInModule {
 
       for (let j = 0; j < cmd.params.length; j++) {
         const argType = cmd.params[j]
-        const converter = this.registry.slashArgumentConverters.find((x) => x.type === argType.type)
+        const converter = this.registry.applicationCommandArgumentConverters.find((x) => x.type === argType.type)
 
         if (argType.type === MessageContextMenuInteraction) {
           argList.push(i)
