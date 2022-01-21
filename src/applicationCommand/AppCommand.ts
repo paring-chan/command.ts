@@ -3,7 +3,7 @@ import { ApplicationCommandDataResolvable, Snowflake } from 'discord.js'
 import { KApplicationCommandChecks } from '../constants'
 import { ApplicationCommandCheckFunction } from '../command'
 
-export type SlashArgument = {
+export type AppCommandArgument = {
   type: any
   name?: string
 }
@@ -21,7 +21,7 @@ export class AppCommand {
     public command: ApplicationCommandDataResolvable,
     private run: Function,
     public module: Module,
-    public params: SlashArgument[],
+    public params: AppCommandArgument[],
     public guild: Snowflake | Snowflake[] | undefined,
     private key: string | symbol,
   ) {}

@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import { Registry } from './Registry'
 import { Client, CommandInteraction, Interaction, Message, Snowflake, User } from 'discord.js'
-import { BuiltinCommandConverters, BuiltinSlashCommandConverters, CommandHandler } from '../builtinModules'
+import { BuiltinCommandConverters, BuiltinApplicationCommandConverters, CommandHandler } from '../builtinModules'
 import { CoolDownAdapter, DefaultCoolDownAdapter } from '../command'
 import { Logger } from 'tslog'
 
@@ -96,6 +96,6 @@ export class CommandClient {
     this.client.once('ready', () => this.ready())
     this.registry.registerModule(new CommandHandler(this.registry))
     this.registry.registerModule(new BuiltinCommandConverters(this))
-    this.registry.registerModule(new BuiltinSlashCommandConverters(this))
+    this.registry.registerModule(new BuiltinApplicationCommandConverters(this))
   }
 }

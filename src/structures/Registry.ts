@@ -1,6 +1,6 @@
 import { CommandClient } from './CommandClient'
 import { Module } from './Module'
-import { Command, SlashArgumentConverter } from '../command'
+import { Command, ApplicationCommandArgumentConverter } from '../command'
 import { KBuiltInModule, KListenerExecuteCache, KModulePath } from '../constants'
 import path from 'path'
 import { InvalidModuleError, InvalidTargetError, ModuleLoadError } from '../error'
@@ -47,8 +47,8 @@ export class Registry {
     return result
   }
 
-  get slashArgumentConverters(): SlashArgumentConverter[] {
-    const result: SlashArgumentConverter[] = []
+  get slashArgumentConverters(): ApplicationCommandArgumentConverter[] {
+    const result: ApplicationCommandArgumentConverter[] = []
 
     for (const [, module] of this.modules) {
       result.push(...module.slashArgumentConverters)

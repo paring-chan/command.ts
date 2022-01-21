@@ -1,7 +1,7 @@
 import { KArgumentConverters, KCommands, KOptionals, KRest, KSlashArgumentConverters } from '../constants'
 import { Command } from './Command'
 import { checkTarget } from '../utils'
-import { ArgumentConverter, SlashArgumentConverter } from './ArgumentConverter'
+import { ArgumentConverter, ApplicationCommandArgumentConverter } from './ArgumentConverter'
 import { Module } from '../structures'
 import { createCheckDecorator } from './utils'
 import { GuildMember, Message, PermissionResolvable, Permissions, TextChannel } from 'discord.js'
@@ -72,7 +72,7 @@ export const argumentConverter = (type: object, requireParameter = true) => {
   }
 }
 
-export const slashArgumentConverter = (type: object) => {
+export const applicationCommandArgumentConverter = (type: object) => {
   return (
     target: Object,
     propertyKey: string,
@@ -80,9 +80,9 @@ export const slashArgumentConverter = (type: object) => {
   ) => {
     checkTarget(target)
 
-    let properties: SlashArgumentConverter[] = Reflect.getMetadata(KSlashArgumentConverters, target)
+    let properties: ApplicationCommandArgumentConverter[] = Reflect.getMetadata(KSlashArgumentConverters, target)
 
-    const converter = new SlashArgumentConverter(type, Reflect.get(target, propertyKey))
+    const converter = new ApplicationCommandArgumentConverter(type, Reflect.get(target, propertyKey))
 
     if (properties) {
       properties.push(converter)

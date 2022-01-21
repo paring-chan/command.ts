@@ -1,14 +1,14 @@
-import { CommandInteraction, Message } from 'discord.js'
+import { CommandInteraction, ContextMenuInteraction, Message } from 'discord.js'
 import type { Argument } from '../command'
-import type { SlashArgument } from '../applicationCommand'
+import type { AppCommandArgument } from '../applicationCommand'
 
 export class ArgumentConverterNotFound extends Error {
   constructor(public type: Argument, public msg: Message) {
     super(`Argument converter ${type.type.name} not found.`)
   }
 }
-export class SlashArgumentConverterNotFound extends Error {
-  constructor(public type: SlashArgument, public interaction: CommandInteraction) {
+export class ApplicationCommandArgumentConverterNotFound extends Error {
+  constructor(public type: AppCommandArgument, public interaction: CommandInteraction | ContextMenuInteraction) {
     super(`Argument converter ${type.type.name} not found.`)
   }
 }

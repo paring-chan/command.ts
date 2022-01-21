@@ -3,6 +3,7 @@ import { Registry } from '../structures'
 import { listener } from '../listener'
 import {
   CommandInteraction,
+  CommandInteractionOptionResolver,
   GuildMember,
   Interaction,
   Message,
@@ -14,7 +15,7 @@ import {
 } from 'discord.js'
 import { CommandClient } from '../structures'
 import { Command } from '../command'
-import { ArgumentConverterNotFound, ArgumentNotProvided, CommandCheckFailed, SlashArgumentConverterNotFound, ApplicationCommandCheckFailed } from '../error'
+import { ArgumentConverterNotFound, ArgumentNotProvided, CommandCheckFailed, ApplicationCommandArgumentConverterNotFound, ApplicationCommandCheckFailed } from '../error'
 import { CommandNotFound } from '../error/CommandNotFound'
 import { SlashCommandGlobalCheckError } from '../error/checks/SlashCommandGlobalCheckError'
 import { MessageComponentHandler } from '../messageComponents/base'
@@ -174,6 +175,16 @@ export class CommandHandler extends BuiltInModule {
         const argType = cmd.params[j]
         const converter = this.registry.slashArgumentConverters.find((x) => x.type === argType.type)
 
+        if (argType.type === CommandInteraction) {
+          argList.push(i)
+          continue
+        }
+
+        if (argType.type === CommandInteractionOptionResolver) {
+          argList.push(i.options)
+          continue
+        }
+
         if (argType.name) {
           switch (argType.type) {
             case String:
@@ -209,7 +220,7 @@ export class CommandHandler extends BuiltInModule {
           continue
         }
 
-        if (!converter) return error(new SlashArgumentConverterNotFound(argType, i))
+        if (!converter) return error(new ApplicationCommandArgumentConverterNotFound(argType, i))
 
         argList.push(await converter.execute(module, i))
       }
@@ -263,7 +274,23 @@ export class CommandHandler extends BuiltInModule {
         if (!(await check(i))) return error(new ApplicationCommandCheckFailed(i, cmd))
       }
 
-      await cmd.execute(module, [i])
+      let argList: any[] = []
+
+      for (let j = 0; j < cmd.params.length; j++) {
+        const argType = cmd.params[j]
+        const converter = this.registry.slashArgumentConverters.find((x) => x.type === argType.type)
+
+        if (argType.type === UserContextMenuInteraction) {
+          argList.push(i)
+          continue
+        }
+
+        if (!converter) return error(new ApplicationCommandArgumentConverterNotFound(argType, i))
+
+        argList.push(await converter.execute(module, i))
+      }
+
+      await cmd.execute(module, argList)
     } catch (e) {
       return error(e)
     }
@@ -289,7 +316,23 @@ export class CommandHandler extends BuiltInModule {
         if (!(await check(i))) return error(new ApplicationCommandCheckFailed(i, cmd))
       }
 
-      await cmd.execute(module, [i])
+      let argList: any[] = []
+
+      for (let j = 0; j < cmd.params.length; j++) {
+        const argType = cmd.params[j]
+        const converter = this.registry.slashArgumentConverters.find((x) => x.type === argType.type)
+
+        if (argType.type === MessageContextMenuInteraction) {
+          argList.push(i)
+          continue
+        }
+
+        if (!converter) return error(new ApplicationCommandArgumentConverterNotFound(argType, i))
+
+        argList.push(await converter.execute(module, i))
+      }
+
+      await cmd.execute(module, argList)
     } catch (e) {
       return error(e)
     }

@@ -1,5 +1,5 @@
 import { Module } from '../structures'
-import { CommandInteraction, Message } from 'discord.js'
+import { CommandInteraction, ContextMenuInteraction, Message } from 'discord.js'
 
 export class ArgumentConverter {
   execute(module: Module, msg: Message, arg?: string) {
@@ -9,8 +9,8 @@ export class ArgumentConverter {
   constructor(public type: object, private run: Function, public withoutParameter: boolean) {}
 }
 
-export class SlashArgumentConverter {
-  execute(module: Module, interaction: CommandInteraction) {
+export class ApplicationCommandArgumentConverter {
+  execute(module: Module, interaction: CommandInteraction | ContextMenuInteraction) {
     return this.run.apply(module, [interaction])
   }
 

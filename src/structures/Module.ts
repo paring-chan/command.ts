@@ -1,7 +1,7 @@
 import { KArgumentConverters, KCommands, KListeners, KMessageComponentHandlers, KModulePath, KSlashArgumentConverters, KApplicationCommands } from '../constants'
 import type { Command } from '../command'
 import { Listener } from '../listener'
-import { ArgumentConverter, SlashArgumentConverter } from '../command'
+import { ArgumentConverter, ApplicationCommandArgumentConverter } from '../command'
 import { AppCommand } from '../applicationCommand'
 import { CommandClient } from './CommandClient'
 import { MessageComponentHandler } from '../messageComponents/base'
@@ -27,7 +27,7 @@ export abstract class Module {
     return Reflect.getMetadata(KArgumentConverters, this) || []
   }
 
-  get slashArgumentConverters(): SlashArgumentConverter[] {
+  get slashArgumentConverters(): ApplicationCommandArgumentConverter[] {
     return Reflect.getMetadata(KSlashArgumentConverters, this) || []
   }
 
