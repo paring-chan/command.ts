@@ -1,6 +1,5 @@
-import { BuiltInModule, CommandClient, ownerOnly, slashCommand, listener, SlashCommandCheckFailed } from '../../src'
+import { BuiltInModule, CommandClient, ownerOnly, applicationCommand, listener, SlashCommandCheckFailed } from '../../src'
 import { CommandInteraction } from 'discord.js'
-import { SlashCommandBuilder } from '@discordjs/builders'
 
 export class Dev extends BuiltInModule {
   constructor(private cts: CommandClient) {
@@ -18,8 +17,13 @@ export class Dev extends BuiltInModule {
     console.error(e.message)
   }
 
-  @slashCommand({
-    command: new SlashCommandBuilder().setName('reload').setDescription('리로드 커맨드'),
+  // new SlashCommandBuilder().setName('reload').setDescription('리로드 커맨드')
+  @applicationCommand({
+    command: {
+      name: 'reload',
+      type: 'CHAT_INPUT',
+      description: '리로드 커맨드',
+    },
   })
   @ownerOnly
   async reload(i: CommandInteraction) {

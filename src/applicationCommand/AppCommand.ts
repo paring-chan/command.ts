@@ -1,6 +1,5 @@
-import { SlashCommandBuilder } from '@discordjs/builders'
 import { Module } from '../structures'
-import { Snowflake } from 'discord.js'
+import { ApplicationCommandDataResolvable, Snowflake } from 'discord.js'
 import { KSlashCommandChecks } from '../constants'
 import { SlashCheckFunction } from '../command'
 
@@ -9,7 +8,7 @@ export type SlashArgument = {
   name?: string
 }
 
-export class SlashCommand {
+export class AppCommand {
   get checks(): SlashCheckFunction[] {
     return Reflect.getMetadata(KSlashCommandChecks, this.module, this.key) || []
   }
@@ -19,7 +18,7 @@ export class SlashCommand {
   }
 
   constructor(
-    public commandBuilder: SlashCommandBuilder | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>,
+    public command: ApplicationCommandDataResolvable,
     private run: Function,
     public module: Module,
     public params: SlashArgument[],

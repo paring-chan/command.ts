@@ -3,7 +3,6 @@ import { Registry } from './Registry'
 import { Client, CommandInteraction, Interaction, Message, Snowflake, User } from 'discord.js'
 import { BuiltinCommandConverters, BuiltinSlashCommandConverters, CommandHandler } from '../builtinModules'
 import { CoolDownAdapter, DefaultCoolDownAdapter } from '../command'
-import { REST } from '@discordjs/rest'
 import { Logger } from 'tslog'
 
 export interface CommandOptions {
@@ -33,6 +32,7 @@ export interface CommandClientOptionsParam {
   command: Partial<CommandOptions>
   owners: 'auto' | string[]
   slashCommands: Partial<SlashCommandOptions>
+  applicationCommands: Partial<ApplicationCommandOptions>
 }
 
 export class CommandClient {
@@ -41,9 +41,6 @@ export class CommandClient {
   registry = new Registry(this)
   client: Client
   coolDownAdapter: CoolDownAdapter
-  rest = new REST({
-    version: '9',
-  })
   logger: Logger
 
   private _isReady = false
@@ -58,7 +55,6 @@ export class CommandClient {
 
   async ready() {
     if (this._isReady) return
-    this.rest.setToken(this.client.token!)
     this._isReady = true
     if (this.options.owners === 'auto') {
       const owners = await this.fetchOwners()

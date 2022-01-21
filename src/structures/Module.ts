@@ -1,9 +1,10 @@
-import { KArgumentConverters, KCommands, KListeners, KModulePath, KSlashArgumentConverters, KSlashCommands } from '../constants'
+import { KArgumentConverters, KCommands, KListeners, KMessageComponentHandlers, KModulePath, KSlashArgumentConverters, KSlashCommands } from '../constants'
 import type { Command } from '../command'
 import { Listener } from '../listener'
 import { ArgumentConverter, SlashArgumentConverter } from '../command'
-import { SlashCommand } from '../slashCommand'
+import { AppCommand } from '../applicationCommand'
 import { CommandClient } from './CommandClient'
+import { MessageComponentHandler } from '../messageComponents/base'
 
 export abstract class Module {
   commandClient!: CommandClient
@@ -30,8 +31,12 @@ export abstract class Module {
     return Reflect.getMetadata(KSlashArgumentConverters, this) || []
   }
 
-  get slashCommands(): SlashCommand[] {
+  get slashCommands(): AppCommand[] {
     return Reflect.getMetadata(KSlashCommands, this) || []
+  }
+
+  get messageComponentHandlers(): MessageComponentHandler[] {
+    return Reflect.getMetadata(KMessageComponentHandlers, this) || []
   }
 
   get path(): string | undefined {

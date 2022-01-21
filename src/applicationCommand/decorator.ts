@@ -1,16 +1,15 @@
-import { Collection, Snowflake } from 'discord.js'
+import { ApplicationCommandDataResolvable, Collection, Snowflake } from 'discord.js'
 import { checkTarget } from '../utils'
 import { KSlashCommandOptions, KSlashCommands } from '../constants'
 import { Module } from '../structures'
-import { SlashCommand } from './SlashCommand'
-import { SlashCommandBuilder } from '@discordjs/builders'
+import { AppCommand } from './AppCommand'
 
-type SlashOptions = {
+type ApplicationCommandOptions = {
   guild: Snowflake | Snowflake[]
   optionTypes?: any[]
 }
 
-export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashCommandBuilder | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'> }) => {
+export const applicationCommand = (opt: Partial<ApplicationCommandOptions> & { command: ApplicationCommandDataResolvable }) => {
   return (
     target: Object,
     propertyKey: string,
@@ -18,13 +17,13 @@ export const slashCommand = (opt: Partial<SlashOptions> & { command: SlashComman
   ) => {
     checkTarget(target)
 
-    let properties: SlashCommand[] = Reflect.getMetadata(KSlashCommands, target)
+    let properties: AppCommand[] = Reflect.getMetadata(KSlashCommands, target)
 
     const params: any[] = opt.optionTypes ?? Reflect.getMetadata('design:paramtypes', target, propertyKey)
 
     const options: Collection<number, string> = Reflect.getMetadata(KSlashCommandOptions, target, propertyKey) || new Collection<number, string>()
 
-    const command = new SlashCommand(
+    const command = new AppCommand(
       opt.command,
       Reflect.get(target, propertyKey),
       target as Module,

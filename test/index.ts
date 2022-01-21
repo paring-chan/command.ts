@@ -8,12 +8,12 @@ const client = new Client({
 })
 
 const cts = new CommandClient({
-  owners: [],
+  owners: 'auto',
   client,
   command: {
     prefix: '!',
   },
-  slashCommands: {
+  applicationCommands: {
     autoSync: true,
     guild: '832938554438844438',
   },

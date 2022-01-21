@@ -23,3 +23,5 @@ export const KSlashArgumentConverters = Symbol('Command.TS Slash Argument Conver
 export const KCommandChecks = Symbol('Command.TS Command Checks')
 
 export const KSlashCommandChecks = Symbol('Command.TS Slash Command Checks')
+
+export const KMessageComponentHandlers = Symbol('Command.TS Message Component Handlers')

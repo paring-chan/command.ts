@@ -7,9 +7,9 @@ import { InvalidModuleError, InvalidTargetError, ModuleLoadError } from '../erro
 import { Collection, Guild } from 'discord.js'
 import walkSync from 'walk-sync'
 import { ArgumentConverter } from '../command'
-import { SlashCommand } from '../slashCommand'
-import { Routes } from 'discord-api-types/v9'
+import { AppCommand } from '../applicationCommand'
 import * as fs from 'fs'
+import { MessageComponentHandler } from '../messageComponents/base'
 
 type ListenerExecutor = {
   event: string
@@ -57,11 +57,21 @@ export class Registry {
     return result
   }
 
-  get slashCommands(): SlashCommand[] {
-    const result: SlashCommand[] = []
+  get slashCommands(): AppCommand[] {
+    const result: AppCommand[] = []
 
     for (const [, module] of this.modules) {
       result.push(...module.slashCommands)
+    }
+
+    return result
+  }
+
+  get messageComponentHandlers(): MessageComponentHandler[] {
+    const result: MessageComponentHandler[] = []
+
+    for (const [, module] of this.modules) {
+      result.push(...module.messageComponentHandlers)
     }
 
     return result
@@ -134,13 +144,11 @@ export class Registry {
       const syncForGuild = async (g: Guild) => {
         this.logger.debug(`Syncing for guild ${g.name}(${g.id})`)
         const commandsToRegister = [
-          ...commands.map((x) => x.commandBuilder),
-          ...this.slashCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false).map((x) => x.commandBuilder),
+          ...commands.map((x) => x.command),
+          ...this.slashCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false).map((x) => x.command),
         ]
         this.logger.debug(`Command List: ${commandsToRegister.map((x) => x.name).join(', ')}`)
-        await this.client.rest.put(Routes.applicationGuildCommands(this.client.client.application!.id, g.id) as any, {
-          body: commandsToRegister.map((x) => x.toJSON()),
-        })
+        await g.commands.set(commandsToRegister)
       }
 
       if (typeof guild === 'string') {
@@ -152,9 +160,7 @@ export class Registry {
       }
     } else {
       this.logger.debug('Syncing global...')
-      await this.client.rest.put(Routes.applicationCommands(this.client.client.application!.id) as any, {
-        body: commands.map((x) => x.commandBuilder.toJSON()),
-      })
+      await this.client.client.application?.commands.set(commands.map((x) => x.command))
     }
     this.logger.debug('Syncing ended.')
   }

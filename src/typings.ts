@@ -1,6 +1,6 @@
 import type { Command } from './command'
 import { CommandClient } from './structures'
-import { SlashCommand } from './slashCommand'
+import { AppCommand } from './applicationCommand'
 
 declare module 'discord.js' {
   interface Message {
@@ -12,7 +12,7 @@ declare module 'discord.js' {
   }
   interface CommandInteraction {
     data: {
-      command: SlashCommand
+      command: AppCommand
       cts: CommandClient
     }
   }

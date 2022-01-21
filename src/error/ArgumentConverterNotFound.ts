@@ -1,6 +1,6 @@
 import { CommandInteraction, Message } from 'discord.js'
 import type { Argument } from '../command'
-import type { SlashArgument } from '../slashCommand'
+import type { SlashArgument } from '../applicationCommand'
 
 export class ArgumentConverterNotFound extends Error {
   constructor(public type: Argument, public msg: Message) {

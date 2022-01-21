@@ -1,12 +1,13 @@
 import { BuiltInModule } from './BuiltInModule'
 import { Registry } from '../structures'
 import { listener } from '../listener'
-import { CommandInteraction, GuildMember, Interaction, Message, Role, User } from 'discord.js'
+import { CommandInteraction, GuildMember, Interaction, Message, MessageComponentInteraction, Role, User } from 'discord.js'
 import { CommandClient } from '../structures'
 import { Command } from '../command'
 import { ArgumentConverterNotFound, ArgumentNotProvided, CommandCheckFailed, SlashArgumentConverterNotFound, SlashCommandCheckFailed } from '../error'
 import { CommandNotFound } from '../error/CommandNotFound'
 import { SlashCommandGlobalCheckError } from '../error/checks/SlashCommandGlobalCheckError'
+import { MessageComponentHandler } from '../messageComponents/base'
 
 export class CommandHandler extends BuiltInModule {
   private readonly client: CommandClient
@@ -133,22 +134,23 @@ export class CommandHandler extends BuiltInModule {
   }
   // endregion
 
+  // region slash command handler
   private async command(i: CommandInteraction) {
     const error = (error: Error) => this.client.client.emit('slashCommandError', error, i)
     try {
-      const cmd = this.registry.slashCommands.find((x) => x.commandBuilder.name === i.commandName)
-
-      const module = this.registry.modules.find((x) => x.slashCommands.includes(cmd!))
-
-      if (!module) return
-
-      const argList: any[] = []
+      const cmd = this.registry.slashCommands.find((x) => x.command.type === 'CHAT_INPUT' && x.command.name === i.commandName)
 
       if (!cmd)
         return i.reply({
           content: 'Unknown command.',
           ephemeral: true,
         })
+
+      const module = this.registry.modules.find((x) => x.slashCommands.includes(cmd))
+
+      if (!module) return
+
+      const argList: any[] = []
 
       i.data = {
         cts: this.client,
@@ -206,24 +208,54 @@ export class CommandHandler extends BuiltInModule {
         argList.push(await converter.execute(module, i))
       }
 
-      try {
-        await cmd.execute(module, argList)
-      } catch (e: any) {
-        return error(e)
-      }
+      await cmd.execute(module, argList)
     } catch (e) {
       return error(e)
+    }
+  }
+  // endregion
+
+  private async messageComponent(i: MessageComponentInteraction) {
+    const error = (e: any) => this.client.client.emit('messageComponentError', e)
+
+    try {
+      const handlers: MessageComponentHandler[] = []
+
+      for (const handler of this.registry.messageComponentHandlers) {
+        if (handler.componentId === handler.componentId && handler.componentType === i.componentType) {
+          handlers.push(handler)
+        }
+      }
+
+      for (const handler of handlers) {
+        const module = this.registry.modules.find((x) => x.messageComponentHandlers.includes(handler))
+        if (!module) continue
+        await handler.run(module, i)
+      }
+    } catch (e) {
+      error(e)
     }
   }
 
   @listener('interactionCreate')
   async interaction(i: Interaction) {
-    const error = (e: any) => this.client.client.emit('interactionError', e)
+    const error = (e: any) => this.client.client.emit('interactionError', e, i)
 
     try {
       await this.client.options.applicationCommands.beforeRunCheck(i)
       if (i.isCommand()) {
         await this.command(i)
+        return
+      }
+      if (i.isMessageComponent()) {
+        await this.messageComponent(i)
+        return
+      }
+      if (i.isMessageContextMenu()) {
+        return
+      }
+      if (i.isUserContextMenu()) {
+        return
       }
     } catch (e) {
       return error(e)

@@ -1,12 +1,22 @@
-import { command, CommandClient, coolDown, CoolDownError, CoolDownType, listener, Module, option, rest, slashCommand } from '../../src'
-import { CommandInteraction, Message } from 'discord.js'
-import { SlashCommandBuilder } from '@discordjs/builders'
+import { command, CommandClient, coolDown, CoolDownError, CoolDownType, listener, messageButton, messageSelectMenu, Module, option, rest, applicationCommand } from '../../src'
+import {
+  ButtonInteraction,
+  CommandInteraction,
+  ContextMenuInteraction,
+  Message,
+  MessageActionRow,
+  MessageButton,
+  MessageSelectMenu,
+  SelectMenuInteraction,
+  UserContextMenuInteraction,
+} from 'discord.js'
 
 class Test extends Module {
   constructor(private client: CommandClient) {
     super()
   }
 
+  // region lifetime method
   load() {
     console.log('load')
   }
@@ -22,6 +32,7 @@ class Test extends Module {
   afterReload() {
     console.log('after reload')
   }
+  // endregion
 
   @listener('ready')
   ready() {
@@ -36,7 +47,7 @@ class Test extends Module {
     console.error(err)
   }
   @listener('slashCommandError')
-  slashCommandError(err: Error, msg: CommandInteraction) {
+  slashCommandError(err: Error, msg: CommandInteraction | ContextMenuInteraction) {
     if (err instanceof CoolDownError) {
       return msg.reply({
         content: `쿨다운: <t:${(err.endsAt.getTime() / 1000).toFixed(0)}:R>`,
@@ -52,25 +63,69 @@ class Test extends Module {
     msg.reply(asdf)
   }
 
-  @slashCommand({
-    command: new SlashCommandBuilder()
-      .setName('sans')
-      .setDescription('test')
-      .addStringOption((builder) => builder.setName('asdf').setDescription('sans')),
+  @applicationCommand({
+    command: {
+      type: 'CHAT_INPUT',
+      name: 'test',
+      description: 'test',
+      options: [
+        {
+          type: 'STRING',
+          name: 'asdf',
+          description: 'test',
+        },
+      ],
+    },
   })
   @coolDown(CoolDownType.USER, 10)
-  coolDownSlash(i: CommandInteraction, @option('asdf') asdf: string = 'wa sans') {}
+  coolDownSlash(i: CommandInteraction, @option('asdf') asdf: string = 'wa sans') {
+    i.reply({
+      content: asdf,
+      components: [
+        new MessageActionRow().addComponents(new MessageButton().setLabel('test').setCustomId('testButton').setStyle('PRIMARY')),
+        new MessageActionRow().addComponents(
+          new MessageSelectMenu()
+            .setCustomId('testSelectMenu')
+            .setPlaceholder('test')
+            .setMinValues(1)
+            .setOptions(
+              new Array(10).fill(1).map((_, i) => ({
+                label: `${i}`,
+                value: `${i}`,
+              })),
+            ),
+        ),
+      ],
+    })
+  }
 
-  @slashCommand({
-    command: new SlashCommandBuilder()
-      .setName('test')
-      .setDescription('test command')
-      .addStringOption((builder) => builder.setName('test').setDescription('test option').setRequired(false)),
+  @applicationCommand({
+    command: {
+      type: 'MESSAGE',
+      name: 'contextMenuTest',
+      defaultPermission: true,
+    },
   })
   @coolDown(CoolDownType.USER, 10)
-  async testSlash(i: CommandInteraction, @option('test') test: string = 'wa sans') {
+  async testSlash(i: UserContextMenuInteraction, @option('test') test: string = 'wa sans') {
     return i.reply({
       content: test,
+    })
+  }
+
+  @messageButton('testButton')
+  async testButton(i: ButtonInteraction) {
+    await i.update({
+      content: 'test',
+      components: [],
+    })
+  }
+
+  @messageSelectMenu('testSelectMenu')
+  async testSelectMenu(i: SelectMenuInteraction) {
+    await i.update({
+      content: i.values.join(', '),
+      components: [],
     })
   }
 }
