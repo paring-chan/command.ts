@@ -1,10 +1,10 @@
-import { CommandInteraction, Message } from 'discord.js'
-import type { CheckFunction, SlashCheckFunction } from './Command'
-import { KCommandChecks, KSlashCommandChecks } from '../constants'
+import { CommandInteraction, ContextMenuInteraction, Message, MessageComponentInteraction } from 'discord.js'
+import type { CheckFunction, ApplicationCommandCheckFunction } from './Command'
+import { KCommandChecks, KApplicationCommandChecks } from '../constants'
 
 export const createCheckDecorator = (
   execute: ((msg: Message) => boolean | Promise<boolean>) | null,
-  slashExecute?: (i: CommandInteraction) => boolean | Promise<boolean>,
+  executeApplicationCommand?: (i: CommandInteraction | MessageComponentInteraction | ContextMenuInteraction) => boolean | Promise<boolean>,
 ): MethodDecorator => {
   return (target, propertyKey) => {
     if (execute) {
@@ -16,13 +16,13 @@ export const createCheckDecorator = (
         Reflect.defineMetadata(KCommandChecks, properties, target, propertyKey)
       }
     }
-    if (slashExecute) {
-      let properties: SlashCheckFunction[] = Reflect.getMetadata(KSlashCommandChecks, target, propertyKey)
+    if (executeApplicationCommand) {
+      let properties: ApplicationCommandCheckFunction[] = Reflect.getMetadata(KApplicationCommandChecks, target, propertyKey)
       if (properties) {
-        properties.push(slashExecute)
+        properties.push(executeApplicationCommand)
       } else {
-        properties = [slashExecute]
-        Reflect.defineMetadata(KSlashCommandChecks, properties, target, propertyKey)
+        properties = [executeApplicationCommand]
+        Reflect.defineMetadata(KApplicationCommandChecks, properties, target, propertyKey)
       }
     }
   }

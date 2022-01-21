@@ -1,6 +1,6 @@
 import { ApplicationCommandDataResolvable, Collection, Snowflake } from 'discord.js'
 import { checkTarget } from '../utils'
-import { KSlashCommandOptions, KSlashCommands } from '../constants'
+import { KSlashCommandOptions, KApplicationCommands } from '../constants'
 import { Module } from '../structures'
 import { AppCommand } from './AppCommand'
 
@@ -17,7 +17,7 @@ export const applicationCommand = (opt: Partial<ApplicationCommandOptions> & { c
   ) => {
     checkTarget(target)
 
-    let properties: AppCommand[] = Reflect.getMetadata(KSlashCommands, target)
+    let properties: AppCommand[] = Reflect.getMetadata(KApplicationCommands, target)
 
     const params: any[] = opt.optionTypes ?? Reflect.getMetadata('design:paramtypes', target, propertyKey)
 
@@ -39,7 +39,7 @@ export const applicationCommand = (opt: Partial<ApplicationCommandOptions> & { c
       properties.push(command)
     } else {
       properties = [command]
-      Reflect.defineMetadata(KSlashCommands, properties, target)
+      Reflect.defineMetadata(KApplicationCommands, properties, target)
     }
   }
 }

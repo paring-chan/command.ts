@@ -6,6 +6,7 @@ import {
   Message,
   MessageActionRow,
   MessageButton,
+  MessageContextMenuInteraction,
   MessageSelectMenu,
   SelectMenuInteraction,
   UserContextMenuInteraction,
@@ -46,7 +47,7 @@ class Test extends Module {
     }
     console.error(err)
   }
-  @listener('slashCommandError')
+  @listener('applicationCommandError')
   slashCommandError(err: Error, msg: CommandInteraction | ContextMenuInteraction) {
     if (err instanceof CoolDownError) {
       return msg.reply({
@@ -55,12 +56,6 @@ class Test extends Module {
       })
     }
     console.error(err)
-  }
-
-  @command()
-  @coolDown(CoolDownType.USER, 10)
-  test(msg: Message, @rest asdf: string = 'wa sans') {
-    msg.reply(asdf)
   }
 
   @applicationCommand({
@@ -107,9 +102,23 @@ class Test extends Module {
     },
   })
   @coolDown(CoolDownType.USER, 10)
-  async testSlash(i: UserContextMenuInteraction, @option('test') test: string = 'wa sans') {
+  async contextMenuMessage(i: MessageContextMenuInteraction) {
     return i.reply({
-      content: test,
+      content: `message id: ${i.targetMessage.id}`,
+    })
+  }
+
+  @applicationCommand({
+    command: {
+      type: 'USER',
+      name: 'contextMenuTest',
+      defaultPermission: true,
+    },
+  })
+  @coolDown(CoolDownType.USER, 10)
+  async contextMenuUser(i: UserContextMenuInteraction) {
+    return i.reply({
+      content: `user id: ${i.targetUser.id}`,
     })
   }
 

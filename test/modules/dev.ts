@@ -1,4 +1,4 @@
-import { BuiltInModule, CommandClient, ownerOnly, applicationCommand, listener, SlashCommandCheckFailed } from '../../src'
+import { BuiltInModule, CommandClient, ownerOnly, applicationCommand, listener, ApplicationCommandCheckFailed } from '../../src'
 import { CommandInteraction } from 'discord.js'
 
 export class Dev extends BuiltInModule {
@@ -8,7 +8,7 @@ export class Dev extends BuiltInModule {
 
   @listener('slashCommandError')
   slashError(e: Error, i: CommandInteraction) {
-    if (e instanceof SlashCommandCheckFailed) {
+    if (e instanceof ApplicationCommandCheckFailed) {
       return i.reply({
         content: 'Command before-run check failed',
         ephemeral: true,

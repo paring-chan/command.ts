@@ -1,7 +1,7 @@
 import { Module } from '../structures'
 import { ApplicationCommandDataResolvable, Snowflake } from 'discord.js'
-import { KSlashCommandChecks } from '../constants'
-import { SlashCheckFunction } from '../command'
+import { KApplicationCommandChecks } from '../constants'
+import { ApplicationCommandCheckFunction } from '../command'
 
 export type SlashArgument = {
   type: any
@@ -9,8 +9,8 @@ export type SlashArgument = {
 }
 
 export class AppCommand {
-  get checks(): SlashCheckFunction[] {
-    return Reflect.getMetadata(KSlashCommandChecks, this.module, this.key) || []
+  get checks(): ApplicationCommandCheckFunction[] {
+    return Reflect.getMetadata(KApplicationCommandChecks, this.module, this.key) || []
   }
 
   execute(module: Module, args: any[]) {

@@ -57,11 +57,11 @@ export class Registry {
     return result
   }
 
-  get slashCommands(): AppCommand[] {
+  get applicationCommands(): AppCommand[] {
     const result: AppCommand[] = []
 
     for (const [, module] of this.modules) {
-      result.push(...module.slashCommands)
+      result.push(...module.applicationCommands)
     }
 
     return result
@@ -138,14 +138,14 @@ export class Registry {
 
   async syncCommands() {
     this.logger.debug(`Syncing commands...`)
-    const commands = this.slashCommands.filter((x) => !x.guild)
+    const commands = this.applicationCommands.filter((x) => !x.guild)
     const guild = this.client.options.applicationCommands.guild
     if (guild) {
       const syncForGuild = async (g: Guild) => {
         this.logger.debug(`Syncing for guild ${g.name}(${g.id})`)
         const commandsToRegister = [
           ...commands.map((x) => x.command),
-          ...this.slashCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false).map((x) => x.command),
+          ...this.applicationCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false).map((x) => x.command),
         ]
         this.logger.debug(`Command List: ${commandsToRegister.map((x) => x.name).join(', ')}`)
         await g.commands.set(commandsToRegister)

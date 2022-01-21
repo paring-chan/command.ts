@@ -16,4 +16,16 @@ declare module 'discord.js' {
       cts: CommandClient
     }
   }
+  interface MessageComponentInteraction {
+    data: {
+      command: AppCommand
+      cts: CommandClient
+    }
+  }
+  interface ContextMenuInteraction {
+    data: {
+      command: AppCommand
+      cts: CommandClient
+    }
+  }
 }

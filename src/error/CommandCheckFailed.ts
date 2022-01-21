@@ -1,4 +1,4 @@
-import { CommandInteraction, Message } from 'discord.js'
+import { CommandInteraction, ContextMenuInteraction, Message, MessageComponentInteraction } from 'discord.js'
 import { Command } from '../command'
 import { AppCommand } from '../applicationCommand'
 
@@ -8,8 +8,8 @@ export class CommandCheckFailed extends Error {
   }
 }
 
-export class SlashCommandCheckFailed extends Error {
-  constructor(public interaction: CommandInteraction, public command: AppCommand) {
+export class ApplicationCommandCheckFailed extends Error {
+  constructor(public interaction: CommandInteraction | MessageComponentInteraction | ContextMenuInteraction, public command: AppCommand) {
     super()
   }
 }
