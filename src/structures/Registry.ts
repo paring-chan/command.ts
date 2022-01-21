@@ -129,7 +129,7 @@ export class Registry {
   async syncCommands() {
     this.logger.debug(`Syncing commands...`)
     const commands = this.slashCommands.filter((x) => !x.guild)
-    const guild = this.client.options.slashCommands.guild
+    const guild = this.client.options.applicationCommands.guild
     if (guild) {
       const syncForGuild = async (g: Guild) => {
         this.logger.debug(`Syncing for guild ${g.name}(${g.id})`)

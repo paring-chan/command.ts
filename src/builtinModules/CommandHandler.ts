@@ -6,6 +6,7 @@ import { CommandClient } from '../structures'
 import { Command } from '../command'
 import { ArgumentConverterNotFound, ArgumentNotProvided, CommandCheckFailed, SlashArgumentConverterNotFound, SlashCommandCheckFailed } from '../error'
 import { CommandNotFound } from '../error/CommandNotFound'
+import { SlashCommandGlobalCheckError } from '../error/checks/SlashCommandGlobalCheckError'
 
 export class CommandHandler extends BuiltInModule {
   private readonly client: CommandClient
@@ -15,6 +16,7 @@ export class CommandHandler extends BuiltInModule {
     this.client = registry.client
   }
 
+  // region message command handler
   @listener('messageCreate')
   async message(msg: Message) {
     const error = (error: Error) => this.client.client.emit('commandError', error, msg)
@@ -129,6 +131,7 @@ export class CommandHandler extends BuiltInModule {
       return error(e)
     }
   }
+  // endregion
 
   private async command(i: CommandInteraction) {
     const error = (error: Error) => this.client.client.emit('slashCommandError', error, i)
@@ -152,6 +155,9 @@ export class CommandHandler extends BuiltInModule {
         command: cmd,
       }
 
+      if (!(await this.client.options.slashCommands.check(i))) {
+        return error(new SlashCommandGlobalCheckError(i))
+      }
       for (const check of cmd.checks) {
         if (!(await check(i))) return error(new SlashCommandCheckFailed(i, cmd))
       }

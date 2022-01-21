@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import { Registry } from './Registry'
-import { Client, Message, Snowflake, User } from 'discord.js'
+import { Client, CommandInteraction, Interaction, Message, Snowflake, User } from 'discord.js'
 import { BuiltinCommandConverters, BuiltinSlashCommandConverters, CommandHandler } from '../builtinModules'
 import { CoolDownAdapter, DefaultCoolDownAdapter } from '../command'
 import { REST } from '@discordjs/rest'
@@ -13,14 +13,20 @@ export interface CommandOptions {
 }
 
 export interface SlashCommandOptions {
+  check: (i: CommandInteraction) => boolean | Promise<boolean>
+}
+
+export interface ApplicationCommandOptions {
   guild?: Snowflake | Snowflake[]
   autoSync: boolean
+  beforeRunCheck: (i: Interaction) => void | Promise<void>
 }
 
 export interface CommandClientOptions {
   command: CommandOptions
   owners: 'auto' | Snowflake[]
   slashCommands: SlashCommandOptions
+  applicationCommands: ApplicationCommandOptions
 }
 
 export interface CommandClientOptionsParam {
@@ -58,7 +64,7 @@ export class CommandClient {
       const owners = await this.fetchOwners()
       this.owners.push(...owners)
     }
-    if (this.options.slashCommands.autoSync) {
+    if (this.options.applicationCommands.autoSync) {
       await this.registry.syncCommands()
     }
   }
@@ -75,7 +81,11 @@ export class CommandClient {
         },
         owners: 'auto',
         slashCommands: {
-          autoSync: true,
+          check: () => true,
+        },
+        applicationCommands: {
+          autoSync: false,
+          beforeRunCheck: () => {},
         },
       },
       options,
