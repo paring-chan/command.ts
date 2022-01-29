@@ -1,4 +1,8 @@
-import { command, CommandClient, coolDown, CoolDownError, CoolDownType, listener, messageButton, messageSelectMenu, Module, option, rest, applicationCommand } from '../../src'
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
+import { CommandClient, coolDown, CoolDownError, CoolDownType, listener, messageButton, messageSelectMenu, Module, option, applicationCommand } from '../../src'
 import {
   ButtonInteraction,
   CommandInteraction,

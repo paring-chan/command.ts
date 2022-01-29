@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { Module } from '../structures'
 import { ApplicationCommandDataResolvable, Snowflake } from 'discord.js'
 import { KApplicationCommandChecks } from '../constants'

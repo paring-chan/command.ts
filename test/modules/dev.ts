@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { BuiltInModule, CommandClient, ownerOnly, applicationCommand, listener, ApplicationCommandCheckFailed } from '../../src'
 import { CommandInteraction } from 'discord.js'
 

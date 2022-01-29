@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { CommandInteraction, ContextMenuInteraction, Message, MessageComponentInteraction } from 'discord.js'
 import type { CheckFunction, ApplicationCommandCheckFunction } from './Command'
 import { KCommandChecks, KApplicationCommandChecks } from '../constants'

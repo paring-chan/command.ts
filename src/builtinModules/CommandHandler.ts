@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { BuiltInModule } from './BuiltInModule'
 import { Registry } from '../structures'
 import { listener } from '../listener'

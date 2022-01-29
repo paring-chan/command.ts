@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { GuildMember, Permissions } from 'discord.js'
 
 export class UserPermissionRequired extends Error {

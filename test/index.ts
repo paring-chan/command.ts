@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { Client, Intents, IntentsString } from 'discord.js'
 import { CommandClient } from '../src'
 

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { BuiltInModule } from './BuiltInModule'
 import { argumentConverter } from '../command'
 import { Client, GuildMember, Message, User, Role } from 'discord.js'

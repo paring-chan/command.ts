@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 export const KCommands = Symbol('Command.TS Commands')
 
 export const KApplicationCommands = Symbol('Command.TS Slash Commands')

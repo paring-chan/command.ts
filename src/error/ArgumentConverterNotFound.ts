@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { CommandInteraction, ContextMenuInteraction, Message } from 'discord.js'
 import type { Argument } from '../command'
 import type { AppCommandArgument } from '../applicationCommand'

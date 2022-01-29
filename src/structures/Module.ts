@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { KArgumentConverters, KCommands, KListeners, KMessageComponentHandlers, KModulePath, KSlashArgumentConverters, KApplicationCommands } from '../constants'
 import type { Command } from '../command'
 import { Listener } from '../listener'

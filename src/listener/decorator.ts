@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { checkTarget } from '../utils'
 import { KListeners } from '../constants'
 import { Listener } from './Listener'

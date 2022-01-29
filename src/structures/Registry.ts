@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { CommandClient } from './CommandClient'
 import { Module } from './Module'
 import { Command, ApplicationCommandArgumentConverter } from '../command'

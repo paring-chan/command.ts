@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { createCheckDecorator } from '../utils'
 import { CoolDownType } from './type'
 import { DMChannel, GuildMember, TextChannel } from 'discord.js'

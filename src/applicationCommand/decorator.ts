@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { ApplicationCommandDataResolvable, Collection, Snowflake } from 'discord.js'
 import { checkTarget } from '../utils'
 import { KSlashCommandOptions, KApplicationCommands } from '../constants'

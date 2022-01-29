@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { Module } from '../structures'
 import { CommandInteraction, ContextMenuInteraction, Message } from 'discord.js'
 

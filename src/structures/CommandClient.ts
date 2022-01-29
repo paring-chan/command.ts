@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import _ from 'lodash'
 import { Registry } from './Registry'
 import { Client, CommandInteraction, Interaction, Message, Snowflake, User } from 'discord.js'

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { Collection } from 'discord.js'
 
 export interface CoolDownAdapter {

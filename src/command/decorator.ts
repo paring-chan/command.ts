@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import { KArgumentConverters, KCommands, KOptionals, KRest, KSlashArgumentConverters } from '../constants'
 import { Command } from './Command'
 import { checkTarget } from '../utils'

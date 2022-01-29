@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 pikokr. Licensed under the MIT license
+ */
+
 import type { Command } from './command'
 import { CommandClient } from './structures'
 import { AppCommand } from './applicationCommand'
