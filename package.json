@@ -6,11 +6,13 @@
   "types": "dist/index.d.ts",
   "license": "MIT",
   "devDependencies": {
+    "@swc/core": "^1.2.135",
     "@types/lodash": "^4.14.172",
     "all-contributors-cli": "^6.20.0",
     "discord.js": "^13.6.0",
     "prettier": "^2.2.1",
     "ts-node": "^10.1.0",
+    "tsup": "^5.11.12",
     "typedoc": "^0.20.35"
   },
   "dependencies": {
@@ -27,7 +29,8 @@
     "url": "https://github.com/pikokr/command.ts-v2"
   },
   "scripts": {
-    "prepack": "tsc",
+    "prepack": "yarn build",
+    "build": "tsup-node",
     "docs:dev": "typedoc",
     "docs:build": "typedoc"
   }
