@@ -146,10 +146,7 @@ export class Registry {
     const guild = this.client.options.applicationCommands.guild
     const syncForGuild = async (g: Guild, commands: AppCommand[]) => {
       this.logger.debug(`Syncing for guild ${g.name}(${g.id})`)
-      const commandsToRegister = [
-        ...commands.map((x) => x.command),
-        ...this.applicationCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false).map((x) => x.command),
-      ]
+      const commandsToRegister = commands.map((x) => x.command)
       this.logger.debug(`Command List: ${commandsToRegister.map((x) => x.name).join(', ')}`)
       await g.commands.set(commandsToRegister)
     }
@@ -165,7 +162,7 @@ export class Registry {
       this.logger.debug('Syncing global...')
       await this.client.client.application?.commands.set(commands.map((x) => x.command))
     }
-    const commandsWithGuild = this.applicationCommands.filter((x) => x.guild)
+    const commandsWithGuild = this.applicationCommands.filter((x) => !!x.guild)
 
     const guilds = new Set<string>()
 

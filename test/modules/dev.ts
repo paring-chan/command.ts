@@ -28,6 +28,7 @@ export class Dev extends BuiltInModule {
       type: 'CHAT_INPUT',
       description: '리로드 커맨드',
     },
+    guild: ['457841749197586438'],
   })
   @ownerOnly
   async reload(i: CommandInteraction) {
