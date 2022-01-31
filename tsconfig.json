@@ -79,5 +79,5 @@
     "forceConsistentCasingInFileNames": true
     /* Disallow inconsistently-cased references to the same file. */
   },
-  "exclude": ["test", "node_modules", "dist", "tsup.config.ts"]
+  "exclude": ["test", "node_modules", "dist", "tsup.config.ts", "scripts"]
 }

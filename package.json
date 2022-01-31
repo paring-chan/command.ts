@@ -6,6 +6,7 @@
   "types": "dist/index.d.ts",
   "license": "MIT",
   "devDependencies": {
+    "@discordjs/ts-docgen": "^0.3.4",
     "@swc/core": "^1.2.135",
     "@types/lodash": "^4.14.172",
     "all-contributors-cli": "^6.20.0",
@@ -13,7 +14,7 @@
     "prettier": "^2.2.1",
     "ts-node": "^10.1.0",
     "tsup": "^5.11.12",
-    "typedoc": "^0.20.35"
+    "typedoc": "^0.22.11"
   },
   "dependencies": {
     "@types/node": "^14.14.37",
@@ -32,6 +33,7 @@
     "prepack": "yarn build",
     "build": "tsup-node",
     "docs:dev": "typedoc",
-    "docs:build": "typedoc"
+    "docs:build": "typedoc",
+    "docs": "typedoc --json docs/typedoc-out.json src/index.ts && ts-node scripts/docs"
   }
 }
