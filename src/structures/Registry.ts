@@ -144,28 +144,49 @@ export class Registry {
     this.logger.debug(`Syncing commands...`)
     const commands = this.applicationCommands.filter((x) => !x.guild)
     const guild = this.client.options.applicationCommands.guild
+    const syncForGuild = async (g: Guild, commands: AppCommand[]) => {
+      this.logger.debug(`Syncing for guild ${g.name}(${g.id})`)
+      const commandsToRegister = [
+        ...commands.map((x) => x.command),
+        ...this.applicationCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false).map((x) => x.command),
+      ]
+      this.logger.debug(`Command List: ${commandsToRegister.map((x) => x.name).join(', ')}`)
+      await g.commands.set(commandsToRegister)
+    }
     if (guild) {
-      const syncForGuild = async (g: Guild) => {
-        this.logger.debug(`Syncing for guild ${g.name}(${g.id})`)
-        const commandsToRegister = [
-          ...commands.map((x) => x.command),
-          ...this.applicationCommands.filter((y) => y.guild === g.id || y.guild?.includes(g.id) || false).map((x) => x.command),
-        ]
-        this.logger.debug(`Command List: ${commandsToRegister.map((x) => x.name).join(', ')}`)
-        await g.commands.set(commandsToRegister)
-      }
-
       if (typeof guild === 'string') {
-        await syncForGuild(await this.client.client.guilds.fetch(guild))
+        await syncForGuild(await this.client.client.guilds.fetch(guild), commands)
       } else {
         for (const g of guild) {
-          await syncForGuild(await this.client.client.guilds.fetch(g))
+          await syncForGuild(await this.client.client.guilds.fetch(g), commands)
         }
       }
     } else {
       this.logger.debug('Syncing global...')
       await this.client.client.application?.commands.set(commands.map((x) => x.command))
     }
+    const commandsWithGuild = this.applicationCommands.filter((x) => x.guild)
+
+    const guilds = new Set<string>()
+
+    for (const command of commandsWithGuild) {
+      if (!command.guild) continue
+      if (typeof command.guild === 'string') {
+        guilds.add(command.guild)
+      } else {
+        for (const guild of command.guild) {
+          guilds.add(guild)
+        }
+      }
+    }
+
+    for (const guild of guilds) {
+      await syncForGuild(
+        await this.client.client.guilds.fetch(guild),
+        commandsWithGuild.filter((x) => x.guild && typeof (x.guild === 'string' ? guild === x.guild : x.guild.includes(guild))),
+      )
+    }
+
     this.logger.debug('Syncing ended.')
   }
 
