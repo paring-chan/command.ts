@@ -183,7 +183,7 @@ export class Registry {
     for (const guild of guilds) {
       await syncForGuild(
         await this.client.client.guilds.fetch(guild),
-        commandsWithGuild.filter((x) => x.guild && typeof (x.guild === 'string' ? guild === x.guild : x.guild.includes(guild))),
+        commandsWithGuild.filter((x) => x.guild && (typeof x.guild === 'string' ? guild === x.guild : x.guild.includes(guild))),
       )
     }
 
