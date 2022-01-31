@@ -13,7 +13,6 @@ jobs:
         with:
           node-version: 16.6
       - run: yarn
-      - run: COMMIT_ID=$(git rev-parse --short HEAD) node publish-version.js
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
