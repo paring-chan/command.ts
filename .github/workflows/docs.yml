@@ -67,8 +67,8 @@ jobs:
 
       - name: Move docs to correct directory
         run: |
-          mkdir -p out/jejudo
-          mv docs/docs.json out/jejudo/${BRANCH_NAME}.json
+          mkdir -p out/command.ts
+          mv docs/docs.json out/command.ts/${BRANCH_NAME}.json
       - name: Commit and push
         run: |
           cd out
