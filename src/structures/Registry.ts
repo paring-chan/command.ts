@@ -150,19 +150,25 @@ export class Registry {
       this.logger.debug(`Command List: ${commandsToRegister.map((x) => x.name).join(', ')}`)
       await g.commands.set(commandsToRegister)
     }
+    const commandsWithGuild = this.applicationCommands.filter((x) => !!x.guild)
     if (guild) {
       if (typeof guild === 'string') {
-        await syncForGuild(await this.client.client.guilds.fetch(guild), commands)
+        await syncForGuild(await this.client.client.guilds.fetch(guild), [
+          ...commands,
+          ...commandsWithGuild.filter((x) => x.guild && (typeof x.guild === 'string' ? guild === x.guild : x.guild.includes(guild))),
+        ])
       } else {
         for (const g of guild) {
-          await syncForGuild(await this.client.client.guilds.fetch(g), commands)
+          await syncForGuild(await this.client.client.guilds.fetch(g), [
+            ...commands,
+            ...commandsWithGuild.filter((x) => x.guild && (typeof x.guild === 'string' ? g === x.guild : x.guild.includes(g))),
+          ])
         }
       }
     } else {
       this.logger.debug('Syncing global...')
       await this.client.client.application?.commands.set(commands.map((x) => x.command))
     }
-    const commandsWithGuild = this.applicationCommands.filter((x) => !!x.guild)
 
     const guilds = new Set<string>()
 
@@ -178,6 +184,7 @@ export class Registry {
     }
 
     for (const guild of guilds) {
+      if (this.client.options.applicationCommands.guild?.includes(guild)) continue
       await syncForGuild(
         await this.client.client.guilds.fetch(guild),
         commandsWithGuild.filter((x) => x.guild && (typeof x.guild === 'string' ? guild === x.guild : x.guild.includes(guild))),
