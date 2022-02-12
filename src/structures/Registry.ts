@@ -145,6 +145,7 @@ export class Registry {
     const commands = this.applicationCommands.filter((x) => !x.guild)
     const guild = this.client.options.applicationCommands.guild
     const syncForGuild = async (g: Guild, commands: AppCommand[]) => {
+      await g.fetch()
       this.logger.debug(`Syncing for guild ${g.name}(${g.id})`)
       const commandsToRegister = commands.map((x) => x.command)
       this.logger.debug(`Command List: ${commandsToRegister.map((x) => x.name).join(', ')}`)

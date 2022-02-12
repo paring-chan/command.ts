@@ -10,7 +10,7 @@
     "@swc/core": "^1.2.135",
     "@types/lodash": "^4.14.172",
     "all-contributors-cli": "^6.20.0",
-    "discord.js": "^13.6.0",
+    "discord.js": "^14.0.0-dev.1644537979.298b226",
     "prettier": "^2.2.1",
     "ts-node": "^10.1.0",
     "tsup": "^5.11.12",

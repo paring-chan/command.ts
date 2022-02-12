@@ -2,8 +2,8 @@
  * Copyright (c) 2022 pikokr. Licensed under the MIT license
  */
 
-import { BuiltInModule, CommandClient, ownerOnly, applicationCommand, listener, ApplicationCommandCheckFailed } from '../../src'
-import { CommandInteraction } from 'discord.js'
+import { applicationCommand, ApplicationCommandCheckFailed, BuiltInModule, CommandClient, listener, ownerOnly } from '../../src'
+import { ApplicationCommandType, CommandInteraction } from 'discord.js'
 
 export class Dev extends BuiltInModule {
   constructor(private cts: CommandClient) {
@@ -25,7 +25,7 @@ export class Dev extends BuiltInModule {
   @applicationCommand({
     command: {
       name: 'reload',
-      type: 'CHAT_INPUT',
+      type: ApplicationCommandType.ChatInput,
       description: '리로드 커맨드',
     },
     guild: ['457841749197586438'],

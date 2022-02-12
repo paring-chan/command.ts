@@ -3,23 +3,23 @@
  */
 
 import { BuiltInModule } from './BuiltInModule'
-import { Registry } from '../structures'
+import { CommandClient, Registry } from '../structures'
 import { listener } from '../listener'
 import {
+  ApplicationCommandType,
   CommandInteraction,
   CommandInteractionOptionResolver,
   GuildMember,
   Interaction,
   Message,
   MessageComponentInteraction,
-  MessageContextMenuInteraction,
+  MessageContextMenuCommandInteraction,
   Role,
   User,
-  UserContextMenuInteraction,
+  UserContextMenuCommandInteraction,
 } from 'discord.js'
-import { CommandClient } from '../structures'
 import { Command } from '../command'
-import { ArgumentConverterNotFound, ArgumentNotProvided, CommandCheckFailed, ApplicationCommandArgumentConverterNotFound, ApplicationCommandCheckFailed } from '../error'
+import { ApplicationCommandArgumentConverterNotFound, ApplicationCommandCheckFailed, ArgumentConverterNotFound, ArgumentNotProvided, CommandCheckFailed } from '../error'
 import { CommandNotFound } from '../error/CommandNotFound'
 import { SlashCommandGlobalCheckError } from '../error/checks/SlashCommandGlobalCheckError'
 import { MessageComponentHandler } from '../messageComponents/base'
@@ -153,7 +153,7 @@ export class CommandHandler extends BuiltInModule {
   private async command(i: CommandInteraction) {
     const error = (error: Error) => this.client.client.emit('applicationCommandError', error, i)
     try {
-      const cmd = this.registry.applicationCommands.find((x) => x.command.type === 'CHAT_INPUT' && x.command.name === i.commandName)
+      const cmd = this.registry.applicationCommands.find((x) => x.command.type === ApplicationCommandType.ChatInput && x.command.name === i.commandName)
 
       if (!cmd) return
 
@@ -192,34 +192,17 @@ export class CommandHandler extends BuiltInModule {
         if (argType.name) {
           switch (argType.type) {
             case String:
-              argList.push(i.options.getString(argType.name, false) || undefined)
-              break
             case Role:
-              argList.push(i.options.getRole(argType.name, false) || undefined)
+            case Boolean:
+            case Number:
+              argList.push(i.options.get(argType.name, false)?.value || undefined)
               break
             case User:
               argList.push(i.options.getUser(argType.name, false) || undefined)
               break
             case GuildMember:
-              argList.push(i.options.getMember(argType.name, false) || undefined)
+              argList.push(i.options.getMember(argType.name) || undefined)
               break
-            case Boolean:
-              argList.push(i.options.getBoolean(argType.name, false) || undefined)
-              break
-            case Number:
-              const opt = i.options.get(argType.name, false)
-              if (!opt) {
-                argList.push(undefined)
-                break
-              }
-              if (opt.type == 'NUMBER') {
-                argList.push(i.options.getNumber(argType.name, false) ?? undefined)
-                break
-              }
-              if (opt.type == 'INTEGER') {
-                argList.push(i.options.getInteger(argType.name, false) ?? undefined)
-                break
-              }
           }
           continue
         }
@@ -258,10 +241,10 @@ export class CommandHandler extends BuiltInModule {
     }
   }
 
-  private async userContextMenu(i: UserContextMenuInteraction) {
+  private async userContextMenu(i: UserContextMenuCommandInteraction) {
     const error = (error: Error) => this.client.client.emit('applicationCommandError', error, i)
     try {
-      const cmd = this.registry.applicationCommands.find((x) => x.command.type === 'USER' && x.command.name === i.commandName)
+      const cmd = this.registry.applicationCommands.find((x) => x.command.type === ApplicationCommandType.User && x.command.name === i.commandName)
 
       if (!cmd) return
 
@@ -284,7 +267,7 @@ export class CommandHandler extends BuiltInModule {
         const argType = cmd.params[j]
         const converter = this.registry.applicationCommandArgumentConverters.find((x) => x.type === argType.type)
 
-        if (argType.type === UserContextMenuInteraction) {
+        if (argType.type === UserContextMenuCommandInteraction) {
           argList.push(i)
           continue
         }
@@ -300,10 +283,10 @@ export class CommandHandler extends BuiltInModule {
     }
   }
 
-  private async messageContextMenu(i: MessageContextMenuInteraction) {
+  private async messageContextMenu(i: MessageContextMenuCommandInteraction) {
     const error = (error: Error) => this.client.client.emit('applicationCommandError', error, i)
     try {
-      const cmd = this.registry.applicationCommands.find((x) => x.command.type === 'MESSAGE' && x.command.name === i.commandName)
+      const cmd = this.registry.applicationCommands.find((x) => x.command.type === ApplicationCommandType.Message && x.command.name === i.commandName)
 
       if (!cmd) return
 
@@ -326,7 +309,7 @@ export class CommandHandler extends BuiltInModule {
         const argType = cmd.params[j]
         const converter = this.registry.applicationCommandArgumentConverters.find((x) => x.type === argType.type)
 
-        if (argType.type === MessageContextMenuInteraction) {
+        if (argType.type === MessageContextMenuCommandInteraction) {
           argList.push(i)
           continue
         }
@@ -348,7 +331,7 @@ export class CommandHandler extends BuiltInModule {
 
     try {
       await this.client.options.applicationCommands.beforeRunCheck(i)
-      if (i.isCommand()) {
+      if (i.isChatInputCommand()) {
         await this.command(i)
         return
       }
@@ -356,11 +339,11 @@ export class CommandHandler extends BuiltInModule {
         await this.messageComponent(i)
         return
       }
-      if (i.isMessageContextMenu()) {
+      if (i.isMessageContextMenuCommand()) {
         await this.messageContextMenu(i)
         return
       }
-      if (i.isUserContextMenu()) {
+      if (i.isUserContextMenuCommand()) {
         await this.userContextMenu(i)
         return
       }

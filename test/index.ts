@@ -2,13 +2,13 @@
  * Copyright (c) 2022 pikokr. Licensed under the MIT license
  */
 
-import { Client, Intents, IntentsString } from 'discord.js'
+import { Client, IntentsBitField } from 'discord.js'
 import { CommandClient } from '../src'
 
 const config = require('./config.json')
 
 const client = new Client({
-  intents: Object.keys(Intents.FLAGS) as IntentsString[],
+  intents: IntentsBitField.resolve([]),
 })
 
 const cts = new CommandClient({
@@ -19,7 +19,7 @@ const cts = new CommandClient({
   },
   applicationCommands: {
     autoSync: true,
-    guild: '832938554438844438',
+    guild: '852227147196137552',
   },
 })
 

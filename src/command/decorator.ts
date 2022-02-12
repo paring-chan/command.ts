@@ -8,7 +8,7 @@ import { checkTarget } from '../utils'
 import { ArgumentConverter, ApplicationCommandArgumentConverter } from './ArgumentConverter'
 import { Module } from '../structures'
 import { createCheckDecorator } from './utils'
-import { GuildMember, Message, PermissionResolvable, Permissions, TextChannel } from 'discord.js'
+import { GuildMember, Message, PermissionResolvable, PermissionsBitField, TextChannel } from 'discord.js'
 import { ClientPermissionRequired, DMOnlyCommandError, GuildOnlyCommandError, OwnerOnlyCommandError, UserPermissionRequired } from '../error'
 
 type CommandOptions = {
@@ -155,14 +155,14 @@ export const requireUserPermissions = (permission: PermissionResolvable) =>
       if (msg.member.permissionsIn(msg.channel as TextChannel).has(permission)) {
         return true
       }
-      throw new UserPermissionRequired(msg.member, new Permissions(permission))
+      throw new UserPermissionRequired(msg.member, PermissionsBitField.resolve(permission))
     },
     (i) => {
       if (!i.guild || !i.member) throw new Error('This command must be used in guild.')
       if (!(i.member instanceof GuildMember) || i.member.permissionsIn(i.channel as TextChannel).has(permission)) {
         return true
       }
-      throw new UserPermissionRequired(i.member, new Permissions(permission))
+      throw new UserPermissionRequired(i.member, PermissionsBitField.resolve(permission))
     },
   )
 
@@ -173,13 +173,13 @@ export const requireClientPermissions = (permission: PermissionResolvable) =>
       if (msg.guild.me!.permissionsIn(msg.channel as TextChannel).has(permission)) {
         return true
       }
-      throw new ClientPermissionRequired(new Permissions(permission))
+      throw new ClientPermissionRequired(PermissionsBitField.resolve(permission))
     },
     (i) => {
       if (!i.guild) throw new Error('This command must be used in guild.')
       if (i.guild.me!.permissionsIn(i.channel as TextChannel).has(permission)) {
         return true
       }
-      throw new ClientPermissionRequired(new Permissions(permission))
+      throw new ClientPermissionRequired(PermissionsBitField.resolve(permission))
     },
   )

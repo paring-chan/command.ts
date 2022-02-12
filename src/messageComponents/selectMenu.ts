@@ -5,10 +5,11 @@
 import { MessageComponentExecutor, MessageComponentHandler } from './base'
 import { checkTarget } from '../utils'
 import { KMessageComponentHandlers } from '../constants'
+import { ComponentType } from 'discord.js'
 
 export class SelectMenuInteractionHandler extends MessageComponentHandler {
   constructor(id: string, execute: MessageComponentExecutor) {
-    super(id, 'SELECT_MENU', execute)
+    super(id, ComponentType.SelectMenu, execute)
   }
 }
 

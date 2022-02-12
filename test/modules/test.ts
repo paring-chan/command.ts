@@ -2,18 +2,22 @@
  * Copyright (c) 2022 pikokr. Licensed under the MIT license
  */
 
-import { CommandClient, coolDown, CoolDownError, CoolDownType, listener, messageButton, messageSelectMenu, Module, option, applicationCommand } from '../../src'
+import { applicationCommand, CommandClient, coolDown, CoolDownError, CoolDownType, listener, messageButton, messageSelectMenu, Module, option } from '../../src'
 import {
+  ActionRow,
+  ApplicationCommandOptionType,
+  ApplicationCommandType,
+  ButtonComponent,
   ButtonInteraction,
+  ButtonStyle,
   CommandInteraction,
-  ContextMenuInteraction,
+  ContextMenuCommandInteraction,
   Message,
-  MessageActionRow,
-  MessageButton,
-  MessageContextMenuInteraction,
-  MessageSelectMenu,
+  MessageContextMenuCommandInteraction,
+  SelectMenuComponent,
   SelectMenuInteraction,
-  UserContextMenuInteraction,
+  SelectMenuOption,
+  UserContextMenuCommandInteraction,
 } from 'discord.js'
 
 class Test extends Module {
@@ -52,9 +56,9 @@ class Test extends Module {
     console.error(err)
   }
   @listener('applicationCommandError')
-  slashCommandError(err: Error, msg: CommandInteraction | ContextMenuInteraction) {
+  slashCommandError(err: Error, i: CommandInteraction | ContextMenuCommandInteraction) {
     if (err instanceof CoolDownError) {
-      return msg.reply({
+      return i.reply({
         content: `쿨다운: <t:${(err.endsAt.getTime() / 1000).toFixed(0)}:R>`,
         ephemeral: true,
       })
@@ -64,12 +68,12 @@ class Test extends Module {
 
   @applicationCommand({
     command: {
-      type: 'CHAT_INPUT',
+      type: ApplicationCommandType.ChatInput,
       name: 'test',
       description: 'test',
       options: [
         {
-          type: 'STRING',
+          type: ApplicationCommandOptionType.String,
           name: 'asdf',
           description: 'test',
         },
@@ -81,17 +85,20 @@ class Test extends Module {
     i.reply({
       content: asdf,
       components: [
-        new MessageActionRow().addComponents(new MessageButton().setLabel('test').setCustomId('testButton').setStyle('PRIMARY')),
-        new MessageActionRow().addComponents(
-          new MessageSelectMenu()
+        new ActionRow().addComponents(new ButtonComponent().setLabel('test').setCustomId('testButton').setStyle(ButtonStyle.Primary)),
+        new ActionRow().addComponents(
+          new SelectMenuComponent()
             .setCustomId('testSelectMenu')
             .setPlaceholder('test')
             .setMinValues(1)
             .setOptions(
-              new Array(10).fill(1).map((_, i) => ({
-                label: `${i}`,
-                value: `${i}`,
-              })),
+              new Array(10).fill(1).map(
+                (_, i) =>
+                  new SelectMenuOption({
+                    label: `${i}`,
+                    value: `${i}`,
+                  }),
+              ),
             ),
         ),
       ],
@@ -100,29 +107,29 @@ class Test extends Module {
 
   @applicationCommand({
     command: {
-      type: 'MESSAGE',
+      type: ApplicationCommandType.Message,
       name: 'contextMenuTest',
       defaultPermission: true,
     },
   })
   @coolDown(CoolDownType.USER, 10)
-  async contextMenuMessage(i: MessageContextMenuInteraction) {
+  async contextMenuMessage(i: MessageContextMenuCommandInteraction) {
     return i.reply({
-      content: `message id: ${i.targetMessage.id}`,
+      content: `message id: ${i.targetId}`,
     })
   }
 
   @applicationCommand({
     command: {
-      type: 'USER',
+      type: ApplicationCommandType.User,
       name: 'contextMenuTest',
       defaultPermission: true,
     },
   })
   @coolDown(CoolDownType.USER, 10)
-  async contextMenuUser(i: UserContextMenuInteraction) {
+  async contextMenuUser(i: UserContextMenuCommandInteraction) {
     return i.reply({
-      content: `user id: ${i.targetUser.id}`,
+      content: `user id: ${i.targetId}`,
     })
   }
 

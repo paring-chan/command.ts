@@ -5,10 +5,11 @@
 import { MessageComponentExecutor, MessageComponentHandler } from './base'
 import { checkTarget } from '../utils'
 import { KMessageComponentHandlers } from '../constants'
+import { ComponentType } from 'discord.js'
 
 export class ButtonInteractionHandler extends MessageComponentHandler {
   constructor(id: string, execute: MessageComponentExecutor) {
-    super(id, 'BUTTON', execute)
+    super(id, ComponentType.Button, execute)
   }
 }
 
