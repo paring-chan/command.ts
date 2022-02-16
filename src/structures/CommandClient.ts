@@ -12,7 +12,6 @@ import { Logger } from 'tslog'
 export interface CommandOptions {
   prefix: string | ((msg: any) => string | Promise<string | string[]> | string[]) | string[]
   check: (msg: Message) => boolean | Promise<boolean>
-  globalAliases: (cmd: string, msg: Message) => string[] | Promise<string[]>
 }
 
 export interface SlashCommandOptions {
@@ -77,7 +76,6 @@ export class CommandClient {
         command: {
           prefix: '!',
           check: () => true,
-          globalAliases: () => [],
         },
         owners: 'auto',
         slashCommands: {

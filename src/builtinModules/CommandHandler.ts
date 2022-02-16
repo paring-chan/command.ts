@@ -66,16 +66,9 @@ export class CommandHandler extends BuiltInModule {
 
       let cmd: Command | null = null
 
-      const globalAliases = await this.client.options.command.globalAliases(command, msg)
-
       for (const c of this.registry.commands) {
-        const globalAliases2 = await this.client.options.command.globalAliases(c.name, msg)
         const aliases = typeof c.aliases === 'function' ? await c.aliases(msg) : c.aliases
         if ([...aliases, c.name].some((x) => x === command)) {
-          cmd = c
-          break
-        }
-        if (globalAliases.every((x, i) => globalAliases2[i] === x)) {
           cmd = c
           break
         }
@@ -109,7 +102,6 @@ export class CommandHandler extends BuiltInModule {
 
         if (argType.rest) {
           const i = args.join(' ')
-          if (!i) break
           argList.push(i)
           break
         }
