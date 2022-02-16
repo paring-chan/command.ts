@@ -42,17 +42,17 @@ export const coolDown = (type: CoolDownType, seconds: number) =>
       const getKey = (): string => {
         switch (type) {
           case CoolDownType.USER:
-            return i.user.id
+            return i.user.id + '.user'
           case CoolDownType.GUILD:
-            return (i.guild || i.user).id
+            return (i.guild || i.user).id + '.guild'
           case CoolDownType.CHANNEL:
-            return i.channel!.id
+            return i.channel!.id + '.channel'
           case CoolDownType.MEMBER:
-            return `${i.guild?.id}.${i.user.id}`
+            return `${i.guild?.id}.${i.user.id}` + '.member'
           case CoolDownType.ROLE:
-            return (i.channel instanceof DMChannel ? i.channel : (i.member as GuildMember)!.roles.highest).id
+            return (i.channel instanceof DMChannel ? i.channel : (i.member as GuildMember)!.roles.highest).id + '.role'
           case CoolDownType.CATEGORY:
-            return ((i.channel as TextChannel).parent || i.channel!).id
+            return ((i.channel as TextChannel).parent || i.channel!).id + '.category'
         }
       }
       const key = getKey() + '-applicationCommand-' + i.commandName
