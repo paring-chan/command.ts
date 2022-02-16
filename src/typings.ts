@@ -26,10 +26,4 @@ declare module 'discord.js' {
       cts: CommandClient
     }
   }
-  interface ContextMenuInteraction {
-    data: {
-      command: AppCommand
-      cts: CommandClient
-    }
-  }
 }

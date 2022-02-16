@@ -27,7 +27,7 @@ export const coolDown = (type: CoolDownType, seconds: number) =>
             return ((msg.channel as TextChannel).parent || msg.channel).id
         }
       }
-      const key = getKey()
+      const key = getKey() + '-command-' + msg.data.command?.name
       const data = await a.get(key)
       const now = Date.now()
       if (!data || !(now - data < seconds * 1000)) {
@@ -37,6 +37,7 @@ export const coolDown = (type: CoolDownType, seconds: number) =>
       throw new CoolDownError(new Date(data + seconds * 1000))
     },
     async (i) => {
+      if (i.isMessageComponent()) return true
       const a = i.data.cts.coolDownAdapter
       const getKey = (): string => {
         switch (type) {
@@ -54,7 +55,7 @@ export const coolDown = (type: CoolDownType, seconds: number) =>
             return ((i.channel as TextChannel).parent || i.channel!).id
         }
       }
-      const key = getKey()
+      const key = getKey() + '-applicationCommand-' + i.commandName
       const data = await a.get(key)
       const now = Date.now()
       if (!data || !(now - data < seconds * 1000)) {
