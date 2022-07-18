@@ -1,5 +1,4 @@
 import { BaseComponent, createComponentDecorator } from '../core'
-import { ApplicationCommandDataResolvable } from 'discord.js'
 
 export type ApplicationCommandOptions = {
   name: string

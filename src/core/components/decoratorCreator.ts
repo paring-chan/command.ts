@@ -1,7 +1,6 @@
 import { Collection } from 'discord.js'
 import { ComponentStoreSymbol } from '../symbols'
 import { BaseComponent } from './BaseComponent'
-import { ComponentArgument } from './ComponentArgument'
 import { ComponentArgumentDecorator } from './ComponentArgumentDecorator'
 
 type ComponentStore = Collection<string|symbol, BaseComponent>
