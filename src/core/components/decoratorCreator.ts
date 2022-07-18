@@ -38,8 +38,6 @@ export const createComponentDecorator = <Options>(type: typeof BaseComponent<Opt
         component.argTypes.get(i)?.decorators.push(x)
       })
 
-      console.log(component)
-
       store.set(key, component)
     }
   }
