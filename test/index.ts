@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from 'discord.js'
-import { applicationCommand, getComponentStore, option } from '../src'
+import { applicationCommand, getComponentStore, moduleHook, option, Registry } from '../src'
 
 class Test {
   @applicationCommand({
@@ -28,10 +28,26 @@ class Test {
     })
     wa: string,
   ) {}
+
+  @moduleHook('load')
+  load() {
+    console.log('load')
+  }
+
+  @moduleHook('unload')
+  unload() {
+    console.log('unload')
+  }
 }
 
 const ext = new Test()
 
-const store = getComponentStore(ext)
+const registry = new Registry()
 
-console.log(store)
+const run = async () => {
+  await registry.registerModule(ext)
+
+  await registry.unregisterModule(ext)
+}
+
+run()
