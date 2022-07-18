@@ -121,3 +121,4 @@ dist
 dist-docs
 /.swc
 docs/typedoc-out.json
+docs/docs.json
