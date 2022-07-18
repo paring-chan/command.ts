@@ -1,2 +1,2 @@
-export { applicationCommand } from './ApplicationCommand'
+export * from './ApplicationCommand'
 export { option } from './ApplicationCommandOption'

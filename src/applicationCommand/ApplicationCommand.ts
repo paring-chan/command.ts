@@ -5,7 +5,7 @@ export type ApplicationCommandOptions = {
   description: string
 }
 
-export class SlashCommand extends BaseComponent<ApplicationCommandOptions> {
+export class ApplicationCommandComponent extends BaseComponent<ApplicationCommandOptions> {
   defaultOptions() {
     return {
       name: '',
@@ -14,4 +14,4 @@ export class SlashCommand extends BaseComponent<ApplicationCommandOptions> {
   }
 }
 
-export const applicationCommand = createComponentDecorator(SlashCommand)
+export const applicationCommand = createComponentDecorator(ApplicationCommandComponent)

@@ -1,5 +1,5 @@
 import { ApplicationCommandOptionType } from 'discord.js'
-import { applicationCommand, getComponentStore, moduleHook, option, Registry } from '../src'
+import { applicationCommand, ApplicationCommandComponent, moduleHook, option, Registry } from '../src'
 
 class Test {
   @applicationCommand({

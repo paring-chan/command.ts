@@ -1,10 +1,21 @@
 import _ from 'lodash'
+import { getComponentStore } from '../components'
 import { getModuleHookStore } from '../hooks'
 
 export class Registry {
   extensions: object[] = []
 
-  async withGroup(name: string, code: () => void | Promise<void>) {}
+  getComponentsWithType<T>(type: T): T[] {
+    const result: T[] = []
+
+    for (const ext of this.extensions) {
+      const componentStore = getComponentStore(ext)
+
+      result.push(...Array.from(componentStore.filter((x) => (x.constructor as unknown) === type).values() as Iterable<T>))
+    }
+
+    return result
+  }
 
   async registerModule(ext: object) {
     await this.runModuleHook(ext, 'load')
