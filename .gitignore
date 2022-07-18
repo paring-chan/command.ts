@@ -120,3 +120,4 @@ dist
 .idea
 dist-docs
 /.swc
+docs/typedoc-out.json

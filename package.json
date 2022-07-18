@@ -34,7 +34,7 @@
     "build": "tsup-node",
     "docs:dev": "typedoc",
     "docs:build": "typedoc",
-    "docs": "typedoc --json docs/typedoc-out.json src/index.ts && ts-node scripts/docs"
+    "docs": "typedoc --json docs/typedoc-out.json --tsconfig tsconfig.prod.json src/index.ts && ts-node -p tsconfig.prod.json scripts/docs"
   },
   "peerDependencies": {
     "discord.js": "^14.0.1"
