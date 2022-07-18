@@ -12,6 +12,6 @@ export class ComponentArgumentDecorator<Options = unknown> {
   }
 
   defaultOptions(): Options {
-    return ({} as unknown) as Options
+    return {} as unknown as Options
   }
 }

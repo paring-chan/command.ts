@@ -15,7 +15,7 @@
     "declaration": true,
     /* Generates corresponding '.d.ts' file. */
     // "declarationMap": true,                      /* Generates a sourcemap for each corresponding '.d.ts' file. */
-     "sourceMap": true,                           /* Generates corresponding '.map' file. */
+    "sourceMap": true /* Generates corresponding '.map' file. */,
     // "outFile": "./",                             /* Concatenate and emit output to single file. */
     "outDir": "./dist",
     /* Redirect output structure to the directory. */
@@ -31,7 +31,7 @@
 
     /* Strict Type-Checking Options */
     "strict": true,
-    
+
     /* Enable all strict type-checking options. */
     // "noImplicitAny": true,                       /* Raise error on expressions and declarations with an implied 'any' type. */
     // "strictNullChecks": true,                    /* Enable strict null checks. */

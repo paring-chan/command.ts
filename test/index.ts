@@ -1,5 +1,6 @@
-import { ApplicationCommandOptionType } from 'discord.js'
-import { applicationCommand, ApplicationCommandComponent, moduleHook, option, Registry } from '../src'
+import { ApplicationCommandOptionType, Client } from 'discord.js'
+import { applicationCommand, ApplicationCommandComponent, CommandClient, moduleHook, option, Registry } from '../src'
+import { listener } from '../src/core/listener'
 
 class Test {
   @applicationCommand({
@@ -38,16 +39,31 @@ class Test {
   unload() {
     console.log('unload')
   }
+
+  @listener({ event: 'test', emitter: 'discord' })
+  testEvent() {
+    console.log('test')
+  }
 }
 
 const ext = new Test()
 
-const registry = new Registry()
+const client = new Client({ intents: [] })
+
+const cc = new CommandClient(client)
+
+const registry = cc.registry
 
 const run = async () => {
   await registry.registerModule(ext)
 
+  // listener test
+  client.emit('test')
+
   await registry.unregisterModule(ext)
+
+  // shold not work
+  client.emit('test')
 }
 
 run()

@@ -3,11 +3,11 @@ import { ComponentStoreSymbol } from '../symbols'
 import { BaseComponent } from './BaseComponent'
 import { ComponentArgumentDecorator } from './ComponentArgumentDecorator'
 
-type ComponentStore = Collection<string|symbol, BaseComponent>
+type ComponentStore = Collection<string | symbol, BaseComponent>
 type ComponentArgumentStore = Collection<number, ComponentArgumentDecorator>
 
 export const getComponentStore = (target: object): ComponentStore => {
-  let result: ComponentStore|null = Reflect.getMetadata(ComponentStoreSymbol, target)
+  let result: ComponentStore | null = Reflect.getMetadata(ComponentStoreSymbol, target)
 
   if (!result) {
     result = new Collection()
@@ -18,14 +18,14 @@ export const getComponentStore = (target: object): ComponentStore => {
   return result
 }
 
-export const getComponent = (target: object, key: string|symbol) => {
+export const getComponent = (target: object, key: string | symbol) => {
   const store = getComponentStore(target)
 
   return store.get(key)
 }
 
-export const createComponentDecorator = <Options>(type: typeof BaseComponent<Options>) => {
-  return (options: Options): MethodDecorator => {
+export const createComponentDecorator = <Options, RequiredOptions>(type: typeof BaseComponent<Options, RequiredOptions>) => {
+  return (options: Partial<Options> & RequiredOptions): MethodDecorator => {
     return (target, key) => {
       var component: BaseComponent<Options> = new type(options, Reflect.get(target, key), Reflect.getMetadata('design:paramtypes', target, key))
 
@@ -33,7 +33,7 @@ export const createComponentDecorator = <Options>(type: typeof BaseComponent<Opt
 
       const decorators = getComponentArgumentStore(target, key)
 
-      decorators.forEach((x, i)=> {
+      decorators.forEach((x, i) => {
         component.argTypes.get(i)?.decorators.push(x)
       })
 
@@ -42,8 +42,8 @@ export const createComponentDecorator = <Options>(type: typeof BaseComponent<Opt
   }
 }
 
-export const getComponentArgumentStore = (target: object, key: string|symbol): ComponentArgumentStore => {
-  let result: ComponentArgumentStore|null = Reflect.getMetadata(ComponentStoreSymbol, target, key)
+export const getComponentArgumentStore = (target: object, key: string | symbol): ComponentArgumentStore => {
+  let result: ComponentArgumentStore | null = Reflect.getMetadata(ComponentStoreSymbol, target, key)
 
   if (!result) {
     result = new Collection()
@@ -65,4 +65,3 @@ export const createArgumentDecorator = <Options>(type: typeof ComponentArgumentD
     }
   }
 }
-
