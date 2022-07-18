@@ -1,0 +1,10 @@
+{
+    "license-header-manager.additionalCommentStyles": [
+        {
+            "extension": ".ts",
+            "commentStart": "/*",
+            "commentEnd": "*/",
+            "commentMiddle": "*"
+        }
+    ]
+}

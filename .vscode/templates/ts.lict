@@ -1,0 +1,5 @@
+File: %(File)
+
+Copyright (c) %(CreationYear)-%(CurrentYear) %(Username)
+
+Licensed under MIT License. Please see more defails in LICENSE file.
