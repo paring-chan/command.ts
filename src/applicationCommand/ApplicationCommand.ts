@@ -1,8 +1,10 @@
+import { ApplicationCommandType } from 'discord.js'
 import { BaseComponent, createComponentDecorator } from '../core'
 
 export type ApplicationCommandOptions = {
   name: string
   description: string
+  type: ApplicationCommandType
 }
 
 export class ApplicationCommandComponent extends BaseComponent<ApplicationCommandOptions> {
@@ -10,6 +12,7 @@ export class ApplicationCommandComponent extends BaseComponent<ApplicationComman
     return {
       name: '',
       description: '',
+      type: ApplicationCommandType.ChatInput,
     }
   }
 }
