@@ -4,8 +4,9 @@ import { listener } from '../src/core/listener'
 import 'dotenv/config'
 import { Logger } from 'tslog'
 import chalk from 'chalk'
+import { Extension } from '../src/core/extensions'
 
-class Test {
+class Test extends Extension {
   @applicationCommand({
     type: ApplicationCommandType.ChatInput,
     name: 'test',
@@ -29,17 +30,17 @@ class Test {
 
   @moduleHook('load')
   load() {
-    console.log('load')
+    this.logger.info('Load')
   }
 
   @moduleHook('unload')
   unload() {
-    console.log('unload')
+    this.logger.info('Unload')
   }
 
-  @listener({ event: 'test', emitter: 'discord' })
+  @listener({ event: 'ready' })
   testEvent() {
-    console.log('test')
+    this.logger.info(`Login: ${chalk.green(client.user!.tag)}`)
   }
 }
 
@@ -61,8 +62,6 @@ const run = async () => {
   await registry.registerModule(ext)
 
   await client.login(process.env.TOKEN)
-
-  logger.info(`Login: ${chalk.green(client.user!.tag)}`)
 
   await cc.getApplicationCommandsExtension()!.sync()
 }

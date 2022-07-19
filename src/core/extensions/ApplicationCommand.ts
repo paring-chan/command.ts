@@ -1,4 +1,5 @@
-import { ApplicationCommandData, ApplicationCommandType, Interaction, Snowflake } from 'discord.js'
+import chalk from 'chalk'
+import { ApplicationCommandData, ApplicationCommandType, GuildAuditLogs, Interaction, Snowflake } from 'discord.js'
 import { ApplicationCommandComponent } from '../../applicationCommand'
 import { ApplicationCommandOption } from '../../applicationCommand/ApplicationCommandOption'
 import { moduleHook } from '../hooks'
@@ -48,6 +49,32 @@ export class ApplicationCommandExtension extends Extension {
       commands.push(cmd)
     }
 
-    this.logger.info(commands)
+    this.logger.info(`Processing ${chalk.green(commands.length)} commands(${commands.map((x) => chalk.blue(x.name)).join(', ')})`)
+
+    if (this.config.guilds) {
+      for (const guild of this.config.guilds) {
+        try {
+          const g = await this.client.guilds.fetch(guild)
+          await g.fetch()
+          this.logger.info(`Registering commands for guild ${chalk.green(g.name)}(${chalk.blue(g.id)})`)
+
+          await g.commands.set(commands)
+
+          this.logger.info(`Successfully registered commands for guild ${chalk.green(g.name)}(${chalk.blue(g.id)})`)
+        } catch (e) {
+          this.logger.error(`Failed to register commands to guild ${chalk.green(guild)}: ${(e as Error).message}`)
+        }
+      }
+    } else {
+      try {
+        this.logger.info(`Registering commands globally...`)
+
+        await this.client.application!.commands.set(commands)
+
+        this.logger.info('Successfully registered commands.')
+      } catch (e) {
+        this.logger.error(`Failed to register commands to global: ${(e as Error).message}`)
+      }
+    }
   }
 }

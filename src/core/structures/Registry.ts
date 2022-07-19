@@ -14,7 +14,13 @@ export class Registry {
 
   emitters: Collection<string, EventEmitter> = new Collection()
 
-  constructor(public logger: Logger, public client: CommandClient) {}
+  logger: Logger
+
+  constructor(logger: Logger, public client: CommandClient) {
+    this.logger = logger.getChildLogger({
+      prefix: [chalk.green('[Registry]')],
+    })
+  }
 
   getComponentsWithTypeGlobal<T extends typeof BaseComponent<Config>, Config>(type: T): InstanceType<T>[] {
     const result: InstanceType<T>[] = []
