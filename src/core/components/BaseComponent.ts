@@ -2,21 +2,16 @@ import { Collection } from 'discord.js'
 import _ from 'lodash'
 import { ComponentArgument } from './ComponentArgument'
 
-export class BaseComponent<Options = unknown, RequiredOptions = unknown> {
-  options: Options & RequiredOptions
+export class BaseComponent<Options = unknown, OptionsArg = Options> {
+  options: Options
 
   method: Function
 
   argTypes: Collection<number, ComponentArgument> = new Collection()
 
-  constructor(options: Partial<Options> & RequiredOptions, method: Function, argTypes: unknown[]) {
-    if (typeof options === 'object') {
-      this.options = _.merge(this.defaultOptions(), options)
-    } else if (typeof options === 'string') {
-      this.options = options as this['options']
-    } else {
-      this.options = null as unknown as this['options']
-    }
+  constructor(options: OptionsArg, method: Function, argTypes: unknown[]) {
+    this.options = this.convertOptions(options)
+
     this.method = method
     for (let i = 0; i < argTypes.length; i++) {
       const element = argTypes[i]
@@ -24,11 +19,11 @@ export class BaseComponent<Options = unknown, RequiredOptions = unknown> {
     }
   }
 
-  defaultOptions(): Options & Partial<RequiredOptions> {
-    return {} as unknown as ReturnType<this['defaultOptions']>
+  convertOptions(options: OptionsArg): Options {
+    return options as unknown as Options
   }
 
   execute(target: object, args: unknown[]) {
-    return this.method.apply(target, args)
+    return this.method.call(target, ...args)
   }
 }

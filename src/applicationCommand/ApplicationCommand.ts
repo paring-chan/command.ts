@@ -1,21 +1,8 @@
-import { ApplicationCommandType } from 'discord.js'
+import { ApplicationCommandType, ChatInputApplicationCommandData, MessageApplicationCommandData, UserApplicationCommandData } from 'discord.js'
 import { BaseComponent, createComponentDecorator } from '../core'
 
-type ApplicationCommandOptions = {
-  type: ApplicationCommandType
-}
-
-type ApplicationCommandRequiredOptions = {
-  name: string
-  description: string
-}
-
-export class ApplicationCommandComponent extends BaseComponent<ApplicationCommandOptions, ApplicationCommandRequiredOptions> {
-  defaultOptions() {
-    return {
-      type: ApplicationCommandType.ChatInput,
-    }
-  }
-}
+export class ApplicationCommandComponent extends BaseComponent<
+  (UserApplicationCommandData | MessageApplicationCommandData | Omit<ChatInputApplicationCommandData, 'options'>) & { type: ApplicationCommandType }
+> {}
 
 export const applicationCommand = createComponentDecorator(ApplicationCommandComponent)

@@ -24,10 +24,10 @@ export const getComponent = (target: object, key: string | symbol) => {
   return store.get(key)
 }
 
-export const createComponentDecorator = <Options, RequiredOptions>(type: typeof BaseComponent<Options, RequiredOptions>) => {
-  return (options: Partial<Options> & RequiredOptions): MethodDecorator => {
+export const createComponentDecorator = <Options, OptionArgs>(type: typeof BaseComponent<Options, OptionArgs>) => {
+  return (options: OptionArgs): MethodDecorator => {
     return (target, key) => {
-      var component: BaseComponent<Options> = new type(options, Reflect.get(target, key), Reflect.getMetadata('design:paramtypes', target, key))
+      var component: BaseComponent<Options, OptionArgs> = new type(options, Reflect.get(target, key), Reflect.getMetadata('design:paramtypes', target, key))
 
       const store = getComponentStore(target)
 

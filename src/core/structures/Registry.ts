@@ -1,17 +1,22 @@
+import chalk from 'chalk'
 import { Collection } from 'discord.js'
 import EventEmitter from 'events'
 import _ from 'lodash'
+import { Logger } from 'tslog'
 import { BaseComponent, getComponentStore } from '../components'
 import { getModuleHookStore } from '../hooks'
 import { ListenerComponent } from '../listener'
-import { ListenersSymbol } from '../symbols'
+import { CommandClientSymbol } from '../symbols'
+import { CommandClient } from './CommandClient'
 
 export class Registry {
   extensions: object[] = []
 
   emitters: Collection<string, EventEmitter> = new Collection()
 
-  getComponentsWithTypeGlobal<T extends typeof BaseComponent<Config, RequiredConfig>, Config, RequiredConfig>(type: T): InstanceType<T>[] {
+  constructor(public logger: Logger, public client: CommandClient) {}
+
+  getComponentsWithTypeGlobal<T extends typeof BaseComponent<Config>, Config>(type: T): InstanceType<T>[] {
     const result: InstanceType<T>[] = []
 
     for (const ext of this.extensions) {
@@ -21,7 +26,7 @@ export class Registry {
     return result
   }
 
-  getComponentsWithType<T extends typeof BaseComponent<Config, RequiredConfig>, Config, RequiredConfig>(ext: object, type: T): InstanceType<T>[] {
+  getComponentsWithType<T extends typeof BaseComponent<Config>, Config>(ext: object, type: T): InstanceType<T>[] {
     const componentStore = getComponentStore(ext)
 
     return Array.from(componentStore.filter((x) => (x.constructor as unknown) === type).values() as Iterable<InstanceType<T>>)
@@ -57,15 +62,19 @@ export class Registry {
   }
 
   async registerModule(ext: object) {
+    Reflect.defineMetadata(CommandClientSymbol, this.client, ext)
+
     this.registerEventListeners(ext)
     await this.runModuleHook(ext, 'load')
     this.extensions.push(ext)
+    this.logger.info(`Module registered: ${chalk.green(ext.constructor.name)}`)
   }
 
   async unregisterModule(ext: object) {
     this.unregisterEventListeners(ext)
     await this.runModuleHook(ext, 'unload')
     _.remove(this.extensions, (x) => x === ext)
+    this.logger.info(`Module unregistered: ${chalk.green(ext.constructor.name)}`)
   }
 
   runModuleHook(ext: object, hookName: string, ...args: unknown[]) {
@@ -75,7 +84,7 @@ export class Registry {
 
     if (functions) {
       for (const fn of functions) {
-        fn.apply(ext, args)
+        fn.call(ext, ...args)
       }
     }
   }

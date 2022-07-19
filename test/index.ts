@@ -1,23 +1,20 @@
-import { ApplicationCommandOptionType, Client } from 'discord.js'
-import { applicationCommand, ApplicationCommandComponent, CommandClient, moduleHook, option, Registry } from '../src'
+import { ApplicationCommandOptionType, ApplicationCommandType, Client } from 'discord.js'
+import { applicationCommand, CommandClient, moduleHook, option, Registry } from '../src'
 import { listener } from '../src/core/listener'
+import 'dotenv/config'
+import { Logger } from 'tslog'
+import chalk from 'chalk'
 
 class Test {
   @applicationCommand({
+    type: ApplicationCommandType.ChatInput,
     name: 'test',
     description: 'wow this is test',
   })
-  async testCommand(
-    @option({
-      name: 'hello',
-      description: '와아',
-      type: ApplicationCommandOptionType.String,
-    })
-    hello: string,
-    world: string,
-  ) {}
+  async testCommand() {}
 
   @applicationCommand({
+    type: ApplicationCommandType.ChatInput,
     name: 'test2',
     description: 'wow this is test wow',
   })
@@ -50,20 +47,24 @@ const ext = new Test()
 
 const client = new Client({ intents: [] })
 
-const cc = new CommandClient(client)
+const logger = new Logger({ dateTimeTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+
+const cc = new CommandClient(client, logger)
 
 const registry = cc.registry
 
 const run = async () => {
+  await cc.enableApplicationCommandsExtension({
+    guilds: ['832938554438844438'],
+  })
+
   await registry.registerModule(ext)
 
-  // listener test
-  client.emit('test')
+  await client.login(process.env.TOKEN)
 
-  await registry.unregisterModule(ext)
+  logger.info(`Login: ${chalk.green(client.user!.tag)}`)
 
-  // shold not work
-  client.emit('test')
+  await cc.getApplicationCommandsExtension()!.sync()
 }
 
 run()
