@@ -1,11 +1,22 @@
 import chalk from 'chalk'
-import { ApplicationCommandData, ApplicationCommandType, GuildAuditLogs, Interaction, InteractionType, Snowflake } from 'discord.js'
+import {
+  ApplicationCommandData,
+  ApplicationCommandType,
+  ChatInputCommandInteraction,
+  GuildAuditLogs,
+  Interaction,
+  InteractionType,
+  MessageContextMenuCommandInteraction,
+  Snowflake,
+  UserContextMenuCommandInteraction,
+} from 'discord.js'
 import { ApplicationCommandComponent } from '.'
 import { ApplicationCommandOption } from './ApplicationCommandOption'
 import { moduleHook } from '../core/hooks'
 import { listener } from '../core/listener'
 import { CommandClient } from '../core/structures'
 import { Extension } from '../core/extensions/Extension'
+import { argConverter } from '../core/converter'
 
 export type ApplicationCommandExtensionConfig = {
   guilds?: Snowflake[]
@@ -39,6 +50,8 @@ export class ApplicationCommandExtension extends Extension {
     if (cmd && ext) {
       const argList: unknown[] = []
 
+      await this.convertArguments(ApplicationCommandComponent, argList, cmd.argTypes, () => [i])
+
       for (const [idx, arg] of cmd.argTypes) {
         let value: unknown = null
 
@@ -49,7 +62,9 @@ export class ApplicationCommandExtension extends Extension {
           }
         }
 
-        argList[idx] = value
+        if (value) {
+          argList[idx] = value
+        }
       }
 
       try {
@@ -116,5 +131,32 @@ export class ApplicationCommandExtension extends Extension {
         this.logger.error(`Failed to register commands to global: ${(e as Error).message}`)
       }
     }
+  }
+
+  @argConverter({
+    component: ApplicationCommandComponent,
+    parameterless: true,
+    type: ChatInputCommandInteraction,
+  })
+  async chatInteraction(i: ChatInputCommandInteraction) {
+    return i
+  }
+
+  @argConverter({
+    component: ApplicationCommandComponent,
+    parameterless: true,
+    type: MessageContextMenuCommandInteraction,
+  })
+  async messageInteraction(i: MessageContextMenuCommandInteraction) {
+    return i
+  }
+
+  @argConverter({
+    component: ApplicationCommandComponent,
+    parameterless: true,
+    type: UserContextMenuCommandInteraction,
+  })
+  async userInteraction(i: UserContextMenuCommandInteraction) {
+    return i
   }
 }
