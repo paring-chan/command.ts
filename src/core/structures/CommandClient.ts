@@ -7,11 +7,15 @@ import { CommandClientSymbol } from '../symbols'
 import { Registry } from './Registry'
 
 export class CommandClient extends EventEmitter {
-  ctsLogger = this.logger.getChildLogger({ prefix: [chalk.blue('[command.ts]')], displayFilePath: 'hidden', displayFunctionName: false })
-  registry = new Registry(this.ctsLogger, this)
+  ctsLogger: Logger
+  registry: Registry
 
   constructor(public discord: Client, public logger: Logger = new Logger({ dateTimeTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone })) {
     super()
+
+    this.ctsLogger = logger.getChildLogger({ prefix: [chalk.blue('[command.ts]')], displayFilePath: 'hidden', displayFunctionName: false })
+
+    this.registry = new Registry(this.ctsLogger, this)
 
     this.registry.registerEventEmitter('cts', this)
     this.registry.registerEventEmitter('discord', this.discord)
