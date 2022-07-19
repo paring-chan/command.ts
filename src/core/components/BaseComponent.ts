@@ -24,8 +24,8 @@ export class BaseComponent<Options = unknown, RequiredOptions = unknown> {
     }
   }
 
-  defaultOptions(): Options & RequiredOptions {
-    return {} as unknown as Options & RequiredOptions
+  defaultOptions(): Options & Partial<RequiredOptions> {
+    return {} as unknown as ReturnType<this['defaultOptions']>
   }
 
   execute(target: object, args: unknown[]) {
