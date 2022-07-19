@@ -8,9 +8,11 @@
   "devDependencies": {
     "@discordjs/ts-docgen": "^0.4.1",
     "@swc/core": "^1.2.218",
+    "@types/chalk": "^2.2.0",
     "@types/lodash": "^4.14.172",
     "all-contributors-cli": "^6.20.0",
     "discord.js": "^14.0.1",
+    "dotenv": "^16.0.1",
     "prettier": "^2.7.1",
     "ts-node": "^10.9.1",
     "tsup": "^5.11.12",
@@ -19,6 +21,7 @@
   },
   "dependencies": {
     "@types/node": "^14.14.37",
+    "chalk": "4.1.2",
     "discord-api-types": "^0.23.1",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
@@ -34,7 +37,8 @@
     "build": "tsup-node",
     "docs:dev": "typedoc",
     "docs:build": "typedoc",
-    "docs": "typedoc --json docs/typedoc-out.json --tsconfig tsconfig.prod.json src/index.ts && ts-node scripts/docs"
+    "docs": "typedoc --json docs/typedoc-out.json --tsconfig tsconfig.prod.json src/index.ts && ts-node scripts/docs",
+    "test": "yarn ts-node --swc test"
   },
   "peerDependencies": {
     "discord.js": "^14.0.1"
