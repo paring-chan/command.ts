@@ -1,11 +1,11 @@
 import chalk from 'chalk'
-import { ApplicationCommandData, ApplicationCommandType, GuildAuditLogs, Interaction, Snowflake } from 'discord.js'
-import { ApplicationCommandComponent } from '../../applicationCommand'
-import { ApplicationCommandOption } from '../../applicationCommand/ApplicationCommandOption'
-import { moduleHook } from '../hooks'
-import { listener } from '../listener'
-import { CommandClient } from '../structures'
-import { Extension } from './Extension'
+import { ApplicationCommandData, ApplicationCommandType, GuildAuditLogs, Interaction, InteractionType, Snowflake } from 'discord.js'
+import { ApplicationCommandComponent } from '.'
+import { ApplicationCommandOption } from './ApplicationCommandOption'
+import { moduleHook } from '../core/hooks'
+import { listener } from '../core/listener'
+import { CommandClient } from '../core/structures'
+import { Extension } from '../core/extensions/Extension'
 
 export type ApplicationCommandExtensionConfig = {
   guilds?: Snowflake[]
@@ -18,7 +18,47 @@ export class ApplicationCommandExtension extends Extension {
 
   @listener({ event: 'interactionCreate' })
   async interactionCreate(i: Interaction) {
-    console.log(i)
+    if (i.type !== InteractionType.ApplicationCommand) return
+
+    let cmd: ApplicationCommandComponent | null = null
+    let ext: object | null = null
+
+    const extensions = this.commandClient.registry.extensions
+
+    for (const extension of extensions) {
+      const components = this.commandClient.registry.getComponentsWithType(extension, ApplicationCommandComponent)
+
+      for (const command of components) {
+        if (command.options.name === i.commandName) {
+          ext = extension
+          cmd = command
+        }
+      }
+    }
+
+    if (cmd && ext) {
+      const argList: unknown[] = []
+
+      for (const [idx, arg] of cmd.argTypes) {
+        let value: unknown = null
+
+        for (const decorator of arg.decorators) {
+          if (decorator instanceof ApplicationCommandOption) {
+            value = i.options.get(decorator.options.name, false)?.value
+            break
+          }
+        }
+
+        argList[idx] = value
+      }
+
+      try {
+        await cmd.execute(ext, argList)
+      } catch (e) {
+        this.logger.error(e)
+        this.commandClient.emit('applicationCommandInvokeError', e, i)
+      }
+    }
   }
 
   @moduleHook('load')

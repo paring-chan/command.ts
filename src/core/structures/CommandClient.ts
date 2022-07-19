@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import { Client } from 'discord.js'
 import EventEmitter from 'events'
 import { Logger } from 'tslog'
-import { ApplicationCommandExtension, ApplicationCommandExtensionConfig } from '../extensions/ApplicationCommand'
+import { ApplicationCommandExtension, ApplicationCommandExtensionConfig } from '../../applicationCommand/ApplicationCommandExtension'
 import { CommandClientSymbol } from '../symbols'
 import { Registry } from './Registry'
 

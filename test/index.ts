@@ -1,4 +1,4 @@
-import { ApplicationCommandOptionType, ApplicationCommandType, Client } from 'discord.js'
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, Client } from 'discord.js'
 import { applicationCommand, CommandClient, moduleHook, option, Registry } from '../src'
 import { listener } from '../src/core/listener'
 import 'dotenv/config'
@@ -12,7 +12,9 @@ class Test extends Extension {
     name: 'test',
     description: 'wow this is test',
   })
-  async testCommand() {}
+  async testCommand(i: ChatInputCommandInteraction) {
+    i.reply('Wow')
+  }
 
   @applicationCommand({
     type: ApplicationCommandType.ChatInput,
@@ -24,9 +26,13 @@ class Test extends Extension {
       name: 'sans',
       description: '와',
       type: ApplicationCommandOptionType.String,
+      required: true,
     })
     wa: string,
-  ) {}
+    i: ChatInputCommandInteraction,
+  ) {
+    i.reply(wa)
+  }
 
   @moduleHook('load')
   load() {
