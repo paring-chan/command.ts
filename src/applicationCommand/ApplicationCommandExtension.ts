@@ -15,14 +15,14 @@ import { ApplicationCommandOption } from './ApplicationCommandOption'
 import { moduleHook } from '../core/hooks'
 import { listener } from '../core/listener'
 import { CommandClient } from '../core/structures'
-import { Extension } from '../core/extensions/Extension'
 import { argConverter } from '../core/converter'
+import { CTSExtension } from '../core/extensions/CTSExtension'
 
 export type ApplicationCommandExtensionConfig = {
   guilds?: Snowflake[]
 }
 
-export class ApplicationCommandExtension extends Extension {
+export class ApplicationCommandExtension extends CTSExtension {
   constructor(public config: ApplicationCommandExtensionConfig) {
     super()
   }

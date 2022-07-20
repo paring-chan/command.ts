@@ -15,7 +15,7 @@ export class Extension {
     return this.commandClient.discord
   }
 
-  private _logger?: Logger
+  protected _logger?: Logger
 
   protected get logger() {
     if (!this._logger) this._logger = this.commandClient.logger.getChildLogger({ prefix: [chalk.green(`[${this.constructor.name}]`)], displayFunctionName: false })
