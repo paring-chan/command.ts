@@ -3,7 +3,6 @@ import {
   ApplicationCommandData,
   ApplicationCommandType,
   ChatInputCommandInteraction,
-  GuildAuditLogs,
   Interaction,
   InteractionType,
   MessageContextMenuCommandInteraction,
