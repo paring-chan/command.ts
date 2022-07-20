@@ -1,10 +1,16 @@
+/*
+ * File: index.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
+
 import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, Client } from 'discord.js'
-import { applicationCommand, CommandClient, moduleHook, option, Registry } from '../src'
-import { listener } from '../src/core/listener'
+import { applicationCommand, CommandClient, moduleHook, option, ownerOnly, listener, Extension } from '../dist'
 import 'dotenv/config'
 import { Logger } from 'tslog'
 import chalk from 'chalk'
-import { Extension } from '../src/core/extensions'
 
 class Test extends Extension {
   @applicationCommand({
@@ -16,6 +22,7 @@ class Test extends Extension {
     i.reply('Wow')
   }
 
+  @ownerOnly
   @applicationCommand({
     type: ApplicationCommandType.ChatInput,
     name: 'test2',
@@ -45,8 +52,9 @@ class Test extends Extension {
   }
 
   @listener({ event: 'ready' })
-  testEvent() {
+  async testEvent() {
     this.logger.info(`Login: ${chalk.green(client.user!.tag)}`)
+    await this.commandClient.fetchOwners()
   }
 }
 

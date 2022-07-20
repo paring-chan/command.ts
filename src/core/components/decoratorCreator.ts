@@ -1,4 +1,14 @@
+/*
+* File: decoratorCreator.ts
+* 
+* Copyright (c) 2022-2022 pikokr
+* 
+* Licensed under MIT License. Please see more defails in LICENSE file.
+*/
+
 import { Collection } from 'discord.js'
+import { ComponentHookStore } from '../hooks'
+import { getComponentHookStore } from '../hooks/componentHook'
 import { ComponentStoreSymbol } from '../symbols'
 import { BaseComponent } from './BaseComponent'
 import { ComponentArgumentDecorator } from './ComponentArgumentDecorator'
@@ -28,6 +38,10 @@ export const createComponentDecorator = <Options, OptionArgs>(type: typeof BaseC
   return (options: OptionArgs): MethodDecorator => {
     return (target, key) => {
       var component: BaseComponent<Options, OptionArgs> = new type(options, Reflect.get(target, key), Reflect.getMetadata('design:paramtypes', target, key))
+
+      const componentHookStore: ComponentHookStore = getComponentHookStore(target, key)
+
+      component.hooks = componentHookStore
 
       const store = getComponentStore(target)
 

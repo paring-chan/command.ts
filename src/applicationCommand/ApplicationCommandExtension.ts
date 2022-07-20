@@ -1,3 +1,11 @@
+/*
+* File: ApplicationCommandExtension.ts
+* 
+* Copyright (c) 2022-2022 pikokr
+* 
+* Licensed under MIT License. Please see more defails in LICENSE file.
+*/
+
 import chalk from 'chalk'
 import {
   ApplicationCommandData,
@@ -9,7 +17,7 @@ import {
   Snowflake,
   UserContextMenuCommandInteraction,
 } from 'discord.js'
-import { ApplicationCommandComponent } from '.'
+import { ApplicationCommandComponent } from './ApplicationCommand'
 import { ApplicationCommandOption } from './ApplicationCommandOption'
 import { moduleHook } from '../core/hooks'
 import { listener } from '../core/listener'
@@ -67,7 +75,7 @@ export class ApplicationCommandExtension extends CTSExtension {
       }
 
       try {
-        await cmd.execute(ext, argList)
+        await cmd.execute(ext, argList, [i])
       } catch (e) {
         this.logger.error(e)
         this.commandClient.emit('applicationCommandInvokeError', e, i)

@@ -1,9 +1,18 @@
+/*
+* File: Registry.ts
+* 
+* Copyright (c) 2022-2022 pikokr
+* 
+* Licensed under MIT License. Please see more defails in LICENSE file.
+*/
+
 import chalk from 'chalk'
 import { Collection } from 'discord.js'
 import EventEmitter from 'events'
 import _ from 'lodash'
 import { Logger } from 'tslog'
-import { BaseComponent, getComponentStore } from '../components'
+import { getComponentStore } from '../components'
+import type { BaseComponent } from '../components'
 import { getModuleHookStore } from '../hooks'
 import { ListenerComponent } from '../listener'
 import { CommandClientSymbol } from '../symbols'

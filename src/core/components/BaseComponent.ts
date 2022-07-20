@@ -1,11 +1,22 @@
+/*
+ * File: BaseComponent.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
+
 import { Collection } from 'discord.js'
 import _ from 'lodash'
+import type { ComponentHookStore } from '../hooks'
 import { ComponentArgument } from './ComponentArgument'
 
 export class BaseComponent<Options = unknown, OptionsArg = Options> {
   options: Options
 
   method: Function
+
+  hooks: ComponentHookStore = new Collection()
 
   argTypes: Collection<number, ComponentArgument> = new Collection()
 
@@ -23,7 +34,23 @@ export class BaseComponent<Options = unknown, OptionsArg = Options> {
     return options as unknown as Options
   }
 
-  execute(target: object, args: unknown[]) {
-    return this.method.call(target, ...args)
+  async executeHook(target: object, name: string, args: unknown[]) {
+    const hook = this.hooks.get(name)
+
+    if (!hook) return
+
+    const { CommandClient } = await import('../structures/CommandClient')
+
+    for (const fn of hook) {
+      await fn.call(null, CommandClient.getFromModule(target), ...args)
+    }
+  }
+
+  async execute(target: object, args: unknown[], beforeCallArgs: unknown[] = args) {
+    await this.executeHook(target, 'beforeCall', beforeCallArgs)
+    const result = await this.method.call(target, ...args)
+    await this.executeHook(target, 'afterCall', [result])
+
+    return result
   }
 }
