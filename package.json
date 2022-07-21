@@ -9,7 +9,7 @@
     "@discordjs/ts-docgen": "0.4.1",
     "@swc/core": "1.2.218",
     "@types/chalk": "2.2.0",
-    "@types/lodash": "4.14.172",
+    "@types/lodash": "4.14.182",
     "all-contributors-cli": "6.20.0",
     "discord.js": "14.0.1",
     "dotenv": "16.0.1",
