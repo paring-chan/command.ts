@@ -1,16 +1,17 @@
 /*
-* File: ApplicationCommandExtension.ts
-* 
-* Copyright (c) 2022-2022 pikokr
-* 
-* Licensed under MIT License. Please see more defails in LICENSE file.
-*/
+ * File: ApplicationCommandExtension.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
 
 import chalk from 'chalk'
 import {
   ApplicationCommandData,
   ApplicationCommandType,
   ChatInputCommandInteraction,
+  Collection,
   Interaction,
   InteractionType,
   MessageContextMenuCommandInteraction,
@@ -93,6 +94,8 @@ export class ApplicationCommandExtension extends CTSExtension {
 
     const commands: ApplicationCommandData[] = []
 
+    const guildCommands = new Collection<Snowflake, ApplicationCommandData[]>()
+
     for (const command of client.registry.getComponentsWithTypeGlobal(ApplicationCommandComponent)) {
       const cmd: ApplicationCommandData = { ...command.options }
 
@@ -108,13 +111,35 @@ export class ApplicationCommandExtension extends CTSExtension {
         }
       }
 
+      if (command.options.guilds) {
+        for (const guild of command.options.guilds) {
+          let commands = guildCommands.get(guild)
+          if (!commands) {
+            commands = []
+            guildCommands.set(guild, commands)
+          }
+          commands.push(cmd)
+        }
+        continue
+      }
+
+      if (this.config.guilds) {
+        for (const guild of this.config.guilds) {
+          let commands = guildCommands.get(guild)
+          if (!commands) {
+            commands = []
+            guildCommands.set(guild, commands)
+          }
+          commands.push(cmd)
+        }
+        continue
+      }
       commands.push(cmd)
     }
 
-    this.logger.info(`Processing ${chalk.green(commands.length)} commands(${commands.map((x) => chalk.blue(x.name)).join(', ')})`)
-
-    if (this.config.guilds) {
-      for (const guild of this.config.guilds) {
+    if (guildCommands.size) {
+      for (const [guild, commands] of guildCommands) {
+        this.logger.info(`Processing ${chalk.green(commands.length)} commands(${commands.map((x) => chalk.blue(x.name)).join(', ')})`)
         try {
           const g = await this.client.guilds.fetch(guild)
           await g.fetch()
@@ -127,7 +152,8 @@ export class ApplicationCommandExtension extends CTSExtension {
           this.logger.error(`Failed to register commands to guild ${chalk.green(guild)}: ${(e as Error).message}`)
         }
       }
-    } else {
+    }
+    if (commands.length) {
       try {
         this.logger.info(`Registering commands globally...`)
 
