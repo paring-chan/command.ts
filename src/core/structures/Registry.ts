@@ -137,7 +137,7 @@ export class Registry {
 
         if (typeof mod.setup !== 'function') continue
 
-        const modules = await mod.setup()
+        const modules = await mod.setup(this.client)
 
         await this.registerModules(modules, path)
 
