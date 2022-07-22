@@ -1,22 +1,24 @@
 /*
-* File: Registry.ts
-* 
-* Copyright (c) 2022-2022 pikokr
-* 
-* Licensed under MIT License. Please see more defails in LICENSE file.
-*/
+ * File: Registry.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
 
 import chalk from 'chalk'
 import { Collection } from 'discord.js'
 import EventEmitter from 'events'
-import _ from 'lodash'
+import _, { result } from 'lodash'
 import { Logger } from 'tslog'
 import { getComponentStore } from '../components'
 import type { BaseComponent } from '../components'
 import { getModuleHookStore } from '../hooks'
 import { ListenerComponent } from '../listener'
-import { CommandClientSymbol } from '../symbols'
+import { CommandClientSymbol, FilePathSymbol } from '../symbols'
 import { CommandClient } from './CommandClient'
+import walkSync from 'walk-sync'
+import path from 'path'
 
 export class Registry {
   extensions: object[] = []
@@ -74,6 +76,85 @@ export class Registry {
         emitter.removeListener(listener.options.event, bound)
       }
     }
+  }
+
+  async loadAllModulesInDirectory(dir: string): Promise<object[]> {
+    const results: object[] = []
+
+    const files = walkSync(dir).filter((x) => x.endsWith('.ts') || x.endsWith('.js'))
+
+    for (const file of files) {
+      try {
+        const p = path.join(dir, file)
+        const mod = require(p)
+
+        if (typeof mod.setup !== 'function') continue
+
+        const modules = await mod.setup()
+
+        results.push(...(await this.registerModules(modules, p)))
+      } catch (e) {
+        this.logger.error(`Failed to load ${file}`)
+      }
+    }
+
+    return results
+  }
+
+  private async registerModules(modules: object | object[], p: string) {
+    const results: object[] = []
+    if (modules instanceof Array) {
+      for (const module of modules) {
+        await this.registerModule(module)
+        Reflect.defineMetadata(FilePathSymbol, p, module)
+        results.push(module)
+      }
+    } else {
+      await this.registerModule(modules)
+      Reflect.defineMetadata(FilePathSymbol, p, modules)
+      results.push(modules)
+    }
+
+    return results
+  }
+
+  async reloadModules() {
+    const result: { file: string; result: boolean; error?: Error }[] = []
+    const paths = new Set<string>()
+    for (const module of this.extensions) {
+      const file = Reflect.getMetadata(FilePathSymbol, module)
+      if (!file) continue
+
+      paths.add(file)
+
+      await this.unregisterModule(module)
+      delete require.cache[require.resolve(file)]
+    }
+
+    for (const path of paths) {
+      try {
+        const mod = require(path)
+
+        if (typeof mod.setup !== 'function') continue
+
+        const modules = await mod.setup()
+
+        await this.registerModules(modules, path)
+
+        result.push({
+          file: path,
+          result: true,
+        })
+      } catch (e) {
+        result.push({
+          file: path,
+          result: false,
+          error: e as Error,
+        })
+      }
+    }
+
+    return result
   }
 
   async registerModule(ext: object) {
