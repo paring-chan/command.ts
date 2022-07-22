@@ -48,7 +48,13 @@ export class BaseComponent<Options = unknown, OptionsArg = Options> {
 
   async execute(target: object, args: unknown[], beforeCallArgs: unknown[] = args) {
     await this.executeHook(target, 'beforeCall', beforeCallArgs)
-    const result = await this.method.call(target, ...args)
+    let result
+    try {
+      result = await this.method.call(target, ...args)
+    } catch (e) {
+      await this.executeHook(target, 'invokeError', [e])
+      throw e
+    }
     await this.executeHook(target, 'afterCall', [result])
 
     return result
