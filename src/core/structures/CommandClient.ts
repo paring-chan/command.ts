@@ -11,6 +11,8 @@ import { Client, Snowflake, Team, User } from 'discord.js'
 import EventEmitter from 'events'
 import { Logger } from 'tslog'
 import { ApplicationCommandExtension, ApplicationCommandExtensionConfig } from '../../applicationCommand/ApplicationCommandExtension'
+import { TextCommandConfig } from '../../textCommand'
+import { TextCommandExtension } from '../../textCommand/TextCommandExtension'
 import { CommandClientSymbol } from '../symbols'
 import { Registry } from './Registry'
 export class CommandClient extends EventEmitter {
@@ -59,6 +61,11 @@ export class CommandClient extends EventEmitter {
   async enableApplicationCommandsExtension(config: ApplicationCommandExtensionConfig) {
     await this.registry.registerModule(new ApplicationCommandExtension(config))
     this.ctsLogger.info('Application command extension enabled.')
+  }
+
+  async enableTextCommandsExtension(config: TextCommandConfig) {
+    await this.registry.registerModule(new TextCommandExtension(config))
+    this.ctsLogger.info('Text command extension enabled.')
   }
 
   getApplicationCommandsExtension() {

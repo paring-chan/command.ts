@@ -34,7 +34,7 @@ export class Extension {
     component: typeof BaseComponent<unknown>,
     argList: unknown[],
     args: Collection<number, ComponentArgument>,
-    getConverterArgs: (arg: ComponentArgument, index: number) => unknown[] | Promise<unknown[]>,
+    getConverterArgs: (arg: ComponentArgument, index: number, converter: ConverterComponent) => unknown[] | Promise<unknown[]>,
   ) {
     const items = new Collection<unknown, { ext: object; component: ConverterComponent }>()
 
@@ -54,7 +54,7 @@ export class Extension {
         continue
       }
 
-      const converterArgs = await getConverterArgs(arg, index)
+      const converterArgs = await getConverterArgs(arg, index, converter.component)
 
       argList[index] = await converter.component.execute(converter.ext, converterArgs)
     }

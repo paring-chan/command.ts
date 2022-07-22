@@ -6,8 +6,8 @@
  * Licensed under MIT License. Please see more defails in LICENSE file.
  */
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, Client } from 'discord.js'
-import { applicationCommand, CommandClient, moduleHook, option, ownerOnly, listener, Extension } from '../dist'
+import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, Client, Message } from 'discord.js'
+import { applicationCommand, CommandClient, moduleHook, option, ownerOnly, listener, Extension, command, rest } from '../src'
 import 'dotenv/config'
 import { Logger } from 'tslog'
 import chalk from 'chalk'
@@ -56,11 +56,17 @@ class Test extends Extension {
     this.logger.info(`Login: ${chalk.green(client.user!.tag)}`)
     await this.commandClient.fetchOwners()
   }
+
+  @command({ name: 'test' })
+  async test(msg: Message, @rest() sans: string) {
+    console.log(sans)
+    await msg.reply('Wow')
+  }
 }
 
 const ext = new Test()
 
-const client = new Client({ intents: [] })
+const client = new Client({ intents: ['GuildMessages', 'MessageContent', 'DirectMessages', 'Guilds'] })
 
 const logger = new Logger({ dateTimeTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone })
 
@@ -71,6 +77,10 @@ const registry = cc.registry
 const run = async () => {
   await cc.enableApplicationCommandsExtension({
     guilds: ['832938554438844438'],
+  })
+
+  await cc.enableTextCommandsExtension({
+    prefix: '.',
   })
 
   await registry.registerModule(ext)
