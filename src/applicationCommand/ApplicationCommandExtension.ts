@@ -78,7 +78,6 @@ export class ApplicationCommandExtension extends CTSExtension {
       try {
         await cmd.execute(ext, argList, [i])
       } catch (e) {
-        this.logger.error(e)
         this.commandClient.emit('applicationCommandInvokeError', e, i)
       }
     }
