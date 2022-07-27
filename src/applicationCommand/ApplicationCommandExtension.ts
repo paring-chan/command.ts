@@ -9,6 +9,7 @@
 import chalk from 'chalk'
 import {
   ApplicationCommandData,
+  ApplicationCommandOptionType,
   ApplicationCommandType,
   ChatInputCommandInteraction,
   Collection,
@@ -65,6 +66,17 @@ export class ApplicationCommandExtension extends CTSExtension {
 
         for (const decorator of arg.decorators) {
           if (decorator instanceof ApplicationCommandOption) {
+            if ([ApplicationCommandOptionType.Subcommand, ApplicationCommandOptionType.SubcommandGroup].includes(decorator.options.type) && i.isChatInputCommand()) {
+              if (decorator.options.type === ApplicationCommandOptionType.Subcommand) {
+                value = i.options.getSubcommand() === decorator.options.name
+                break
+              }
+              if (decorator.options.type === ApplicationCommandOptionType.SubcommandGroup) {
+                value = i.options.getSubcommandGroup() === decorator.options.name
+                break
+              }
+            }
+
             value = i.options.get(decorator.options.name, false)?.value
             break
           }
