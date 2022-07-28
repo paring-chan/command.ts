@@ -7,7 +7,7 @@
 
 Command framework for discord.js
 
-[Discord](https://discord.gg/EEhcPzsGHV) / [Docs](https://cts.pikokr.dev)
+[Discord](https://discord.gg/EkFHRG4TZZ) / [Docs](https://cts.pikokr.dev)
 
 ## Contributors
 
