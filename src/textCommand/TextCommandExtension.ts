@@ -1,10 +1,10 @@
 /*
-* File: TextCommandExtension.ts
-* 
-* Copyright (c) 2022-2022 pikokr
-* 
-* Licensed under MIT License. Please see more defails in LICENSE file.
-*/
+ * File: TextCommandExtension.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
 
 import { listener } from '../core/listener'
 import { Message } from 'discord.js'
