@@ -84,6 +84,7 @@ export class Registry {
     const files = walkSync(dir).filter((x) => x.endsWith('.ts') || x.endsWith('.js'))
 
     for (const file of files) {
+      if (file.endsWith('.d.ts')) continue
       try {
         const p = path.join(dir, file)
         const mod = require(p)
