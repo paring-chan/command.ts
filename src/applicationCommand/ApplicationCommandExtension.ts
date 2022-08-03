@@ -95,9 +95,6 @@ export class ApplicationCommandExtension extends CTSExtension {
     }
   }
 
-  @moduleHook('load')
-  async load() {}
-
   async sync() {
     const client = CommandClient.getFromModule(this)
 
