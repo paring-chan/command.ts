@@ -52,13 +52,44 @@ export class ApplicationCommandExtension extends CTSExtension {
 
     const extensions = this.commandClient.registry.extensions
 
-    for (const extension of extensions) {
+    let subcommand: string | null = null
+    let subcommandGroup: string | null = null
+
+    if (i.commandType === ApplicationCommandType.ChatInput) {
+      subcommand = i.options.getSubcommand(false)
+      subcommandGroup = i.options.getSubcommandGroup(false)
+    }
+
+    extLoop: for (const extension of extensions) {
       const components = this.commandClient.registry.getComponentsWithType<ApplicationCommandComponent>(extension, ApplicationCommandComponent)
 
-      for (const command of components) {
-        if (command.options.name === i.commandName) {
-          ext = extension
-          cmd = command
+      if (subcommand) {
+        for (const command of components) {
+          if (!command.subcommandGroup && !command.subcommandGroupChild) continue
+
+          if (
+            command.subcommandGroupChild &&
+            command.subcommandGroupChild.parent.options.name === i.commandName &&
+            command.subcommandGroupChild.options.name === subcommandGroup &&
+            command.options.name === subcommand
+          ) {
+            ext = extension
+            cmd = command
+            break extLoop
+          }
+          if (command.subcommandGroup && !subcommandGroup && command.subcommandGroup.options.name === i.commandName && command.options.name === subcommand) {
+            ext = extension
+            cmd = command
+            break extLoop
+          }
+        }
+      } else {
+        for (const command of components) {
+          if (command.options.name === i.commandName) {
+            ext = extension
+            cmd = command
+            break extLoop
+          }
         }
       }
     }
