@@ -8,9 +8,14 @@
 
 import chalk from 'chalk'
 import {
+  APIApplicationCommandSubcommandGroupOption,
+  APIApplicationCommandSubcommandOption,
   ApplicationCommandData,
+  ApplicationCommandOptionData,
   ApplicationCommandOptionType,
+  ApplicationCommandSubCommandData,
   ApplicationCommandType,
+  ChatInputApplicationCommandData,
   ChatInputCommandInteraction,
   Collection,
   CommandInteraction,
@@ -27,6 +32,7 @@ import { listener } from '../core/listener'
 import { CommandClient } from '../core/structures'
 import { argConverter } from '../core/converter'
 import { CTSExtension } from '../core/extensions/CTSExtension'
+import { inspect } from 'util'
 
 export type ApplicationCommandExtensionConfig = {
   guilds?: Snowflake[]
@@ -101,11 +107,83 @@ export class ApplicationCommandExtension extends CTSExtension {
 
     this.logger.info('Trying to sync commands...')
 
-    const commands: ApplicationCommandData[] = []
+    let commands: ApplicationCommandData[] = []
 
     const guildCommands = new Collection<Snowflake, ApplicationCommandData[]>()
 
+    const subcommandGroups = new Collection<string, ChatInputApplicationCommandData>()
+
     for (const command of client.registry.getComponentsWithTypeGlobal<ApplicationCommandComponent>(ApplicationCommandComponent)) {
+      if (command.subcommandGroup) {
+        let group = subcommandGroups.get(command.subcommandGroup.options.name)
+
+        if (!group) {
+          group = {
+            ...command.subcommandGroup.options,
+            type: ApplicationCommandType.ChatInput,
+          }
+
+          if (command.subcommandGroup.guilds) {
+            for (const guild of command.subcommandGroup.guilds) {
+              let commands = guildCommands.get(guild)
+              if (!commands) {
+                commands = []
+                guildCommands.set(guild, commands)
+              }
+            }
+          } else {
+            commands.push(group)
+          }
+
+          subcommandGroups.set(command.subcommandGroup.options.name, group)
+        }
+
+        if (!group.options) group.options = []
+
+        group.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand } as ApplicationCommandSubCommandData)
+
+        continue
+      } else if (command.subcommandGroupChild) {
+        const parent = command.subcommandGroupChild.parent
+        let group = subcommandGroups.get(parent.options.name)
+
+        if (!group) {
+          group = {
+            ...parent.options,
+            type: ApplicationCommandType.ChatInput,
+          }
+
+          if (parent.guilds) {
+            for (const guild of parent.guilds) {
+              let commands = guildCommands.get(guild)
+              if (!commands) {
+                commands = []
+                guildCommands.set(guild, commands)
+              }
+            }
+          } else {
+            commands.push(group)
+          }
+
+          subcommandGroups.set(parent.options.name, group)
+        }
+
+        if (!group.options) group.options = []
+
+        let child = group.options.find((x) => x.name === command.subcommandGroupChild!.options.name) as APIApplicationCommandSubcommandGroupOption
+
+        if (!child) {
+          child = { type: ApplicationCommandOptionType.SubcommandGroup, ...(command.subcommandGroupChild.options as Omit<APIApplicationCommandSubcommandGroupOption, 'type'>) }
+          group.options.push(child)
+        }
+
+        if (!child.options) child.options = []
+
+        child.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand } as APIApplicationCommandSubcommandOption)
+
+        continue
+      }
+
       const cmd: ApplicationCommandData = { ...command.options }
 
       if (cmd.type === ApplicationCommandType.ChatInput) {
@@ -127,32 +205,34 @@ export class ApplicationCommandExtension extends CTSExtension {
             commands = []
             guildCommands.set(guild, commands)
           }
-          commands.push(cmd)
         }
         continue
       }
 
-      if (this.config.guilds) {
-        for (const guild of this.config.guilds) {
-          let commands = guildCommands.get(guild)
-          if (!commands) {
-            commands = []
-            guildCommands.set(guild, commands)
-          }
-          commands.push(cmd)
-        }
-        continue
-      }
       commands.push(cmd)
+    }
+
+    if (this.config.guilds) {
+      for (const guild of this.config.guilds) {
+        let g = guildCommands.get(guild)
+        if (!g) {
+          g = []
+          guildCommands.set(guild, g)
+        }
+        g.push(...commands)
+      }
+
+      commands = []
     }
 
     if (guildCommands.size) {
       for (const [guild, commands] of guildCommands) {
-        this.logger.info(`Processing ${chalk.green(commands.length)} commands(${commands.map((x) => chalk.blue(x.name)).join(', ')})`)
         try {
           const g = await this.client.guilds.fetch(guild)
           await g.fetch()
-          this.logger.info(`Registering commands for guild ${chalk.green(g.name)}(${chalk.blue(g.id)})`)
+          this.logger.info(
+            `Processing ${chalk.green(commands.length)} commands(${commands.map((x) => chalk.blue(x.name)).join(', ')}) for guild ${chalk.green(g.name)}(${chalk.blue(g.id)})`,
+          )
 
           await g.commands.set(commands)
 
@@ -164,7 +244,7 @@ export class ApplicationCommandExtension extends CTSExtension {
     }
     if (commands.length) {
       try {
-        this.logger.info(`Registering commands globally...`)
+        this.logger.info(`Processing ${chalk.green(commands.length)} commands(${commands.map((x) => chalk.blue(x.name)).join(', ')}) for application scope...`)
 
         await this.client.application!.commands.set(commands)
 

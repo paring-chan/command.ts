@@ -20,7 +20,7 @@ export class SubCommandGroup {
 }
 
 export class SubCommandGroupChild {
-  constructor(public options: Omit<APIApplicationCommandSubcommandOption, 'type'>, parent: SubCommandGroup) {}
+  constructor(public options: Omit<APIApplicationCommandSubcommandOption, 'type'>, public parent: SubCommandGroup) {}
 
   command(options: Omit<ChatInputApplicationCommandData, 'options' | 'type'>): MethodDecorator {
     const cmd = new ApplicationCommandComponent({

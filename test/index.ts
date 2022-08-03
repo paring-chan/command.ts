@@ -104,6 +104,8 @@ const run = async () => {
 
   await client.login(process.env.TOKEN)
 
+  await client.application?.commands.set([])
+
   await cc.getApplicationCommandsExtension()!.sync()
 }
 
