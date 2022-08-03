@@ -1,10 +1,10 @@
 /*
-* File: decoratorCreator.ts
-* 
-* Copyright (c) 2022-2022 pikokr
-* 
-* Licensed under MIT License. Please see more defails in LICENSE file.
-*/
+ * File: decoratorCreator.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
 
 import { Collection } from 'discord.js'
 import { ComponentHookStore } from '../hooks'
@@ -34,25 +34,23 @@ export const getComponent = (target: object, key: string | symbol) => {
   return store.get(key)
 }
 
-export const createComponentDecorator = <Options, OptionArgs>(type: typeof BaseComponent<Options, OptionArgs>) => {
-  return (options: OptionArgs): MethodDecorator => {
-    return (target, key) => {
-      var component: BaseComponent<Options, OptionArgs> = new type(options, Reflect.get(target, key), Reflect.getMetadata('design:paramtypes', target, key))
+export const createComponentDecorator = (component: BaseComponent): MethodDecorator => {
+  return (target, key) => {
+    component._init(Reflect.get(target, key), Reflect.getMetadata('design:paramtypes', target, key))
 
-      const componentHookStore: ComponentHookStore = getComponentHookStore(target, key)
+    const componentHookStore: ComponentHookStore = getComponentHookStore(target, key)
 
-      component.hooks = componentHookStore
+    component.hooks = componentHookStore
 
-      const store = getComponentStore(target)
+    const store = getComponentStore(target)
 
-      const decorators = getComponentArgumentStore(target, key)
+    const decorators = getComponentArgumentStore(target, key)
 
-      decorators.forEach((x, i) => {
-        component.argTypes.get(i)?.decorators.push(x)
-      })
+    decorators.forEach((x, i) => {
+      component.argTypes.get(i)?.decorators.push(x)
+    })
 
-      store.set(key, component)
-    }
+    store.set(key, component)
   }
 }
 

@@ -1,10 +1,10 @@
 /*
-* File: Extension.ts
-* 
-* Copyright (c) 2022-2022 pikokr
-* 
-* Licensed under MIT License. Please see more defails in LICENSE file.
-*/
+ * File: Extension.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
 
 import chalk from 'chalk'
 import { Collection } from 'discord.js'
@@ -31,7 +31,7 @@ export class Extension {
   }
 
   protected async convertArguments(
-    component: typeof BaseComponent<unknown>,
+    component: unknown,
     argList: unknown[],
     args: Collection<number, ComponentArgument>,
     getConverterArgs: (arg: ComponentArgument, index: number, converter: ConverterComponent) => unknown[] | Promise<unknown[]>,
@@ -39,7 +39,7 @@ export class Extension {
     const items = new Collection<unknown, { ext: object; component: ConverterComponent }>()
 
     for (const extension of this.commandClient.registry.extensions) {
-      for (const converter of this.commandClient.registry.getComponentsWithType(extension, ConverterComponent)) {
+      for (const converter of this.commandClient.registry.getComponentsWithType<ConverterComponent>(extension, ConverterComponent)) {
         if (converter.options.component != component) continue
 
         items.set(converter.options.type, { component: converter, ext: extension })

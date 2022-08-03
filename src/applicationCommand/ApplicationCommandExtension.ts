@@ -46,7 +46,7 @@ export class ApplicationCommandExtension extends CTSExtension {
     const extensions = this.commandClient.registry.extensions
 
     for (const extension of extensions) {
-      const components = this.commandClient.registry.getComponentsWithType(extension, ApplicationCommandComponent)
+      const components = this.commandClient.registry.getComponentsWithType<ApplicationCommandComponent>(extension, ApplicationCommandComponent)
 
       for (const command of components) {
         if (command.options.name === i.commandName) {
@@ -107,7 +107,7 @@ export class ApplicationCommandExtension extends CTSExtension {
 
     const guildCommands = new Collection<Snowflake, ApplicationCommandData[]>()
 
-    for (const command of client.registry.getComponentsWithTypeGlobal(ApplicationCommandComponent)) {
+    for (const command of client.registry.getComponentsWithTypeGlobal<ApplicationCommandComponent>(ApplicationCommandComponent)) {
       const cmd: ApplicationCommandData = { ...command.options }
 
       if (cmd.type === ApplicationCommandType.ChatInput) {

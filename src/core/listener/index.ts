@@ -1,29 +1,27 @@
 /*
-* File: index.ts
-* 
-* Copyright (c) 2022-2022 pikokr
-* 
-* Licensed under MIT License. Please see more defails in LICENSE file.
-*/
+ * File: index.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
 
+import _ from 'lodash'
 import { BaseComponent } from '../components/BaseComponent'
 import { createComponentDecorator } from '../components/decoratorCreator'
 
-export class ListenerComponent extends BaseComponent<{ emitter: string; event: string }, { emitter?: string; event: string }> {
-  defaultOptions() {
-    return { emitter: 'discord' }
-  }
+type Options = { emitter: string; event: string }
 
-  constructor(options: ListenerComponent['options'], method: Function, argTypes: unknown[]) {
-    super(
-      {
-        event: options.event,
-        emitter: options.emitter ?? 'discord',
-      },
-      method,
-      argTypes,
-    )
+type OptionsArg = { emitter?: string; event: string }
+
+export class ListenerComponent extends BaseComponent {
+  options: Options
+
+  constructor(options: OptionsArg) {
+    super()
+
+    this.options = _.merge({ emitter: 'discord' }, options)
   }
 }
 
-export const listener = createComponentDecorator(ListenerComponent)
+export const listener = (options: OptionsArg) => createComponentDecorator(new ListenerComponent(options))

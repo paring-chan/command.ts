@@ -10,8 +10,19 @@ import type { ApplicationCommandType, ChatInputApplicationCommandData, MessageAp
 import { createComponentDecorator } from '../core/components/decoratorCreator'
 import { BaseComponent } from '../core/components/BaseComponent'
 
-export class ApplicationCommandComponent extends BaseComponent<
-  (UserApplicationCommandData | MessageApplicationCommandData | Omit<ChatInputApplicationCommandData, 'options'>) & { type: ApplicationCommandType; guilds?: Snowflake[] }
-> {}
+type Options = (UserApplicationCommandData | MessageApplicationCommandData | Omit<ChatInputApplicationCommandData, 'options'>) & {
+  type: ApplicationCommandType
+  guilds?: Snowflake[]
+}
 
-export const applicationCommand = createComponentDecorator(ApplicationCommandComponent)
+export class ApplicationCommandComponent extends BaseComponent {
+  options: Options
+
+  constructor(options: UserApplicationCommandData | MessageApplicationCommandData | Omit<ChatInputApplicationCommandData, 'options'>) {
+    super()
+
+    this.options = options as Options
+  }
+}
+
+export const applicationCommand = (options: Options) => createComponentDecorator(new ApplicationCommandComponent(options))

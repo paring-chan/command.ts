@@ -15,6 +15,10 @@ type TextCommandOptions = {
   description?: string
 }
 
-export class TextCommandComponent extends BaseComponent<TextCommandOptions> {}
+export class TextCommandComponent extends BaseComponent {
+  constructor(public options: TextCommandOptions) {
+    super()
+  }
+}
 
-export const command = createComponentDecorator(TextCommandComponent)
+export const command = (options: TextCommandOptions) => createComponentDecorator(new TextCommandComponent(options))

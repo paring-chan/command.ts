@@ -33,24 +33,24 @@ export class Registry {
     })
   }
 
-  getComponentsWithTypeGlobal<T extends typeof BaseComponent<Config>, Config>(type: T): InstanceType<T>[] {
-    const result: InstanceType<T>[] = []
+  getComponentsWithTypeGlobal<T>(type: unknown): T[] {
+    const result: T[] = []
 
     for (const ext of this.extensions) {
-      result.push(...this.getComponentsWithType(ext, type))
+      result.push(...this.getComponentsWithType<T>(ext, type))
     }
 
     return result
   }
 
-  getComponentsWithType<T extends typeof BaseComponent<Config>, Config>(ext: object, type: T): InstanceType<T>[] {
+  getComponentsWithType<T>(ext: object, type: unknown): T[] {
     const componentStore = getComponentStore(ext)
 
-    return Array.from(componentStore.filter((x) => (x.constructor as unknown) === type).values() as Iterable<InstanceType<T>>)
+    return Array.from(componentStore.filter((x) => (x.constructor as unknown) === type).values() as Iterable<T>)
   }
 
   registerEventListeners(ext: object) {
-    const listeners = this.getComponentsWithType(ext, ListenerComponent)
+    const listeners = this.getComponentsWithType<ListenerComponent>(ext, ListenerComponent)
 
     for (const listener of listeners) {
       const emitter = this.emitters.get(listener.options.emitter)
@@ -66,7 +66,7 @@ export class Registry {
   }
 
   unregisterEventListeners(ext: object) {
-    const listeners = this.getComponentsWithType(ext, ListenerComponent)
+    const listeners = this.getComponentsWithType<ListenerComponent>(ext, ListenerComponent)
 
     for (const listener of listeners) {
       const emitter = this.emitters.get(listener.options.emitter)

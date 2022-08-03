@@ -58,7 +58,7 @@ export class TextCommandExtension extends CTSExtension {
     const extensions = new Map<TextCommandComponent, object>()
 
     for (const ext of this.commandClient.registry.extensions) {
-      for (const cmd of this.commandClient.registry.getComponentsWithType(ext, TextCommandComponent)) {
+      for (const cmd of this.commandClient.registry.getComponentsWithType<TextCommandComponent>(ext, TextCommandComponent)) {
         commands.push(cmd)
         extensions.set(cmd, ext)
       }
