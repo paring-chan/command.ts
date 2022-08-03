@@ -13,6 +13,7 @@ import {
   ApplicationCommandType,
   ChatInputCommandInteraction,
   Collection,
+  CommandInteraction,
   Interaction,
   InteractionType,
   MessageContextMenuCommandInteraction,
@@ -198,6 +199,15 @@ export class ApplicationCommandExtension extends CTSExtension {
     type: UserContextMenuCommandInteraction,
   })
   async userInteraction(i: UserContextMenuCommandInteraction) {
+    return i
+  }
+
+  @argConverter({
+    component: ApplicationCommandComponent,
+    parameterless: true,
+    type: CommandInteraction,
+  })
+  async commandInteraction(i: UserContextMenuCommandInteraction) {
     return i
   }
 }
