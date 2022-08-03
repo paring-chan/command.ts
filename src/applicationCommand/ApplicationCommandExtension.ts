@@ -97,7 +97,7 @@ export class ApplicationCommandExtension extends CTSExtension {
   }
 
   async sync() {
-    const client = CommandClient.getFromModule(this)
+    const client = this.commandClient
 
     this.logger.info('Trying to sync commands...')
 
