@@ -234,6 +234,7 @@ export class ApplicationCommandExtension extends CTSExtension {
             commands = []
             guildCommands.set(guild, commands)
           }
+          commands.push(cmd)
         }
         continue
       }
