@@ -7,7 +7,7 @@
   "license": "MIT",
   "devDependencies": {
     "@discordjs/ts-docgen": "0.4.1",
-    "@swc/core": "1.2.222",
+    "@swc/core": "1.2.223",
     "@types/chalk": "2.2.0",
     "@types/lodash": "4.14.182",
     "all-contributors-cli": "6.20.0",
