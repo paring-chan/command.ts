@@ -7,10 +7,17 @@
  */
 
 import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, Client, Message } from 'discord.js'
-import { applicationCommand, CommandClient, moduleHook, option, ownerOnly, listener, Extension, command, rest } from '../src'
+import { applicationCommand, CommandClient, moduleHook, option, ownerOnly, listener, Extension, command, rest, SubCommandGroup } from '../src'
 import 'dotenv/config'
 import { Logger } from 'tslog'
 import chalk from 'chalk'
+
+const group = new SubCommandGroup({
+  name: 'hi',
+  description: 'sans',
+})
+
+const sub = group.createChild({ name: 'sub', description: 'wow this is subcommand group' })
 
 class Test extends Extension {
   @applicationCommand({
@@ -44,6 +51,16 @@ class Test extends Extension {
   @moduleHook('load')
   load() {
     this.logger.info('Load')
+  }
+
+  @group.command({ name: 'hi', description: 'Wow this is sans' })
+  hi(i: ChatInputCommandInteraction) {
+    i.reply('Hi this is subcommand')
+  }
+
+  @sub.command({ name: 'hi', description: 'Wow this is sans' })
+  subHi(i: ChatInputCommandInteraction) {
+    i.reply('Hi this is subcommand in subcommand group')
   }
 
   @moduleHook('unload')
