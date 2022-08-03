@@ -225,7 +225,7 @@ export class ApplicationCommandExtension extends CTSExtension {
         }
       }
 
-      command.executeHook(this, 'beforeSync', [cmd, command])
+      await command.executeHook(this, 'beforeSync', [cmd, command])
 
       if (command.options.guilds) {
         for (const guild of command.options.guilds) {
