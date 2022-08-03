@@ -11,7 +11,6 @@ import {
   APIApplicationCommandSubcommandGroupOption,
   APIApplicationCommandSubcommandOption,
   ApplicationCommandData,
-  ApplicationCommandOptionData,
   ApplicationCommandOptionType,
   ApplicationCommandSubCommandData,
   ApplicationCommandType,
@@ -27,12 +26,9 @@ import {
 } from 'discord.js'
 import { ApplicationCommandComponent } from './ApplicationCommand'
 import { ApplicationCommandOption } from './ApplicationCommandOption'
-import { moduleHook } from '../core/hooks'
 import { listener } from '../core/listener'
-import { CommandClient } from '../core/structures'
 import { argConverter } from '../core/converter'
 import { CTSExtension } from '../core/extensions/CTSExtension'
-import { inspect } from 'util'
 
 export type ApplicationCommandExtensionConfig = {
   guilds?: Snowflake[]
@@ -228,6 +224,8 @@ export class ApplicationCommandExtension extends CTSExtension {
           }
         }
       }
+
+      command.executeHook(this, 'beforeSync', [cmd, command])
 
       if (command.options.guilds) {
         for (const guild of command.options.guilds) {

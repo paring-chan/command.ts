@@ -9,7 +9,6 @@
 import chalk from 'chalk'
 import { Collection } from 'discord.js'
 import { Logger } from 'tslog'
-import { BaseComponent } from '../components'
 import { ComponentArgument } from '../components/ComponentArgument'
 import { ConverterComponent } from '../converter'
 import { CommandClient } from '../structures'
