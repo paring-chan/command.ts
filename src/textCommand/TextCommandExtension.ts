@@ -53,70 +53,74 @@ export class TextCommandExtension extends CTSExtension {
 
   @listener({ event: 'messageCreate', emitter: 'discord' })
   private async messageCreate(msg: Message) {
-    const startIndex = await this.processPrefix(msg)
+    try {
+      const startIndex = await this.processPrefix(msg)
 
-    if (!startIndex) return
+      if (!startIndex) return
 
-    const content = msg.content.slice(startIndex)
+      const content = msg.content.slice(startIndex)
 
-    const commands: TextCommandComponent[] = []
+      const commands: TextCommandComponent[] = []
 
-    const extensions = new Map<TextCommandComponent, object>()
+      const extensions = new Map<TextCommandComponent, object>()
 
-    for (const ext of this.commandClient.registry.extensions) {
-      for (const cmd of this.commandClient.registry.getComponentsWithType<TextCommandComponent>(ext, TextCommandComponent)) {
-        commands.push(cmd)
-        extensions.set(cmd, ext)
-      }
-    }
-
-    let commandNameLength = 0
-
-    const command = commands.find((x) => {
-      const names = [x.options.name]
-
-      if (x.options.aliases) {
-        names.push(...x.options.aliases)
-      }
-
-      for (const name of names) {
-        if (content.startsWith(name)) {
-          if (content.length === name.length) {
-            commandNameLength = name.length
-            return true
-          }
-          commandNameLength = name.length
-          return content.startsWith(name + ' ')
+      for (const ext of this.commandClient.registry.extensions) {
+        for (const cmd of this.commandClient.registry.getComponentsWithType<TextCommandComponent>(ext, TextCommandComponent)) {
+          commands.push(cmd)
+          extensions.set(cmd, ext)
         }
       }
 
-      return false
-    })
+      let commandNameLength = 0
 
-    if (!command) return
+      const command = commands.find((x) => {
+        const names = [x.options.name]
 
-    const ext = extensions.get(command)
+        if (x.options.aliases) {
+          names.push(...x.options.aliases)
+        }
 
-    if (!ext) return
+        for (const name of names) {
+          if (content.startsWith(name)) {
+            if (content.length === name.length) {
+              commandNameLength = name.length
+              return true
+            }
+            commandNameLength = name.length
+            return content.startsWith(name + ' ')
+          }
+        }
 
-    msg.command = command
+        return false
+      })
 
-    const args: unknown[] = []
+      if (!command) return
 
-    let argStrings = content.slice(commandNameLength + 1).split(/ /g)
+      const ext = extensions.get(command)
 
-    await this.convertArguments(TextCommandComponent, args, command.argTypes, async (arg, i, converter) => {
-      if (converter.options.parameterless) return [msg]
+      if (!ext) return
 
-      if (arg.decorators.find((x) => x.constructor === TextCommandRestOption)) {
-        const text = argStrings.join(' ')
-        argStrings = []
-        return [text, msg]
-      }
-      return [argStrings.shift(), msg]
-    })
+      msg.command = command
 
-    await command.execute(ext, args, [msg])
+      const args: unknown[] = []
+
+      let argStrings = content.slice(commandNameLength + 1).split(/ /g)
+
+      await this.convertArguments(TextCommandComponent, args, command.argTypes, async (arg, i, converter) => {
+        if (converter.options.parameterless) return [msg]
+
+        if (arg.decorators.find((x) => x.constructor === TextCommandRestOption)) {
+          const text = argStrings.join(' ')
+          argStrings = []
+          return [text, msg]
+        }
+        return [argStrings.shift(), msg]
+      })
+
+      await command.execute(ext, args, [msg])
+    } catch (e) {
+      this.commandClient.emit('textCommandInvokeError', e, msg)
+    }
   }
 
   @argConverter({ component: TextCommandComponent, type: Message, parameterless: true })

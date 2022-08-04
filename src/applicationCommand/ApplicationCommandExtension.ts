@@ -41,91 +41,91 @@ export class ApplicationCommandExtension extends CTSExtension {
 
   @listener({ event: 'interactionCreate' })
   async interactionCreate(i: Interaction) {
-    if (i.type !== InteractionType.ApplicationCommand) return
+    try {
+      if (i.type !== InteractionType.ApplicationCommand) return
 
-    let cmd: ApplicationCommandComponent | null = null
-    let ext: object | null = null
+      let cmd: ApplicationCommandComponent | null = null
+      let ext: object | null = null
 
-    const extensions = this.commandClient.registry.extensions
+      const extensions = this.commandClient.registry.extensions
 
-    let subcommand: string | null = null
-    let subcommandGroup: string | null = null
+      let subcommand: string | null = null
+      let subcommandGroup: string | null = null
 
-    if (i.commandType === ApplicationCommandType.ChatInput) {
-      subcommand = i.options.getSubcommand(false)
-      subcommandGroup = i.options.getSubcommandGroup(false)
-    }
-
-    extLoop: for (const extension of extensions) {
-      const components = this.commandClient.registry.getComponentsWithType<ApplicationCommandComponent>(extension, ApplicationCommandComponent)
-
-      if (subcommand) {
-        for (const command of components) {
-          if (!command.subcommandGroup && !command.subcommandGroupChild) continue
-
-          if (
-            command.subcommandGroupChild &&
-            command.subcommandGroupChild.parent.options.name === i.commandName &&
-            command.subcommandGroupChild.options.name === subcommandGroup &&
-            command.options.name === subcommand
-          ) {
-            ext = extension
-            cmd = command
-            break extLoop
-          }
-          if (command.subcommandGroup && !subcommandGroup && command.subcommandGroup.options.name === i.commandName && command.options.name === subcommand) {
-            ext = extension
-            cmd = command
-            break extLoop
-          }
-        }
-      } else {
-        for (const command of components) {
-          if (command.options.name === i.commandName) {
-            ext = extension
-            cmd = command
-            break extLoop
-          }
-        }
+      if (i.commandType === ApplicationCommandType.ChatInput) {
+        subcommand = i.options.getSubcommand(false)
+        subcommandGroup = i.options.getSubcommandGroup(false)
       }
-    }
 
-    if (cmd && ext) {
-      const argList: unknown[] = []
+      extLoop: for (const extension of extensions) {
+        const components = this.commandClient.registry.getComponentsWithType<ApplicationCommandComponent>(extension, ApplicationCommandComponent)
 
-      await this.convertArguments(ApplicationCommandComponent, argList, cmd.argTypes, () => [i])
+        if (subcommand) {
+          for (const command of components) {
+            if (!command.subcommandGroup && !command.subcommandGroupChild) continue
 
-      for (const [idx, arg] of cmd.argTypes) {
-        let value: unknown = null
-
-        for (const decorator of arg.decorators) {
-          if (decorator instanceof ApplicationCommandOption) {
-            if ([ApplicationCommandOptionType.Subcommand, ApplicationCommandOptionType.SubcommandGroup].includes(decorator.options.type) && i.isChatInputCommand()) {
-              if (decorator.options.type === ApplicationCommandOptionType.Subcommand) {
-                value = i.options.getSubcommand() === decorator.options.name
-                break
-              }
-              if (decorator.options.type === ApplicationCommandOptionType.SubcommandGroup) {
-                value = i.options.getSubcommandGroup() === decorator.options.name
-                break
-              }
+            if (
+              command.subcommandGroupChild &&
+              command.subcommandGroupChild.parent.options.name === i.commandName &&
+              command.subcommandGroupChild.options.name === subcommandGroup &&
+              command.options.name === subcommand
+            ) {
+              ext = extension
+              cmd = command
+              break extLoop
             }
+            if (command.subcommandGroup && !subcommandGroup && command.subcommandGroup.options.name === i.commandName && command.options.name === subcommand) {
+              ext = extension
+              cmd = command
+              break extLoop
+            }
+          }
+        } else {
+          for (const command of components) {
+            if (command.options.name === i.commandName) {
+              ext = extension
+              cmd = command
+              break extLoop
+            }
+          }
+        }
+      }
 
-            value = i.options.get(decorator.options.name, false)?.value
-            break
+      if (cmd && ext) {
+        const argList: unknown[] = []
+
+        await this.convertArguments(ApplicationCommandComponent, argList, cmd.argTypes, () => [i])
+
+        for (const [idx, arg] of cmd.argTypes) {
+          let value: unknown = null
+
+          for (const decorator of arg.decorators) {
+            if (decorator instanceof ApplicationCommandOption) {
+              if ([ApplicationCommandOptionType.Subcommand, ApplicationCommandOptionType.SubcommandGroup].includes(decorator.options.type) && i.isChatInputCommand()) {
+                if (decorator.options.type === ApplicationCommandOptionType.Subcommand) {
+                  value = i.options.getSubcommand() === decorator.options.name
+                  break
+                }
+                if (decorator.options.type === ApplicationCommandOptionType.SubcommandGroup) {
+                  value = i.options.getSubcommandGroup() === decorator.options.name
+                  break
+                }
+              }
+
+              value = i.options.get(decorator.options.name, false)?.value
+              break
+            }
+          }
+
+          if (value) {
+            argList[idx] = value
           }
         }
 
-        if (value) {
-          argList[idx] = value
-        }
-      }
-
-      try {
         await cmd.execute(ext, argList, [i])
-      } catch (e) {
-        this.commandClient.emit('applicationCommandInvokeError', e, i)
       }
+    } catch (e) {
+      this.commandClient.emit('applicationCommandInvokeError', e, i)
     }
   }
 
