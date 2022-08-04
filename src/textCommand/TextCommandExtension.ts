@@ -17,6 +17,12 @@ export type TextCommandConfig = {
   prefix: string | string[] | ((msg: Message) => Promise<string | string[]> | string | string[])
 }
 
+declare module 'discord.js' {
+  interface Message {
+    command: TextCommandComponent
+  }
+}
+
 export class TextCommandExtension extends CTSExtension {
   constructor(private config: TextCommandConfig) {
     super()
@@ -92,6 +98,8 @@ export class TextCommandExtension extends CTSExtension {
     const ext = extensions.get(command)
 
     if (!ext) return
+
+    msg.command = command
 
     const args: unknown[] = []
 
