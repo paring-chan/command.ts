@@ -39,6 +39,12 @@ export class ApplicationCommandExtension extends CTSExtension {
     super()
   }
 
+  unmanagedCommands: ApplicationCommandData[] = []
+
+  registerUnmanagedCommand(command: ApplicationCommandData) {
+    this.unmanagedCommands.push(command)
+  }
+
   @listener({ event: 'interactionCreate' })
   async interactionCreate(i: Interaction) {
     try {
@@ -261,6 +267,8 @@ export class ApplicationCommandExtension extends CTSExtension {
 
       commands.push(cmd)
     }
+
+    commands.push(...this.unmanagedCommands)
 
     if (this.config.guilds) {
       for (const guild of this.config.guilds) {
