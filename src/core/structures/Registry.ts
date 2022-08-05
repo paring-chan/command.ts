@@ -85,21 +85,25 @@ export class Registry {
 
     for (const file of files) {
       if (file.endsWith('.d.ts')) continue
-      try {
-        const p = path.join(dir, file)
-        const mod = require(p)
-
-        if (typeof mod.setup !== 'function') continue
-
-        const modules = await mod.setup()
-
-        results.push(...(await this.registerModules(modules, p)))
-      } catch (e) {
-        this.logger.error(`Failed to load ${file}`)
-      }
+      const p = path.join(dir, file)
+      results.push(...(await this.loadModulesAtPath(p)))
     }
 
     return results
+  }
+
+  async loadModulesAtPath(file: string) {
+    this.logger.info(`Loading module: ${chalk.green(module.constructor.name)}`)
+
+    const p = require.resolve(file)
+
+    const mod = require(p)
+
+    if (typeof mod.setup !== 'function') throw new Error('Extension must have a setup function')
+
+    const modules = await mod.setup()
+
+    return this.registerModules(modules, p)
   }
 
   private async registerModules(modules: object | object[], p: string) {
@@ -120,34 +124,29 @@ export class Registry {
   }
 
   async reloadModules() {
-    const result: { file: string; result: boolean; error?: Error }[] = []
+    const result: { file: string; result: boolean; error?: Error; extensions?: object[] }[] = []
     const paths = new Set<string>()
     for (const module of this.extensions) {
       const file = Reflect.getMetadata(FilePathSymbol, module)
       if (!file) continue
 
+      this.logger.info(`Unloading module: ${chalk.green(module.constructor.name)}`)
+
       paths.add(file)
 
       await this.unregisterModule(module)
-
-      _.remove(this.extensions, (x) => x === module)
 
       delete require.cache[require.resolve(file)]
     }
 
     for (const path of paths) {
       try {
-        const mod = require(path)
-
-        if (typeof mod.setup !== 'function') continue
-
-        const modules = await mod.setup(this.client)
-
-        this.extensions.push(...(await this.registerModules(modules, path)))
+        const extensions = await this.loadModulesAtPath(path)
 
         result.push({
           file: path,
           result: true,
+          extensions,
         })
       } catch (e) {
         result.push({
