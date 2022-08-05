@@ -129,6 +129,9 @@ export class Registry {
       paths.add(file)
 
       await this.unregisterModule(module)
+
+      _.remove(this.extensions, (x) => x === module)
+
       delete require.cache[require.resolve(file)]
     }
 
@@ -140,7 +143,7 @@ export class Registry {
 
         const modules = await mod.setup(this.client)
 
-        await this.registerModules(modules, path)
+        this.extensions.push(...(await this.registerModules(modules, path)))
 
         result.push({
           file: path,
