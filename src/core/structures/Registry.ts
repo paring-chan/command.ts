@@ -93,7 +93,7 @@ export class Registry {
   }
 
   async loadModulesAtPath(file: string) {
-    this.logger.info(`Loading module: ${chalk.green(file)}`)
+    this.logger.info(`Loading module at path ${chalk.green(file)}`)
 
     const p = require.resolve(file)
 
@@ -130,7 +130,7 @@ export class Registry {
       const file = Reflect.getMetadata(FilePathSymbol, module)
       if (!file) continue
 
-      this.logger.info(`Unloading module: ${chalk.green(module.constructor.name)}`)
+      this.logger.info(`Unloading module: ${chalk.green(module.constructor.name)}(at path ${chalk.green(file)})`)
 
       paths.add(file)
 
