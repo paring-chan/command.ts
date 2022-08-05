@@ -126,11 +126,12 @@ export class Registry {
   async reloadModules() {
     const result: { file: string; result: boolean; error?: Error; extensions?: object[] }[] = []
     const paths = new Set<string>()
-    for (const module of this.extensions) {
+    const extensions = [...this.extensions]
+    for (const module of extensions) {
       const file = Reflect.getMetadata(FilePathSymbol, module)
       if (!file) continue
 
-      this.logger.info(`Unloading module: ${chalk.green(module.constructor.name)}(at path ${chalk.green(file)})`)
+      this.logger.info(`Unloading module: ${chalk.green(module.constructor.name)}`)
 
       paths.add(file)
 
