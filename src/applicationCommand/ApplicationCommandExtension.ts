@@ -167,7 +167,17 @@ export class ApplicationCommandExtension extends CTSExtension {
 
         if (!group.options) group.options = []
 
-        group.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand } as ApplicationCommandSubCommandData)
+        const options = []
+
+        for (const [, arg] of command.argTypes) {
+          const option = arg.decorators.find((x) => x.constructor === ApplicationCommandOption) as ApplicationCommandOption
+
+          if (option) {
+            options.push(option.options)
+          }
+        }
+
+        group.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand, options } as ApplicationCommandSubCommandData)
 
         continue
       } else if (command.subcommandGroupChild) {
@@ -206,7 +216,17 @@ export class ApplicationCommandExtension extends CTSExtension {
 
         if (!child.options) child.options = []
 
-        child.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand } as APIApplicationCommandSubcommandOption)
+        const options = []
+
+        for (const [, arg] of command.argTypes) {
+          const option = arg.decorators.find((x) => x.constructor === ApplicationCommandOption) as ApplicationCommandOption
+
+          if (option) {
+            options.push(option.options)
+          }
+        }
+
+        child.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand, options } as APIApplicationCommandSubcommandOption)
 
         continue
       }
