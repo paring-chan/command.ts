@@ -93,7 +93,7 @@ export class Registry {
   }
 
   async loadModulesAtPath(file: string) {
-    this.logger.info(`Loading module: ${chalk.green(module.constructor.name)}`)
+    this.logger.info(`Loading module: ${chalk.green(file)}`)
 
     const p = require.resolve(file)
 
