@@ -42,7 +42,7 @@ export class ApplicationCommandExtension extends CTSExtension {
 
   unmanagedCommands: (ApplicationCommandData & { guilds?: Snowflake[] })[] = []
 
-  registerUnmanagedCommand(command: ApplicationCommandData & { guild?: Snowflake[] }) {
+  registerUnmanagedCommand(command: ApplicationCommandData & { guilds?: Snowflake[] }) {
     this.unmanagedCommands.push(command)
   }
 
