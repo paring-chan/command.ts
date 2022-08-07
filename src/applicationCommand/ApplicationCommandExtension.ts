@@ -11,6 +11,7 @@ import {
   APIApplicationCommandSubcommandGroupOption,
   APIApplicationCommandSubcommandOption,
   ApplicationCommandData,
+  ApplicationCommandDataResolvable,
   ApplicationCommandOptionType,
   ApplicationCommandSubCommandData,
   ApplicationCommandType,
@@ -39,9 +40,9 @@ export class ApplicationCommandExtension extends CTSExtension {
     super()
   }
 
-  unmanagedCommands: ApplicationCommandData[] = []
+  unmanagedCommands: (ApplicationCommandData & { guilds?: Snowflake[] })[] = []
 
-  registerUnmanagedCommand(command: ApplicationCommandData) {
+  registerUnmanagedCommand(command: ApplicationCommandData & { guild?: Snowflake[] }) {
     this.unmanagedCommands.push(command)
   }
 
@@ -268,7 +269,21 @@ export class ApplicationCommandExtension extends CTSExtension {
       commands.push(cmd)
     }
 
-    commands.push(...this.unmanagedCommands)
+    for (const { guilds, ...rest } of this.unmanagedCommands) {
+      if (guilds) {
+        for (const guild of guilds) {
+          let commands = guildCommands.get(guild)
+          if (!commands) {
+            commands = []
+            guildCommands.set(guild, commands)
+          }
+          commands.push(rest)
+        }
+        continue
+      } else {
+        commands.push(rest)
+      }
+    }
 
     if (this.config.guilds) {
       for (const guild of this.config.guilds) {
