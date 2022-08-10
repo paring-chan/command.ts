@@ -11,7 +11,7 @@
     "@types/chalk": "2.2.0",
     "@types/lodash": "4.14.184",
     "all-contributors-cli": "6.20.0",
-    "discord.js": "14.1.2",
+    "discord.js": "14.2.0",
     "dotenv": "16.0.1",
     "prettier": "2.7.1",
     "rimraf": "3.0.2",
