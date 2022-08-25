@@ -101,7 +101,7 @@ export class Registry {
 
     if (typeof mod.setup !== 'function') throw new Error('Extension must have a setup function')
 
-    const modules = await mod.setup()
+    const modules = await mod.setup(this.client)
 
     return this.registerModules(modules, p)
   }
