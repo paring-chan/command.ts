@@ -1,10 +1,10 @@
 /*
-* File: CommandClient.ts
-* 
-* Copyright (c) 2022-2022 pikokr
-* 
-* Licensed under MIT License. Please see more defails in LICENSE file.
-*/
+ * File: CommandClient.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
 
 import chalk from 'chalk'
 import { Client, Snowflake, Team, User } from 'discord.js'
@@ -30,6 +30,10 @@ export class CommandClient extends EventEmitter {
 
     this.registry.registerEventEmitter('cts', this)
     this.registry.registerEventEmitter('discord', this.discord)
+  }
+
+  async isOwner(user: User): Promise<boolean> {
+    return this.owners.has(user.id)
   }
 
   async fetchOwners() {

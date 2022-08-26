@@ -1,10 +1,10 @@
 /*
-* File: checks.ts
-* 
-* Copyright (c) 2022-2022 pikokr
-* 
-* Licensed under MIT License. Please see more defails in LICENSE file.
-*/
+ * File: checks.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
 
 import { BaseInteraction, Interaction, Message } from 'discord.js'
 import { createComponentHook } from '../hooks'
@@ -18,9 +18,10 @@ export const ownerOnly = createCheckDecorator(async (client: CommandClient, i: I
   let isOwner = false
 
   if (i instanceof BaseInteraction) {
-    isOwner = client.owners.has(i.user.id)
+    client
+    isOwner = await client.isOwner(i.user)
   } else if (i instanceof Message) {
-    isOwner = client.owners.has(i.author.id)
+    isOwner = await client.isOwner(i.author)
   }
 
   if (!isOwner) throw new OwnerOnlyError()
