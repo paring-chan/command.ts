@@ -9,7 +9,7 @@
 import chalk from 'chalk'
 import { Client, Snowflake, Team, User } from 'discord.js'
 import EventEmitter from 'events'
-import { Logger } from 'tslog'
+import { ISettingsParam, Logger } from 'tslog'
 import { ApplicationCommandExtension, ApplicationCommandExtensionConfig } from '../../applicationCommand/ApplicationCommandExtension'
 import { TextCommandConfig } from '../../textCommand'
 import { TextCommandExtension } from '../../textCommand/TextCommandExtension'
@@ -21,10 +21,14 @@ export class CommandClient extends EventEmitter {
 
   owners: Set<Snowflake> = new Set()
 
-  constructor(public discord: Client, public logger: Logger = new Logger({ dateTimeTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone })) {
+  constructor(
+    public discord: Client,
+    public logger: Logger = new Logger({ dateTimeTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone }),
+    loggerOptions: ISettingsParam = {},
+  ) {
     super()
 
-    this.ctsLogger = logger.getChildLogger({ prefix: [chalk.blue('[command.ts]')], displayFilePath: 'hidden', displayFunctionName: false })
+    this.ctsLogger = logger.getChildLogger({ prefix: [chalk.blue('[command.ts]')], displayFilePath: 'hidden', displayFunctionName: false, ...loggerOptions })
 
     this.registry = new Registry(this.ctsLogger, this)
 
