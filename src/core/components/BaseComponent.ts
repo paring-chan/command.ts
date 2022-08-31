@@ -33,8 +33,16 @@ export class BaseComponent {
 
     const { CommandClient } = await import('../structures/CommandClient')
 
+    const client = CommandClient.getFromModule(target)
+
+    const globalHooks = client.registry.globalHooks[name]
+
+    if (globalHooks) {
+      hook.unshift(...globalHooks)
+    }
+
     for (const fn of hook) {
-      await fn.call(null, CommandClient.getFromModule(target), ...args)
+      await fn.call(null, client, ...args)
     }
   }
 

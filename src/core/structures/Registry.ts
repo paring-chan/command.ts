@@ -12,13 +12,13 @@ import EventEmitter from 'events'
 import _, { result } from 'lodash'
 import { Logger } from 'tslog'
 import { getComponentStore } from '../components'
-import type { BaseComponent } from '../components'
 import { getModuleHookStore } from '../hooks'
 import { ListenerComponent } from '../listener'
 import { CommandClientSymbol, FilePathSymbol } from '../symbols'
 import { CommandClient } from './CommandClient'
 import walkSync from 'walk-sync'
 import path from 'path'
+import { ComponentHookFn } from '../hooks/componentHook'
 
 export class Registry {
   extensions: object[] = []
@@ -27,10 +27,23 @@ export class Registry {
 
   logger: Logger
 
+  globalHooks: Record<string, ComponentHookFn[]> = {}
+
   constructor(logger: Logger, public client: CommandClient) {
     this.logger = logger.getChildLogger({
       prefix: [chalk.green('[Registry]')],
     })
+  }
+
+  addGlobalHook(name: string, fn: ComponentHookFn) {
+    let hooks = this.globalHooks[name]
+
+    if (!hooks) {
+      hooks = []
+      this.globalHooks[name] = hooks
+    }
+
+    hooks.push(fn)
   }
 
   getComponentsWithTypeGlobal<T>(type: unknown): T[] {
