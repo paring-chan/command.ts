@@ -51,11 +51,11 @@ export class BaseComponent {
     let result
     try {
       result = await this.method.call(target, ...args)
+      await this.executeHook(target, 'afterCall', [...beforeCallArgs, result])
     } catch (e) {
       await this.executeHook(target, 'invokeError', [e, ...beforeCallArgs])
       throw e
     }
-    await this.executeHook(target, 'afterCall', [...beforeCallArgs, result])
 
     return result
   }
