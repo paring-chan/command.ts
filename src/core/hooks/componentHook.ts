@@ -1,10 +1,10 @@
 /*
-* File: componentHook.ts
-* 
-* Copyright (c) 2022-2022 pikokr
-* 
-* Licensed under MIT License. Please see more defails in LICENSE file.
-*/
+ * File: componentHook.ts
+ *
+ * Copyright (c) 2022-2022 pikokr
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
 
 import { Collection } from 'discord.js'
 import { ComponentHookSymbol } from '../symbols'
@@ -35,6 +35,6 @@ export const createComponentHook = (name: string, fn: ComponentHookFn): MethodDe
       store.set(name, hooks)
     }
 
-    hooks.push(fn)
+    hooks.unshift(fn)
   }
 }
