@@ -23,3 +23,5 @@ export class ConverterComponent extends BaseComponent {
 }
 
 export const argConverter = (options: OptionsArg) => createComponentDecorator(new ConverterComponent(options))
+
+export { Options as ArgumentConvertOptions, OptionsArg as ArgumentConvertOptionsArg }

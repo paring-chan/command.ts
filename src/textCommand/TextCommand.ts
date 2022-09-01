@@ -9,7 +9,7 @@
 import { createComponentDecorator } from '../core/components/decoratorCreator'
 import { BaseComponent } from '../core/components/BaseComponent'
 
-type TextCommandOptions = {
+export type TextCommandOptions = {
   name: string
   aliases?: string[]
   description?: string

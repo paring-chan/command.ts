@@ -13,8 +13,8 @@ import { ComponentStoreSymbol } from '../symbols'
 import { BaseComponent } from './BaseComponent'
 import { ComponentArgumentDecorator } from './ComponentArgumentDecorator'
 
-type ComponentStore = Collection<string | symbol, BaseComponent>
-type ComponentArgumentStore = Collection<number, ComponentArgumentDecorator>
+export type ComponentStore = Collection<string | symbol, BaseComponent>
+export type ComponentArgumentStore = Collection<number, ComponentArgumentDecorator>
 
 export const getComponentStore = (target: object): ComponentStore => {
   let result: ComponentStore | null = Reflect.getMetadata(ComponentStoreSymbol, target)

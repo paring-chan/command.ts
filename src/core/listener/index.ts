@@ -25,3 +25,5 @@ export class ListenerComponent extends BaseComponent {
 }
 
 export const listener = (options: OptionsArg) => createComponentDecorator(new ListenerComponent(options))
+
+export { Options as ListenerOptions, OptionsArg as ListenerOptionsArg }
