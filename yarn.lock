@@ -65,7 +65,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@discordjs/ts-docgen@npm:^0.4.1":
+"@discordjs/ts-docgen@npm:0.4.1":
   version: 0.4.1
   resolution: "@discordjs/ts-docgen@npm:0.4.1"
   dependencies:
@@ -157,7 +157,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@pikokr/command.ts@workspace:."
   dependencies:
-    "@discordjs/ts-docgen": ^0.4.1
+    "@discordjs/ts-docgen": 0.4.1
     "@swc/core": 1.2.223
     "@types/chalk": 2.2.0
     "@types/lodash": 4.14.184
@@ -171,10 +171,10 @@ __metadata:
     reflect-metadata: ^0.1.13
     rimraf: 3.0.2
     ts-node: 10.9.1
-    tslog: ^3.3.4
+    tslog: 3.3.4
     tsup: 6.2.1
-    typedoc: ^0.23.13
-    typescript: ^4.8.2
+    typedoc: 0.23.13
+    typescript: 4.8.2
     walk-sync: ^3.0.0
   peerDependencies:
     discord.js: "*"
@@ -2806,7 +2806,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"tslog@npm:^3.3.4":
+"tslog@npm:3.3.4":
   version: 3.3.4
   resolution: "tslog@npm:3.3.4"
   dependencies:
@@ -2858,6 +2858,22 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
+"typedoc@npm:0.23.13":
+  version: 0.23.13
+  resolution: "typedoc@npm:0.23.13"
+  dependencies:
+    lunr: ^2.3.9
+    marked: ^4.0.19
+    minimatch: ^5.1.0
+    shiki: ^0.11.1
+  peerDependencies:
+    typescript: 4.6.x || 4.7.x || 4.8.x
+  bin:
+    typedoc: bin/typedoc
+  checksum: 720b5fa9846fcb2d0e3a763bc01b8f856d7e1c80ac50d2efd85dd850f61b98c4f52b7519a86ff2c59cebc7ab1e19e92cab31a25082d4574ab9a6f93e660e5369
+  languageName: node
+  linkType: hard
+
 "typedoc@npm:^0.22.15":
   version: 0.22.18
   resolution: "typedoc@npm:0.22.18"
@@ -2875,23 +2891,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"typedoc@npm:^0.23.13":
-  version: 0.23.13
-  resolution: "typedoc@npm:0.23.13"
-  dependencies:
-    lunr: ^2.3.9
-    marked: ^4.0.19
-    minimatch: ^5.1.0
-    shiki: ^0.11.1
-  peerDependencies:
-    typescript: 4.6.x || 4.7.x || 4.8.x
-  bin:
-    typedoc: bin/typedoc
-  checksum: 720b5fa9846fcb2d0e3a763bc01b8f856d7e1c80ac50d2efd85dd850f61b98c4f52b7519a86ff2c59cebc7ab1e19e92cab31a25082d4574ab9a6f93e660e5369
-  languageName: node
-  linkType: hard
-
-"typescript@npm:^4.8.2":
+"typescript@npm:4.8.2":
   version: 4.8.2
   resolution: "typescript@npm:4.8.2"
   bin:
@@ -2901,7 +2901,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.8.2#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.8.2#~builtin<compat/typescript>":
   version: 4.8.2
   resolution: "typescript@patch:typescript@npm%3A4.8.2#~builtin<compat/typescript>::version=4.8.2&hash=a1c5e5"
   bin:
