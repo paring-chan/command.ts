@@ -129,7 +129,12 @@ export class ApplicationCommandExtension extends CTSExtension {
           }
         }
 
-        await cmd.execute(ext, argList, [i])
+        try {
+          await cmd.executeGlobalHook(ext, 'beforeApplicationCommandCall', [i])
+          await cmd.execute(ext, argList, [i])
+        } finally {
+          await cmd.executeGlobalHook(ext, 'afterApplicationCommandCall', [i])
+        }
       }
     } catch (e) {
       this.commandClient.emit('applicationCommandInvokeError', e, i)

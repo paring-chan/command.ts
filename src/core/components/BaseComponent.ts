@@ -26,6 +26,20 @@ export class BaseComponent {
     }
   }
 
+  async executeGlobalHook(target: object, name: string, args: unknown[]) {
+    const { CommandClient } = await import('../structures/CommandClient')
+
+    const client = CommandClient.getFromModule(target)
+
+    const globalHooks = client.registry.globalHooks[name]
+
+    if (globalHooks) {
+      for (const fn of globalHooks) {
+        await fn.call(null, client, ...args)
+      }
+    }
+  }
+
   async executeHook(target: object, name: string, args: unknown[]) {
     const hook = this.hooks.get(name)
 
