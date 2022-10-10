@@ -5,7 +5,16 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@babel/runtime@npm:^7.14.6, @babel/runtime@npm:^7.7.6":
+"@babel/runtime@npm:^7.18.9":
+  version: 7.19.4
+  resolution: "@babel/runtime@npm:7.19.4"
+  dependencies:
+    regenerator-runtime: ^0.13.4
+  checksum: 66b7e3c13e9ee1d2c9397ea89144f29a875edee266a0eb2d9971be51b32fdbafc85808c7a45e011e6681899bb804b4e2ee2aed6dc07108dbbd6b11b6cc2afba6
+  languageName: node
+  linkType: hard
+
+"@babel/runtime@npm:^7.7.6":
   version: 7.16.7
   resolution: "@babel/runtime@npm:7.16.7"
   dependencies:
@@ -162,7 +171,7 @@ __metadata:
     "@types/chalk": 2.2.0
     "@types/lodash": 4.14.184
     "@types/node": ^16.0.0
-    all-contributors-cli: 6.20.0
+    all-contributors-cli: 6.24.0
     chalk: 4.1.2
     discord.js: 14.3.0
     dotenv: 16.0.1
@@ -514,23 +523,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"all-contributors-cli@npm:6.20.0":
-  version: 6.20.0
-  resolution: "all-contributors-cli@npm:6.20.0"
+"all-contributors-cli@npm:6.24.0":
+  version: 6.24.0
+  resolution: "all-contributors-cli@npm:6.24.0"
   dependencies:
     "@babel/runtime": ^7.7.6
-    async: ^3.0.1
+    async: ^3.1.0
     chalk: ^4.0.0
     didyoumean: ^1.2.1
-    inquirer: ^7.0.4
-    json-fixer: ^1.5.1
+    inquirer: ^7.3.3
+    json-fixer: ^1.6.8
     lodash: ^4.11.2
     node-fetch: ^2.6.0
     pify: ^5.0.0
     yargs: ^15.0.1
   bin:
     all-contributors: dist/cli.js
-  checksum: 3ac54cc73b75960be0d0304b22301d56f2422d509660860ab5cdb55bce1a3a1d3b3eba63b470a6edbe9568dfc4fd0c8176b0702ea2bdb430376c9c57900f53f4
+  checksum: 26b0a5ec014185d79380a90c5603d26100f8d57956cabbf92b68d3567de058787f5a4ddf788e3b3e71802dff827c3c096c6052805473f243f912018c31a024b7
   languageName: node
   linkType: hard
 
@@ -614,10 +623,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"async@npm:^3.0.1":
-  version: 3.2.3
-  resolution: "async@npm:3.2.3"
-  checksum: c4bee57ab2249af3dc83ca3ef9acfa8e822c0d5e5aa41bae3eaf7f673648343cd64ecd7d26091ffd357f3f044428b17b5f00098494b6cf8b6b3e9681f0636ca1
+"async@npm:^3.1.0":
+  version: 3.2.4
+  resolution: "async@npm:3.2.4"
+  checksum: 43d07459a4e1d09b84a20772414aa684ff4de085cbcaec6eea3c7a8f8150e8c62aa6cd4e699fe8ee93c3a5b324e777d34642531875a0817a35697522c1b02e89
   languageName: node
   linkType: hard
 
@@ -1585,7 +1594,7 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"inquirer@npm:^7.0.4":
+"inquirer@npm:^7.3.3":
   version: 7.3.3
   resolution: "inquirer@npm:7.3.3"
   dependencies:
@@ -1691,14 +1700,14 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"json-fixer@npm:^1.5.1":
-  version: 1.6.13
-  resolution: "json-fixer@npm:1.6.13"
+"json-fixer@npm:^1.6.8":
+  version: 1.6.15
+  resolution: "json-fixer@npm:1.6.15"
   dependencies:
-    "@babel/runtime": ^7.14.6
+    "@babel/runtime": ^7.18.9
     chalk: ^4.1.2
     pegjs: ^0.10.0
-  checksum: 21a650768d22290a5cefd0a36a3e709c13edfde9e3d627d5cdfefd54d35d537d6d16446cb5f8ed9a7bf409fb354a9aec7d02bd07d13e3f733cb2bf25c0f6bab9
+  checksum: ae805d5155ace57fd588a9ec129efd7324c3ef7f622988c66301eed9380da0acccdd35e9355b307c53051b246e2118d17a40775a2b13f19221574f5f662d4b15
   languageName: node
   linkType: hard
 
