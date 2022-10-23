@@ -173,7 +173,7 @@ __metadata:
     ts-node: 10.9.1
     tslog: ^3.3.4
     tsup: 6.2.1
-    typedoc: ^0.23.13
+    typedoc: 0.23.18
     typescript: ^4.8.2
     walk-sync: ^3.0.0
   peerDependencies:
@@ -2858,6 +2858,22 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
+"typedoc@npm:0.23.18":
+  version: 0.23.18
+  resolution: "typedoc@npm:0.23.18"
+  dependencies:
+    lunr: ^2.3.9
+    marked: ^4.0.19
+    minimatch: ^5.1.0
+    shiki: ^0.11.1
+  peerDependencies:
+    typescript: 4.6.x || 4.7.x || 4.8.x
+  bin:
+    typedoc: bin/typedoc
+  checksum: 2cf1ae57865e53545ba4cbdd8a441870b7a4ad74e421d43f4b731e4643adc82c3a2e89fa9cf1f600f908d9d12da818bcd1d26970c9dce9493a8d8ec5b649b594
+  languageName: node
+  linkType: hard
+
 "typedoc@npm:^0.22.15":
   version: 0.22.18
   resolution: "typedoc@npm:0.22.18"
@@ -2872,22 +2888,6 @@ fsevents@~2.3.2:
   bin:
     typedoc: bin/typedoc
   checksum: b813d8129682f6ed5a4e96bacaf019e4da1d2744ca89fef850d6bb4c034616567ce67e6a7f5cfc5f00aac573f0b45d44b1427aafa262ab88dce6b460cb9e744c
-  languageName: node
-  linkType: hard
-
-"typedoc@npm:^0.23.13":
-  version: 0.23.13
-  resolution: "typedoc@npm:0.23.13"
-  dependencies:
-    lunr: ^2.3.9
-    marked: ^4.0.19
-    minimatch: ^5.1.0
-    shiki: ^0.11.1
-  peerDependencies:
-    typescript: 4.6.x || 4.7.x || 4.8.x
-  bin:
-    typedoc: bin/typedoc
-  checksum: 720b5fa9846fcb2d0e3a763bc01b8f856d7e1c80ac50d2efd85dd850f61b98c4f52b7519a86ff2c59cebc7ab1e19e92cab31a25082d4574ab9a6f93e660e5369
   languageName: node
   linkType: hard
 
