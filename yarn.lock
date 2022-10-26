@@ -163,7 +163,7 @@ __metadata:
     "@types/lodash": 4.14.184
     "@types/node": ^16.0.0
     all-contributors-cli: 6.20.0
-    chalk: 4.1.2
+    chalk: 5.1.2
     discord.js: 14.3.0
     dotenv: 16.0.1
     lodash: ^4.17.21
@@ -728,7 +728,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:4.1.2, chalk@npm:^4.0.0, chalk@npm:^4.1.0, chalk@npm:^4.1.2":
+"chalk@npm:5.1.2":
+  version: 5.1.2
+  resolution: "chalk@npm:5.1.2"
+  checksum: 804d7485e33531abe45b14e91026ceb5615974a8c04259ab0806f214a7666f6ea03e39ab124f7d5a0c78a83fda89005f236db3c5f10c2abe9ae875f7aa56bcb5
+  languageName: node
+  linkType: hard
+
+"chalk@npm:^4.0.0, chalk@npm:^4.1.0, chalk@npm:^4.1.2":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
