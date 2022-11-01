@@ -160,7 +160,7 @@ __metadata:
     "@discordjs/ts-docgen": ^0.4.1
     "@swc/core": 1.2.223
     "@types/chalk": 2.2.0
-    "@types/lodash": 4.14.184
+    "@types/lodash": 4.14.187
     "@types/node": ^16.0.0
     all-contributors-cli: 6.20.0
     chalk: 4.1.2
@@ -424,10 +424,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:4.14.184":
-  version: 4.14.184
-  resolution: "@types/lodash@npm:4.14.184"
-  checksum: 6d9a4d67f7f9d0ec3fd21174f3dd3d00629dc1227eb469450eace53adbc1f7e2330699c28d0fe093e5f0fef0f0e763098be1f779268857213224af082b62be21
+"@types/lodash@npm:4.14.187":
+  version: 4.14.187
+  resolution: "@types/lodash@npm:4.14.187"
+  checksum: 5f8a4fe6d8a6785b8ecbd9efdc8b7d3341b873f63c5390ad0f269a517508e92c1b1d7d43e97bdfb6bba5bba9a8501b30a54f791ef4c30b854382745c75c607d4
   languageName: node
   linkType: hard
 
