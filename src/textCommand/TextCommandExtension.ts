@@ -59,7 +59,7 @@ export class TextCommandExtension extends CTSExtension {
     try {
       const startIndex = await this.processPrefix(msg)
 
-      if (!startIndex === null) return
+      if (startIndex === null) return
 
       const content = msg.content.slice(startIndex)
 
