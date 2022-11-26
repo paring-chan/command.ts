@@ -14,7 +14,10 @@ import { TextCommandRestOption } from './parameters'
 import { argConverter } from '../core'
 
 export type TextCommandConfig = {
-  prefix: string | string[] | ((msg: Message) => Promise<string | string[]> | string | string[])
+  prefix:
+    | string
+    | string[]
+    | ((msg: Message) => Promise<string | string[]> | string | string[])
 }
 
 declare module 'discord.js' {
@@ -56,7 +59,7 @@ export class TextCommandExtension extends CTSExtension {
     try {
       const startIndex = await this.processPrefix(msg)
 
-      if (!startIndex) return
+      if (!startIndex === null) return
 
       const content = msg.content.slice(startIndex)
 
@@ -65,7 +68,10 @@ export class TextCommandExtension extends CTSExtension {
       const extensions = new Map<TextCommandComponent, object>()
 
       for (const ext of this.commandClient.registry.extensions) {
-        for (const cmd of this.commandClient.registry.getComponentsWithType<TextCommandComponent>(ext, TextCommandComponent)) {
+        for (const cmd of this.commandClient.registry.getComponentsWithType<TextCommandComponent>(
+          ext,
+          TextCommandComponent
+        )) {
           commands.push(cmd)
           extensions.set(cmd, ext)
         }
@@ -106,16 +112,23 @@ export class TextCommandExtension extends CTSExtension {
 
       let argStrings = content.slice(commandNameLength + 1).split(/ /g)
 
-      await this.convertArguments(TextCommandComponent, args, command.argTypes, async (arg, i, converter) => {
-        if (converter.options.parameterless) return [msg]
+      await this.convertArguments(
+        TextCommandComponent,
+        args,
+        command.argTypes,
+        async (arg, i, converter) => {
+          if (converter.options.parameterless) return [msg]
 
-        if (arg.decorators.find((x) => x.constructor === TextCommandRestOption)) {
-          const text = argStrings.join(' ')
-          argStrings = []
-          return [text, msg]
+          if (
+            arg.decorators.find((x) => x.constructor === TextCommandRestOption)
+          ) {
+            const text = argStrings.join(' ')
+            argStrings = []
+            return [text, msg]
+          }
+          return [argStrings.shift(), msg]
         }
-        return [argStrings.shift(), msg]
-      })
+      )
 
       await command.execute(ext, args, [msg])
     } catch (e) {
@@ -123,7 +136,11 @@ export class TextCommandExtension extends CTSExtension {
     }
   }
 
-  @argConverter({ component: TextCommandComponent, type: Message, parameterless: true })
+  @argConverter({
+    component: TextCommandComponent,
+    type: Message,
+    parameterless: true,
+  })
   async mesage(msg: Message) {
     return msg
   }
