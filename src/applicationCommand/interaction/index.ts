@@ -6,5 +6,5 @@
  * Licensed under MIT License. Please see more defails in LICENSE file.
  */
 
-export * from "./Interaction"
-export * from "./InteractionHandlerExtension"
+export * from './Interaction'
+export * from './InteractionHandlerExtension'
