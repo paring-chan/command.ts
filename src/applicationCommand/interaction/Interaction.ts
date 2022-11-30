@@ -1,3 +1,11 @@
+/*
+ * File: Interaction.ts
+ *
+ * Copyright (c) 2022-2022 Dayo
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
+
 import {BaseComponent, createComponentDecorator} from "../../core";
 
 export interface Interaction {

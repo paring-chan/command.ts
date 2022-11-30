@@ -1,3 +1,11 @@
+/*
+ * File: InteractionHandlerExtension.ts
+ *
+ * Copyright (c) 2022-2022 Dayo
+ *
+ * Licensed under MIT License. Please see more defails in LICENSE file.
+ */
+
 import {CTSExtension} from "../../core/extensions/CTSExtension";
 import {listener} from "../../core";
 import { Events, Interaction } from "discord.js";

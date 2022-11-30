@@ -14,11 +14,10 @@ import {
   Client,
   Message
 } from 'discord.js'
-import { applicationCommand, CommandClient, moduleHook, option, ownerOnly, listener, Extension, command, rest, SubCommandGroup } from '../src'
+import { applicationCommand, CommandClient, moduleHook, option, ownerOnly, listener, Extension, command, rest, SubCommandGroup, interaction } from '../src'
 import 'dotenv/config'
 import { Logger } from 'tslog'
 import chalk from 'chalk'
-import {interaction} from "../src/applicationCommand/interaction";
 
 const group = new SubCommandGroup({
   name: 'hi',
