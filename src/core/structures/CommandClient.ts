@@ -15,6 +15,7 @@ import { TextCommandConfig } from '../../textCommand'
 import { TextCommandExtension } from '../../textCommand/TextCommandExtension'
 import { CommandClientSymbol } from '../symbols'
 import { Registry } from './Registry'
+import {InteractionHandlerExtension} from "../../applicationCommand/interaction/InteractionHandlerExtension";
 export class CommandClient extends EventEmitter {
   ctsLogger: Logger
   registry: Registry
@@ -74,6 +75,11 @@ export class CommandClient extends EventEmitter {
   async enableTextCommandsExtension(config: TextCommandConfig) {
     await this.registry.registerModule(new TextCommandExtension(config))
     this.ctsLogger.info('Text command extension enabled.')
+  }
+
+  async enableInteractionHandlerExtension() {
+    await this.registry.registerModule(new InteractionHandlerExtension())
+    this.ctsLogger.info('Interaction handler extension enabled.')
   }
 
   getApplicationCommandsExtension() {

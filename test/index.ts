@@ -6,11 +6,19 @@
  * Licensed under MIT License. Please see more defails in LICENSE file.
  */
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, Client, Message } from 'discord.js'
+import {
+  ApplicationCommandOptionType,
+  ApplicationCommandType,
+  ButtonInteraction,
+  ChatInputCommandInteraction,
+  Client,
+  Message
+} from 'discord.js'
 import { applicationCommand, CommandClient, moduleHook, option, ownerOnly, listener, Extension, command, rest, SubCommandGroup } from '../src'
 import 'dotenv/config'
 import { Logger } from 'tslog'
 import chalk from 'chalk'
+import {interaction} from "../src/applicationCommand/interaction";
 
 const group = new SubCommandGroup({
   name: 'hi',
@@ -78,6 +86,15 @@ class Test extends Extension {
   async test(msg: Message, @rest() sans: string) {
     console.log(sans)
     await msg.reply('Wow')
+  }
+
+  @interaction({
+    receiveType: 'Button',
+    customId: 'id'
+  })
+  async testButton(interaction: ButtonInteraction) {
+    console.log(JSON.stringify(interaction))
+    await interaction.reply('sans!')
   }
 }
 
