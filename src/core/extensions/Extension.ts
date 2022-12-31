@@ -22,10 +22,10 @@ export class Extension {
     return this.commandClient.discord
   }
 
-  protected _logger?: Logger
+  protected _logger?: Logger<unknown>
 
   protected get logger() {
-    if (!this._logger) this._logger = this.commandClient.logger.getChildLogger({ prefix: [chalk.green(`[${this.constructor.name}]`)], displayFunctionName: false })
+    if (!this._logger) this._logger = this.commandClient.logger.getSubLogger({ prefix: [chalk.green(`[${this.constructor.name}]`)] })
     return this._logger
   }
 

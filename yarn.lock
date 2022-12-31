@@ -171,7 +171,7 @@ __metadata:
     reflect-metadata: ^0.1.13
     rimraf: 3.0.2
     ts-node: 10.9.1
-    tslog: ^3.3.4
+    tslog: ^4.7.1
     tsup: 6.2.1
     typedoc: ^0.23.13
     typescript: ^4.8.2
@@ -660,13 +660,6 @@ __metadata:
   dependencies:
     fill-range: ^7.0.1
   checksum: e2a8e769a863f3d4ee887b5fe21f63193a891c68b612ddb4b68d82d1b5f3ff9073af066c343e9867a393fe4c2555dcb33e89b937195feb9c1613d259edfcd459
-  languageName: node
-  linkType: hard
-
-"buffer-from@npm:^1.0.0":
-  version: 1.1.2
-  resolution: "buffer-from@npm:1.1.2"
-  checksum: 0448524a562b37d4d7ed9efd91685a5b77a50672c556ea254ac9a6d30e3403a517d8981f10e565db24e8339413b43c97ca2951f10e399c6125a0d8911f5679bb
   languageName: node
   linkType: hard
 
@@ -2541,29 +2534,12 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"source-map-support@npm:^0.5.21":
-  version: 0.5.21
-  resolution: "source-map-support@npm:0.5.21"
-  dependencies:
-    buffer-from: ^1.0.0
-    source-map: ^0.6.0
-  checksum: 43e98d700d79af1d36f859bdb7318e601dfc918c7ba2e98456118ebc4c4872b327773e5a1df09b0524e9e5063bb18f0934538eace60cca2710d1fa687645d137
-  languageName: node
-  linkType: hard
-
 "source-map@npm:0.8.0-beta.0":
   version: 0.8.0-beta.0
   resolution: "source-map@npm:0.8.0-beta.0"
   dependencies:
     whatwg-url: ^7.0.0
   checksum: e94169be6461ab0ac0913313ad1719a14c60d402bd22b0ad96f4a6cffd79130d91ab5df0a5336a326b04d2df131c1409f563c9dc0d21a6ca6239a44b6c8dbd92
-  languageName: node
-  linkType: hard
-
-"source-map@npm:^0.6.0":
-  version: 0.6.1
-  resolution: "source-map@npm:0.6.1"
-  checksum: 59ce8640cf3f3124f64ac289012c2b8bd377c238e316fb323ea22fbfe83da07d81e000071d7242cad7a23cd91c7de98e4df8830ec3f133cb6133a5f6e9f67bc2
   languageName: node
   linkType: hard
 
@@ -2806,12 +2782,10 @@ fsevents@~2.3.2:
   languageName: node
   linkType: hard
 
-"tslog@npm:^3.3.4":
-  version: 3.3.4
-  resolution: "tslog@npm:3.3.4"
-  dependencies:
-    source-map-support: ^0.5.21
-  checksum: c830921239dfb0e1fd8b4733710b6d3a7e49d1c2890481a49b0f3396c86e913a2db2bbafc6be7afcc305ef4e8503b5cb58817bc770c969fef67758a1f764871b
+"tslog@npm:^4.7.1":
+  version: 4.7.1
+  resolution: "tslog@npm:4.7.1"
+  checksum: 03050b49c27baf07e5de6d2d446298f6ac36fcb151db20eb2890c2769ba525224b404a3b18472d5a57c5dc704885215fb319afbd1245e246d4d242121b91de0d
   languageName: node
   linkType: hard
 

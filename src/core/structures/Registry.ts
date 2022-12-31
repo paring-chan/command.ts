@@ -25,12 +25,12 @@ export class Registry {
 
   emitters: Collection<string, EventEmitter> = new Collection()
 
-  logger: Logger
+  logger: Logger<unknown>
 
   globalHooks: Record<string, ComponentHookFn[]> = {}
 
-  constructor(logger: Logger, public client: CommandClient) {
-    this.logger = logger.getChildLogger({
+  constructor(logger: Logger<unknown>, public client: CommandClient) {
+    this.logger = logger.getSubLogger({
       prefix: [chalk.green('[Registry]')],
     })
   }

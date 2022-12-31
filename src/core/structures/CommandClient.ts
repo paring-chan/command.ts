@@ -16,19 +16,15 @@ import { TextCommandExtension } from '../../textCommand/TextCommandExtension'
 import { CommandClientSymbol } from '../symbols'
 import { Registry } from './Registry'
 export class CommandClient extends EventEmitter {
-  ctsLogger: Logger
+  ctsLogger: Logger<unknown>
   registry: Registry
 
   owners: Set<Snowflake> = new Set()
 
-  constructor(
-    public discord: Client,
-    public logger: Logger = new Logger({ dateTimeTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone }),
-    loggerOptions: ISettingsParam = {},
-  ) {
+  constructor(public discord: Client, public logger: Logger<unknown> = new Logger({ prettyLogTimeZone: 'local' }), loggerOptions: ISettingsParam<unknown> = {}) {
     super()
 
-    this.ctsLogger = logger.getChildLogger({ prefix: [chalk.blue('[command.ts]')], displayFilePath: 'hidden', displayFunctionName: false, ...loggerOptions })
+    this.ctsLogger = logger.getSubLogger({ prefix: [chalk.blue('[command.ts]')], ...loggerOptions })
 
     this.registry = new Registry(this.ctsLogger, this)
 
