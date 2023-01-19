@@ -34,6 +34,15 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Kimu-Nowchira",
+      "name": "키뮤",
+      "avatar_url": "https://avatars.githubusercontent.com/u/47320945?v=4",
+      "profile": "https://blog.naver.com/hon20ke",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "projectName": "command.ts",
