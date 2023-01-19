@@ -91,10 +91,10 @@ export class Registry {
     }
   }
 
-  async loadAllModulesInDirectory(dir: string): Promise<object[]> {
+  async loadAllModulesInDirectory(dir: string, pattern?: RegExp): Promise<object[]> {
     const results: object[] = []
 
-    const files = walkSync(dir).filter((x) => x.endsWith('.ts') || x.endsWith('.js'))
+    const files = walkSync(dir).filter((x) => (x.endsWith('.ts') || x.endsWith('.js')) && (!pattern || pattern.test(x)))
 
     for (const file of files) {
       if (file.endsWith('.d.ts')) continue
