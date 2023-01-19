@@ -1,4 +1,3 @@
-
 <div align="center">
 	<br />
 	<p>
@@ -12,14 +11,18 @@
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About
+
 **Command.ts** is a powerful command framework for discord.js
-* Easy to make slash command
-* Decorator support
-* Object-oriented class structure
-* TypeScript
+
+- Easy to make slash command
+- Decorator support
+- Object-oriented class structure
+- TypeScript
 
 ## Installation
+
 Node.js 16.9.0 or newer is required.
+
 ```shell
 npm install @pikokr/command.ts
 yarn add @pikokr/command.ts
@@ -27,24 +30,29 @@ pnpm add @pikokr/command.ts
 ```
 
 ### Required packages
-* [discord.js](https://github.com/discordjs/discord.js) (`npm install discord.js`)
-* [tslog](https://github.com/fullstack-build/tslog) for cts built-in logger (`npm install tslog`)
+
+- [discord.js](https://github.com/discordjs/discord.js) (`npm install discord.js`)
+- [tslog](https://github.com/fullstack-build/tslog) for cts built-in logger (`npm install tslog`)
 
 ## Start with template
+
 If you want to start project with command.ts, you can use the [quickstart template](https://github.com/pikokr/command.ts-v5-template).
+
 ```shell
 npx degit pikokr/command.ts-v5-template my-app
 cd my-app
 npm dev
 ```
+
 Please refer to [template repository](https://github.com/pikokr/command.ts-v5-template) for detailed usage.
 
 ## Links
-* [Official Discord Server](https://discord.gg/EkFHRG4TZZ)
-* [Documentation](https://cts.pikokr.dev)
-* [Command.TS V5 QuickStart Template](https://github.com/pikokr/command.ts-v5-template)
-* [Command.TS V4 QuickStart Template](https://github.com/pikokr/command.ts-v4-quickstart-template)
-* [Command.TS V3 QuickStart Template](https://github.com/pikokr/command.ts-v3-quickstart-template)
+
+- [Official Discord Server](https://discord.gg/EkFHRG4TZZ)
+- [Documentation](https://cts.pikokr.dev)
+- [Command.TS V5 QuickStart Template](https://github.com/pikokr/command.ts-v5-template)
+- [Command.TS V4 QuickStart Template](https://github.com/pikokr/command.ts-v4-quickstart-template)
+- [Command.TS V3 QuickStart Template](https://github.com/pikokr/command.ts-v3-quickstart-template)
 
 ## Contributors
 
