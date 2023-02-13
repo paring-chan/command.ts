@@ -1,7 +1,7 @@
 {
   "name": "@pikokr/command.ts",
   "description": "Discord.js command framework for typescript.",
-  "version": "5.4.0",
+  "version": "5.5.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
