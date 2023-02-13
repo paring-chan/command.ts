@@ -31,7 +31,7 @@ export class Registry {
 
   constructor(logger: Logger<unknown>, public client: CommandClient) {
     this.logger = logger.getSubLogger({
-      prefix: [chalk.green('[Registry]')],
+      name: chalk.green('Registry'),
     })
   }
 

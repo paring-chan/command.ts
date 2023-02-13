@@ -26,7 +26,7 @@ class Test extends Extension {
     description: 'wow this is test',
   })
   async testCommand(i: ChatInputCommandInteraction) {
-    i.reply('Wow')
+    await i.reply('Wow')
   }
 
   @ownerOnly
@@ -85,7 +85,7 @@ const ext = new Test()
 
 const client = new Client({ intents: ['GuildMessages', 'MessageContent', 'DirectMessages', 'Guilds'] })
 
-const logger = new Logger({ dateTimeTimezone: Intl.DateTimeFormat().resolvedOptions().timeZone })
+const logger = new Logger({  })
 
 const cc = new CommandClient(client, logger)
 

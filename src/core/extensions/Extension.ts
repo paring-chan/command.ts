@@ -25,7 +25,7 @@ export class Extension {
   protected _logger?: Logger<unknown>
 
   protected get logger() {
-    if (!this._logger) this._logger = this.commandClient.logger.getSubLogger({ prefix: [chalk.green(`[${this.constructor.name}]`)] })
+    if (!this._logger) this._logger = this.commandClient.logger.getSubLogger({ name: chalk.green(`${this.constructor.name}`) })
     return this._logger
   }
 

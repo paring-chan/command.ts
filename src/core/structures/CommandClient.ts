@@ -24,7 +24,10 @@ export class CommandClient extends EventEmitter {
   constructor(public discord: Client, public logger: Logger<unknown> = new Logger({ prettyLogTimeZone: 'local' }), loggerOptions: ISettingsParam<unknown> = {}) {
     super()
 
-    this.ctsLogger = logger.getSubLogger({ prefix: [chalk.blue('[command.ts]')], ...loggerOptions })
+    this.ctsLogger = logger.getSubLogger({
+      ...loggerOptions,
+      name: 'command.ts',
+    })
 
     this.registry = new Registry(this.ctsLogger, this)
 
