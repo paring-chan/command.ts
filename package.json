@@ -1,6 +1,7 @@
 {
   "name": "@pikokr/command.ts",
   "description": "Discord.js command framework for typescript.",
+  "packageManager": "pnpm@7.30.3",
   "version": "5.5.0",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,9 +11,14 @@
     "@swc/core": "1.2.223",
     "@types/chalk": "2.2.0",
     "@types/lodash": "4.14.184",
+    "@typescript-eslint/eslint-plugin": "latest",
+    "@typescript-eslint/parser": "latest",
     "all-contributors-cli": "6.20.0",
     "discord.js": "14.3.0",
     "dotenv": "16.0.1",
+    "eslint": "latest",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "prettier": "2.7.1",
     "rimraf": "3.0.2",
     "ts-node": "10.9.1",
@@ -38,7 +44,8 @@
     "docs:dev": "typedoc",
     "docs:build": "typedoc",
     "docs": "typedoc --json docs/typedoc-out.json --tsconfig tsconfig.prod.json src/index.ts && ts-node scripts/docs",
-    "test": "yarn ts-node --swc test"
+    "test": "yarn ts-node --swc test",
+    "lint": "eslint --ignore-path .gitignore ."
   },
   "peerDependencies": {
     "discord.js": "*",
