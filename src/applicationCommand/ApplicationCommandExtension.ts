@@ -1,13 +1,5 @@
 import chalk from 'chalk'
-import type {
-  APIApplicationCommandSubcommandGroupOption,
-  APIApplicationCommandSubcommandOption,
-  ApplicationCommandData,
-  ApplicationCommandSubCommandData,
-  ChatInputApplicationCommandData,
-  Interaction,
-  Snowflake,
-} from 'discord.js'
+import type { ApplicationCommandData, ApplicationCommandSubCommandData, ApplicationCommandSubGroupData, ChatInputApplicationCommandData, Interaction, Snowflake } from 'discord.js'
 import {
   ApplicationCommandOptionType,
   ApplicationCommandType,
@@ -212,10 +204,10 @@ export class ApplicationCommandExtension extends CTSExtension {
 
         if (!group.options) group.options = []
 
-        let child = group.options.find((x) => x.name === command.subcommandGroupChild?.options.name) as APIApplicationCommandSubcommandGroupOption | undefined
+        let child = group.options.find((x) => x.name === command.subcommandGroupChild?.options.name) as ApplicationCommandSubGroupData
 
         if (!child) {
-          child = { type: ApplicationCommandOptionType.SubcommandGroup, ...(command.subcommandGroupChild.options as Omit<APIApplicationCommandSubcommandGroupOption, 'type'>) }
+          child = { ...(command.subcommandGroupChild.options as Omit<ApplicationCommandSubGroupData, 'type'>), type: ApplicationCommandOptionType.SubcommandGroup }
           group.options.push(child)
         }
 
@@ -231,7 +223,7 @@ export class ApplicationCommandExtension extends CTSExtension {
           }
         }
 
-        child.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand, options } as APIApplicationCommandSubcommandOption)
+        child.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand, options } as ApplicationCommandSubCommandData)
 
         continue
       }

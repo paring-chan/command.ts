@@ -1,12 +1,12 @@
-import type { APIApplicationCommandSubcommandOption, ChatInputApplicationCommandData } from 'discord.js'
+import type { ApplicationCommandSubGroupData, ChatInputApplicationCommandData } from 'discord.js'
 import { ApplicationCommandType } from 'discord.js'
 import { createComponentDecorator } from '../core'
 import { ApplicationCommandComponent } from './ApplicationCommand'
 
 export class SubCommandGroup {
-  constructor(public options: Omit<APIApplicationCommandSubcommandOption, 'type'>, public guilds?: string[]) {}
+  constructor(public options: Omit<ChatInputApplicationCommandData, 'type'>, public guilds?: string[]) {}
 
-  command(options: Omit<ChatInputApplicationCommandData, 'options' | 'type'>): MethodDecorator {
+  command(options: Omit<ApplicationCommandSubGroupData, 'options' | 'type'>): MethodDecorator {
     const cmd = new ApplicationCommandComponent({
       type: ApplicationCommandType.ChatInput,
       ...options,
@@ -15,13 +15,13 @@ export class SubCommandGroup {
     return createComponentDecorator(cmd)
   }
 
-  createChild(options: Omit<APIApplicationCommandSubcommandOption, 'type'>) {
+  createChild(options: Omit<ApplicationCommandSubGroupData, 'options' | 'type'>) {
     return new SubCommandGroupChild(options, this)
   }
 }
 
 export class SubCommandGroupChild {
-  constructor(public options: Omit<APIApplicationCommandSubcommandOption, 'type'>, public parent: SubCommandGroup) {}
+  constructor(public options: Omit<ApplicationCommandSubGroupData, 'options' | 'type'>, public parent: SubCommandGroup) {}
 
   command(options: Omit<ChatInputApplicationCommandData, 'options' | 'type'>): MethodDecorator {
     const cmd = new ApplicationCommandComponent({
