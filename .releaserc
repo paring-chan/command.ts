@@ -1,0 +1,11 @@
+{
+  "release": {
+    "branches": [
+      "stable",
+      {
+        "name": "dev",
+        "prerelease": true
+      }
+    ]
+  }
+}
