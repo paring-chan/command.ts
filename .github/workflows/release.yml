@@ -20,8 +20,10 @@ jobs:
       - name: Enable corepack
         run: corepack enable
 
-      - name: Replace npm with pnpm
-        run: cat $(which pnpm) > $(which npm)
+      - name: Remove packageManager entry
+        run: |
+          apt install -y jq
+          cat package.json | jq "del(.packageManager)" | tee package.json
 
       - name: Get pnpm store directory
         id: pnpm-cache
