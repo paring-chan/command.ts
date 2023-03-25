@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "@types/node": "^16.0.0",
-    "chalk": "4.1.2",
+    "chalk": "5.2.0",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
     "walk-sync": "^3.0.0"
