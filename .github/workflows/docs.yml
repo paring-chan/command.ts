@@ -24,13 +24,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16
-          cache: 'yarn'
-          cache-dependency-path: yarn.lock
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
       - name: Install dependencies
-        run: yarn --immutable
+        run: pnpm i --frozen-lockfile
 
       - name: Build docs
-        run: yarn docs
+        run: pnpm docs
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
