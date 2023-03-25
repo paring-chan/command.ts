@@ -2,7 +2,7 @@
   "name": "@pikokr/command.ts",
   "description": "Discord.js command framework for typescript.",
   "packageManager": "pnpm@7.30.3",
-  "version": "5.5.0",
+  "version": "0.0.0-development",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
@@ -25,7 +25,8 @@
     "tslog": "^4.7.1",
     "tsup": "6.2.1",
     "typedoc": "^0.23.13",
-    "typescript": "^4.8.2"
+    "typescript": "^4.8.2",
+    "semantic-release": "^21.0.0"
   },
   "dependencies": {
     "@types/node": "^16.0.0",
@@ -45,7 +46,8 @@
     "docs:build": "typedoc",
     "docs": "typedoc --json docs/typedoc-out.json --tsconfig tsconfig.prod.json src/index.ts && ts-node scripts/docs",
     "test": "yarn ts-node --swc test",
-    "lint": "eslint --ignore-path .gitignore ."
+    "lint": "eslint --ignore-path .gitignore .",
+    "semantic-release": "semantic-release"
   },
   "peerDependencies": {
     "discord.js": "*",
