@@ -4,8 +4,9 @@
 		<a href="https://cts.pikokr.dev"><img src="https://user-images.githubusercontent.com/47320945/213408015-daf06ba4-687d-4b1c-b255-d42e3a590d1e.png" width="546" alt="discord.js" /></a>
 	</p>
 
-[![.github/workflows/publish.yml](https://github.com/pikokr/command.ts/actions/workflows/publish.yml/badge.svg)](https://github.com/pikokr/command.ts/actions/workflows/publish.yml) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![Release](https://github.com/pikokr/command.ts/actions/workflows/release.yml/badge.svg)](https://github.com/pikokr/command.ts/actions/workflows/release.yml) <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-3-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## About
