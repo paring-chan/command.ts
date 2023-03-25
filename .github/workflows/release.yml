@@ -20,6 +20,9 @@ jobs:
       - name: Enable corepack
         run: corepack enable
 
+      - name: Replace npm with pnpm
+        run: cat $(which pnpm) > $(which npm)
+
       - name: Get pnpm store directory
         id: pnpm-cache
         shell: bash
