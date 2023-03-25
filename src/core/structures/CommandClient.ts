@@ -1,11 +1,3 @@
-/*
- * File: CommandClient.ts
- *
- * Copyright (c) 2022-2022 pikokr
- *
- * Licensed under MIT License. Please see more defails in LICENSE file.
- */
-
 import chalk from 'chalk'
 import { Client, Snowflake, Team, User } from 'discord.js'
 import EventEmitter from 'events'

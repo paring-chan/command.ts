@@ -85,7 +85,7 @@ const ext = new Test()
 
 const client = new Client({ intents: ['GuildMessages', 'MessageContent', 'DirectMessages', 'Guilds'] })
 
-const logger = new Logger({  })
+const logger = new Logger({})
 
 const cc = new CommandClient(client, logger)
 

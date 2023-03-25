@@ -1,11 +1,3 @@
-/*
- * File: checks.ts
- *
- * Copyright (c) 2022-2022 pikokr
- *
- * Licensed under MIT License. Please see more defails in LICENSE file.
- */
-
 import { BaseInteraction, Interaction, Message } from 'discord.js'
 import { createComponentHook } from '../hooks'
 import { ComponentHookFn } from '../hooks/componentHook'

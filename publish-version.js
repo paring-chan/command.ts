@@ -1,10 +1,10 @@
-/* 
+/*
  *  This is the default license template.
- *  
+ *
  *  File: publish-version.js
  *  Author: pikokr
  *  Copyright (c) 2022 pikokr
- *  
+ *
  *  To edit this license information: Press Ctrl+Shift+P and press 'Create new License Template...'.
  */
 
