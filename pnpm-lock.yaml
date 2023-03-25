@@ -3,14 +3,13 @@ lockfileVersion: 5.4
 specifiers:
   '@discordjs/ts-docgen': ^0.4.1
   '@swc/core': 1.2.223
-  '@types/chalk': 2.2.0
   '@types/lodash': 4.14.184
   '@types/node': ^16.0.0
   '@typescript-eslint/eslint-plugin': latest
   '@typescript-eslint/parser': latest
   all-contributors-cli: 6.20.0
   chalk: 4.1.2
-  discord.js: 14.3.0
+  discord.js: 14.8.0
   dotenv: 16.0.1
   eslint: latest
   eslint-config-prettier: ^8.8.0
@@ -23,8 +22,8 @@ specifiers:
   ts-node: 10.9.1
   tslog: ^4.7.1
   tsup: 6.2.1
-  typedoc: ^0.23.13
-  typescript: ^4.8.2
+  typedoc: ^0.23.28
+  typescript: ^4.7.4
   walk-sync: ^3.0.0
 
 dependencies:
@@ -35,14 +34,13 @@ dependencies:
   walk-sync: 3.0.0
 
 devDependencies:
-  '@discordjs/ts-docgen': 0.4.1_typescript@4.9.5
+  '@discordjs/ts-docgen': 0.4.1_typescript@4.7.4
   '@swc/core': 1.2.223
-  '@types/chalk': 2.2.0
   '@types/lodash': 4.14.184
-  '@typescript-eslint/eslint-plugin': 5.56.0_iskin7c6dxqunwflhstekcjqmq
-  '@typescript-eslint/parser': 5.56.0_vgl77cfdswitgr47lm5swmv43m
+  '@typescript-eslint/eslint-plugin': 5.56.0_tdlfzgcpl3o7c3erxtokdxrd2q
+  '@typescript-eslint/parser': 5.56.0_eky3x5i7y7l4yby5jbcncpkdgu
   all-contributors-cli: 6.20.0
-  discord.js: 14.3.0
+  discord.js: 14.8.0
   dotenv: 16.0.1
   eslint: 8.36.0
   eslint-config-prettier: 8.8.0_eslint@8.36.0
@@ -50,11 +48,11 @@ devDependencies:
   prettier: 2.7.1
   rimraf: 3.0.2
   semantic-release: 21.0.0
-  ts-node: 10.9.1_b6vk2ugxcfo44gvlh325k4stpa
+  ts-node: 10.9.1_k7ulvn4nl2int7t3uuuc2ypvmu
   tslog: 4.8.2
-  tsup: 6.2.1_cerl2wpifr6f3l2eq6n4d2urou
-  typedoc: 0.23.28_typescript@4.9.5
-  typescript: 4.9.5
+  tsup: 6.2.1_4y3eejo6iw3ifjjgqi6t2pp5s4
+  typedoc: 0.23.28_typescript@4.7.4
+  typescript: 4.7.4
 
 packages:
 
@@ -139,12 +137,12 @@ packages:
       undici: 5.21.0
     dev: true
 
-  /@discordjs/ts-docgen/0.4.1_typescript@4.9.5:
+  /@discordjs/ts-docgen/0.4.1_typescript@4.7.4:
     resolution: {integrity: sha512-T+GMJaWvISrEi3Rjg2Tfn1EZeido+SEBv3+393uFLK71koJvwlexAwjzOc0yKz6uanK4mUQyCp35vOIvWsQ1IQ==}
     engines: {node: '>=16.0.0', npm: '>=7.0.0'}
     dependencies:
       js-yaml: 4.1.0
-      typedoc: 0.22.18_typescript@4.9.5
+      typedoc: 0.22.18_typescript@4.7.4
     transitivePeerDependencies:
       - typescript
     dev: true
@@ -693,13 +691,6 @@ packages:
     resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
     dev: true
 
-  /@types/chalk/2.2.0:
-    resolution: {integrity: sha512-1zzPV9FDe1I/WHhRkf9SNgqtRJWZqrBWgu7JGveuHmmyR9CnAPCie2N/x+iHrgnpYBIcCJWHBoMRv2TRWktsvw==}
-    deprecated: This is a stub types definition for chalk (https://github.com/chalk/chalk). chalk provides its own type definitions, so you don't need @types/chalk installed!
-    dependencies:
-      chalk: 4.1.2
-    dev: true
-
   /@types/json-schema/7.0.11:
     resolution: {integrity: sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==}
     dev: true
@@ -737,7 +728,7 @@ packages:
       '@types/node': 16.18.20
     dev: true
 
-  /@typescript-eslint/eslint-plugin/5.56.0_iskin7c6dxqunwflhstekcjqmq:
+  /@typescript-eslint/eslint-plugin/5.56.0_tdlfzgcpl3o7c3erxtokdxrd2q:
     resolution: {integrity: sha512-ZNW37Ccl3oMZkzxrYDUX4o7cnuPgU+YrcaYXzsRtLB16I1FR5SHMqga3zGsaSliZADCWo2v8qHWqAYIj8nWCCg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -749,23 +740,23 @@ packages:
         optional: true
     dependencies:
       '@eslint-community/regexpp': 4.4.1
-      '@typescript-eslint/parser': 5.56.0_vgl77cfdswitgr47lm5swmv43m
+      '@typescript-eslint/parser': 5.56.0_eky3x5i7y7l4yby5jbcncpkdgu
       '@typescript-eslint/scope-manager': 5.56.0
-      '@typescript-eslint/type-utils': 5.56.0_vgl77cfdswitgr47lm5swmv43m
-      '@typescript-eslint/utils': 5.56.0_vgl77cfdswitgr47lm5swmv43m
+      '@typescript-eslint/type-utils': 5.56.0_eky3x5i7y7l4yby5jbcncpkdgu
+      '@typescript-eslint/utils': 5.56.0_eky3x5i7y7l4yby5jbcncpkdgu
       debug: 4.3.4
       eslint: 8.36.0
       grapheme-splitter: 1.0.4
       ignore: 5.2.4
       natural-compare-lite: 1.4.0
       semver: 7.3.8
-      tsutils: 3.21.0_typescript@4.9.5
-      typescript: 4.9.5
+      tsutils: 3.21.0_typescript@4.7.4
+      typescript: 4.7.4
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@typescript-eslint/parser/5.56.0_vgl77cfdswitgr47lm5swmv43m:
+  /@typescript-eslint/parser/5.56.0_eky3x5i7y7l4yby5jbcncpkdgu:
     resolution: {integrity: sha512-sn1OZmBxUsgxMmR8a8U5QM/Wl+tyqlH//jTqCg8daTAmhAk26L2PFhcqPLlYBhYUJMZJK276qLXlHN3a83o2cg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -777,10 +768,10 @@ packages:
     dependencies:
       '@typescript-eslint/scope-manager': 5.56.0
       '@typescript-eslint/types': 5.56.0
-      '@typescript-eslint/typescript-estree': 5.56.0_typescript@4.9.5
+      '@typescript-eslint/typescript-estree': 5.56.0_typescript@4.7.4
       debug: 4.3.4
       eslint: 8.36.0
-      typescript: 4.9.5
+      typescript: 4.7.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -793,7 +784,7 @@ packages:
       '@typescript-eslint/visitor-keys': 5.56.0
     dev: true
 
-  /@typescript-eslint/type-utils/5.56.0_vgl77cfdswitgr47lm5swmv43m:
+  /@typescript-eslint/type-utils/5.56.0_eky3x5i7y7l4yby5jbcncpkdgu:
     resolution: {integrity: sha512-8WxgOgJjWRy6m4xg9KoSHPzBNZeQbGlQOH7l2QEhQID/+YseaFxg5J/DLwWSsi9Axj4e/cCiKx7PVzOq38tY4A==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -803,12 +794,12 @@ packages:
       typescript:
         optional: true
     dependencies:
-      '@typescript-eslint/typescript-estree': 5.56.0_typescript@4.9.5
-      '@typescript-eslint/utils': 5.56.0_vgl77cfdswitgr47lm5swmv43m
+      '@typescript-eslint/typescript-estree': 5.56.0_typescript@4.7.4
+      '@typescript-eslint/utils': 5.56.0_eky3x5i7y7l4yby5jbcncpkdgu
       debug: 4.3.4
       eslint: 8.36.0
-      tsutils: 3.21.0_typescript@4.9.5
-      typescript: 4.9.5
+      tsutils: 3.21.0_typescript@4.7.4
+      typescript: 4.7.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -818,7 +809,7 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@typescript-eslint/typescript-estree/5.56.0_typescript@4.9.5:
+  /@typescript-eslint/typescript-estree/5.56.0_typescript@4.7.4:
     resolution: {integrity: sha512-41CH/GncsLXOJi0jb74SnC7jVPWeVJ0pxQj8bOjH1h2O26jXN3YHKDT1ejkVz5YeTEQPeLCCRY0U2r68tfNOcg==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -833,13 +824,13 @@ packages:
       globby: 11.1.0
       is-glob: 4.0.3
       semver: 7.3.8
-      tsutils: 3.21.0_typescript@4.9.5
-      typescript: 4.9.5
+      tsutils: 3.21.0_typescript@4.7.4
+      typescript: 4.7.4
     transitivePeerDependencies:
       - supports-color
     dev: true
 
-  /@typescript-eslint/utils/5.56.0_vgl77cfdswitgr47lm5swmv43m:
+  /@typescript-eslint/utils/5.56.0_eky3x5i7y7l4yby5jbcncpkdgu:
     resolution: {integrity: sha512-XhZDVdLnUJNtbzaJeDSCIYaM+Tgr59gZGbFuELgF7m0IY03PlciidS7UQNKLE0+WpUTn1GlycEr6Ivb/afjbhA==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
@@ -850,7 +841,7 @@ packages:
       '@types/semver': 7.3.13
       '@typescript-eslint/scope-manager': 5.56.0
       '@typescript-eslint/types': 5.56.0
-      '@typescript-eslint/typescript-estree': 5.56.0_typescript@4.9.5
+      '@typescript-eslint/typescript-estree': 5.56.0_typescript@4.7.4
       eslint: 8.36.0
       eslint-scope: 5.1.1
       semver: 7.3.8
@@ -1385,14 +1376,15 @@ packages:
     resolution: {integrity: sha512-LDMBKzl/zbvHO/yCzno5hevuA6lFIXJwdKSJZQrB+1ToDpFfN9thK+xxgZNR4aVkI7GHRDja0p4Sl2oYVPnHYg==}
     dev: true
 
-  /discord.js/14.3.0:
-    resolution: {integrity: sha512-CpIwoAAuELiHSgVKRMzsCADS6ZlJwAZ9RlvcJYdEgS00aW36dSvXyBgE+S3pigkc7G+jU6BEalMUWIJFveqrBQ==}
+  /discord.js/14.8.0:
+    resolution: {integrity: sha512-UOxYtc/YnV7jAJ2gISluJyYeBw4e+j8gWn+IoqG8unaHAVuvZ13DdYN0M1f9fbUgUvSarV798inIrYFtDNDjwQ==}
     engines: {node: '>=16.9.0'}
-    deprecated: Hard crashes on interactions with a channel in the payload, use 14.8.0 and up
     dependencies:
       '@discordjs/builders': 1.5.0
       '@discordjs/collection': 1.4.0
+      '@discordjs/formatters': 0.2.0
       '@discordjs/rest': 1.6.0
+      '@discordjs/util': 0.2.0
       '@sapphire/snowflake': 3.4.0
       '@types/ws': 8.5.4
       discord-api-types: 0.37.37
@@ -3170,7 +3162,7 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.1.0
-      ts-node: 10.9.1_b6vk2ugxcfo44gvlh325k4stpa
+      ts-node: 10.9.1_k7ulvn4nl2int7t3uuuc2ypvmu
       yaml: 1.10.2
     dev: true
 
@@ -3824,7 +3816,7 @@ packages:
     resolution: {integrity: sha512-k43M7uCG1AkTyxgnmI5MPwKoUvS/bRvLvUb7+Pgpdlmok8AoqmUaZxUUw8zKM5B1lqZrt41GjYgnvAi0fppqgQ==}
     dev: true
 
-  /ts-node/10.9.1_b6vk2ugxcfo44gvlh325k4stpa:
+  /ts-node/10.9.1_k7ulvn4nl2int7t3uuuc2ypvmu:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -3851,7 +3843,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.9.5
+      typescript: 4.7.4
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
@@ -3869,7 +3861,7 @@ packages:
     engines: {node: '>=16'}
     dev: true
 
-  /tsup/6.2.1_cerl2wpifr6f3l2eq6n4d2urou:
+  /tsup/6.2.1_4y3eejo6iw3ifjjgqi6t2pp5s4:
     resolution: {integrity: sha512-KhBhCqVA3bHrIWhkcqTUA7R69H05IcBlHEtCVLEu42XDGUzz+bDqCcfu5PwpkKJ8DqK5tpdgM/qmyk4DdUbkZw==}
     engines: {node: '>=14'}
     hasBin: true
@@ -3900,20 +3892,20 @@ packages:
       source-map: 0.8.0-beta.0
       sucrase: 3.30.0
       tree-kill: 1.2.2
-      typescript: 4.9.5
+      typescript: 4.7.4
     transitivePeerDependencies:
       - supports-color
       - ts-node
     dev: true
 
-  /tsutils/3.21.0_typescript@4.9.5:
+  /tsutils/3.21.0_typescript@4.7.4:
     resolution: {integrity: sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA==}
     engines: {node: '>= 6'}
     peerDependencies:
       typescript: '>=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta'
     dependencies:
       tslib: 1.14.1
-      typescript: 4.9.5
+      typescript: 4.7.4
     dev: true
 
   /type-check/0.4.0:
@@ -3958,7 +3950,7 @@ packages:
     engines: {node: '>=12.20'}
     dev: true
 
-  /typedoc/0.22.18_typescript@4.9.5:
+  /typedoc/0.22.18_typescript@4.7.4:
     resolution: {integrity: sha512-NK9RlLhRUGMvc6Rw5USEYgT4DVAUFk7IF7Q6MYfpJ88KnTZP7EneEa4RcP+tX1auAcz7QT1Iy0bUSZBYYHdoyA==}
     engines: {node: '>= 12.10.0'}
     hasBin: true
@@ -3970,10 +3962,10 @@ packages:
       marked: 4.3.0
       minimatch: 5.1.6
       shiki: 0.10.1
-      typescript: 4.9.5
+      typescript: 4.7.4
     dev: true
 
-  /typedoc/0.23.28_typescript@4.9.5:
+  /typedoc/0.23.28_typescript@4.7.4:
     resolution: {integrity: sha512-9x1+hZWTHEQcGoP7qFmlo4unUoVJLB0H/8vfO/7wqTnZxg4kPuji9y3uRzEu0ZKez63OJAUmiGhUrtukC6Uj3w==}
     engines: {node: '>= 14.14'}
     hasBin: true
@@ -3984,11 +3976,11 @@ packages:
       marked: 4.3.0
       minimatch: 7.4.3
       shiki: 0.14.1
-      typescript: 4.9.5
+      typescript: 4.7.4
     dev: true
 
-  /typescript/4.9.5:
-    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
+  /typescript/4.7.4:
+    resolution: {integrity: sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
