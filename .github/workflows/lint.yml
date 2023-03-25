@@ -1,0 +1,25 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - 'dev'
+  pull_request:
+
+jobs:
+  eslint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Enable corepack
+        run: corepack enable
+      - name: Install dependencies
+        run: pnpm i
+      - name: Lint
+        run: pnpm run lint
