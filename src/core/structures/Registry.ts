@@ -1,16 +1,16 @@
 import chalk from 'chalk'
 import { Collection } from 'discord.js'
-import EventEmitter from 'events'
-import _, { result } from 'lodash'
-import { Logger } from 'tslog'
+import type EventEmitter from 'events'
+import _ from 'lodash'
+import type { Logger } from 'tslog'
 import { getComponentStore } from '../components'
 import { getModuleHookStore } from '../hooks'
 import { ListenerComponent } from '../listener'
 import { CommandClientSymbol, FilePathSymbol } from '../symbols'
-import { CommandClient } from './CommandClient'
+import type { CommandClient } from './CommandClient'
 import walkSync from 'walk-sync'
 import path from 'path'
-import { ComponentHookFn } from '../hooks/componentHook'
+import type { ComponentHookFn } from '../hooks/componentHook'
 
 export class Registry {
   extensions: object[] = []
@@ -19,7 +19,7 @@ export class Registry {
 
   logger: Logger<unknown>
 
-  globalHooks: Record<string, ComponentHookFn[]> = {}
+  globalHooks: Record<string, ComponentHookFn<unknown[]>[]> = {}
 
   constructor(logger: Logger<unknown>, public client: CommandClient) {
     this.logger = logger.getSubLogger({
@@ -27,7 +27,7 @@ export class Registry {
     })
   }
 
-  addGlobalHook(name: string, fn: ComponentHookFn) {
+  addGlobalHook(name: string, fn: ComponentHookFn<unknown[]>) {
     let hooks = this.globalHooks[name]
 
     if (!hooks) {
@@ -102,7 +102,7 @@ export class Registry {
 
     const p = require.resolve(file)
 
-    const mod = require(p)
+    const mod = await import(p)
 
     if (typeof mod.setup !== 'function') throw new Error('Extension must have a setup function')
 

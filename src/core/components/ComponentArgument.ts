@@ -1,4 +1,4 @@
-import { ComponentArgumentDecorator } from './ComponentArgumentDecorator'
+import type { ComponentArgumentDecorator } from './ComponentArgumentDecorator'
 
 export class ComponentArgument {
   decorators: ComponentArgumentDecorator[] = []

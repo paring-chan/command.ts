@@ -1,7 +1,7 @@
 import type { ApplicationCommandType, ChatInputApplicationCommandData, MessageApplicationCommandData, Snowflake, UserApplicationCommandData } from 'discord.js'
 import { createComponentDecorator } from '../core/components/decoratorCreator'
 import { BaseComponent } from '../core/components/BaseComponent'
-import { SubCommandGroup, SubCommandGroupChild } from './group'
+import type { SubCommandGroup, SubCommandGroupChild } from './group'
 
 type Options = (UserApplicationCommandData | MessageApplicationCommandData | Omit<ChatInputApplicationCommandData, 'options'>) & {
   type: ApplicationCommandType

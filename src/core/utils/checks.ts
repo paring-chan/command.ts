@@ -1,10 +1,11 @@
-import { BaseInteraction, Interaction, Message } from 'discord.js'
+import type { Interaction } from 'discord.js'
+import { BaseInteraction, Message } from 'discord.js'
 import { createComponentHook } from '../hooks'
-import { ComponentHookFn } from '../hooks/componentHook'
-import { CommandClient } from '../structures'
+import type { ComponentHookFn } from '../hooks/componentHook'
+import type { CommandClient } from '../structures'
 import { OwnerOnlyError } from './errors'
 
-export const createCheckDecorator = (fn: ComponentHookFn) => createComponentHook('beforeCall', fn)
+export const createCheckDecorator = (fn: ComponentHookFn<[CommandClient, Interaction | Message]>) => createComponentHook('beforeCall', fn)
 
 export const ownerOnly = createCheckDecorator(async (client: CommandClient, i: Interaction | Message) => {
   let isOwner = false

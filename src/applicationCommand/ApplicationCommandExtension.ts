@@ -1,20 +1,21 @@
 import chalk from 'chalk'
-import {
+import type {
   APIApplicationCommandSubcommandGroupOption,
   APIApplicationCommandSubcommandOption,
   ApplicationCommandData,
-  ApplicationCommandDataResolvable,
-  ApplicationCommandOptionType,
   ApplicationCommandSubCommandData,
-  ApplicationCommandType,
   ChatInputApplicationCommandData,
+  Interaction,
+  Snowflake,
+} from 'discord.js'
+import {
+  ApplicationCommandOptionType,
+  ApplicationCommandType,
   ChatInputCommandInteraction,
   Collection,
   CommandInteraction,
-  Interaction,
   InteractionType,
   MessageContextMenuCommandInteraction,
-  Snowflake,
   UserContextMenuCommandInteraction,
 } from 'discord.js'
 import { ApplicationCommandComponent } from './ApplicationCommand'
@@ -211,7 +212,7 @@ export class ApplicationCommandExtension extends CTSExtension {
 
         if (!group.options) group.options = []
 
-        let child = group.options.find((x) => x.name === command.subcommandGroupChild!.options.name) as APIApplicationCommandSubcommandGroupOption
+        let child = group.options.find((x) => x.name === command.subcommandGroupChild?.options.name) as APIApplicationCommandSubcommandGroupOption | undefined
 
         if (!child) {
           child = { type: ApplicationCommandOptionType.SubcommandGroup, ...(command.subcommandGroupChild.options as Omit<APIApplicationCommandSubcommandGroupOption, 'type'>) }
@@ -316,9 +317,13 @@ export class ApplicationCommandExtension extends CTSExtension {
       try {
         this.logger.info(`Processing ${chalk.green(commands.length)} commands(${commands.map((x) => chalk.blue(x.name)).join(', ')}) for application scope...`)
 
-        await this.client.application!.commands.set(commands)
+        if (this.client.application) {
+          await this.client.application.commands.set(commands)
 
-        this.logger.info('Successfully registered commands.')
+          this.logger.info('Successfully registered commands.')
+        } else {
+          this.logger.error('Client#application is not yet initialized.')
+        }
       } catch (e) {
         this.logger.error(`Failed to register commands to global: ${(e as Error).message}`)
       }

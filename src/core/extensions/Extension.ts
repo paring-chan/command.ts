@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import { Collection } from 'discord.js'
-import { Logger } from 'tslog'
-import { ComponentArgument } from '../components/ComponentArgument'
+import type { Logger } from 'tslog'
+import type { ComponentArgument } from '../components/ComponentArgument'
 import { ConverterComponent } from '../converter'
 import { CommandClient } from '../structures'
 
@@ -25,12 +25,12 @@ export class Extension {
     component: unknown,
     argList: unknown[],
     args: Collection<number, ComponentArgument>,
-    getConverterArgs: (arg: ComponentArgument, index: number, converter: ConverterComponent) => unknown[] | Promise<unknown[]>,
+    getConverterArgs: (arg: ComponentArgument, index: number, converter: ConverterComponent<unknown>) => unknown[] | Promise<unknown[]>,
   ) {
-    const items = new Collection<unknown, { ext: object; component: ConverterComponent }>()
+    const items = new Collection<unknown, { ext: object; component: ConverterComponent<unknown> }>()
 
     for (const extension of this.commandClient.registry.extensions) {
-      for (const converter of this.commandClient.registry.getComponentsWithType<ConverterComponent>(extension, ConverterComponent)) {
+      for (const converter of this.commandClient.registry.getComponentsWithType<ConverterComponent<unknown>>(extension, ConverterComponent)) {
         if (converter.options.component != component) continue
 
         items.set(converter.options.type, { component: converter, ext: extension })

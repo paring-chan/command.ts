@@ -1,4 +1,4 @@
-import { APIApplicationCommandOption } from 'discord.js'
+import type { APIApplicationCommandOption } from 'discord.js'
 import { createArgumentDecorator, ComponentArgumentDecorator } from '../core'
 
 type Options = APIApplicationCommandOption

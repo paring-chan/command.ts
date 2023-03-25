@@ -1,4 +1,5 @@
-import { APIApplicationCommandSubcommandOption, ApplicationCommandType, ChatInputApplicationCommandData } from 'discord.js'
+import type { APIApplicationCommandSubcommandOption, ChatInputApplicationCommandData } from 'discord.js'
+import { ApplicationCommandType } from 'discord.js'
 import { createComponentDecorator } from '../core'
 import { ApplicationCommandComponent } from './ApplicationCommand'
 

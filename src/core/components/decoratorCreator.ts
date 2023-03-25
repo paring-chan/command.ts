@@ -1,9 +1,9 @@
 import { Collection } from 'discord.js'
-import { ComponentHookStore } from '../hooks'
+import type { ComponentHookStore } from '../hooks'
 import { getComponentHookStore } from '../hooks/componentHook'
 import { ComponentStoreSymbol } from '../symbols'
-import { BaseComponent } from './BaseComponent'
-import { ComponentArgumentDecorator } from './ComponentArgumentDecorator'
+import type { BaseComponent } from './BaseComponent'
+import type { ComponentArgumentDecorator } from './ComponentArgumentDecorator'
 
 export type ComponentStore = Collection<string | symbol, BaseComponent>
 export type ComponentArgumentStore = Collection<number, ComponentArgumentDecorator>

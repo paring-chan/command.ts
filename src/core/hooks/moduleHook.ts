@@ -1,7 +1,8 @@
 import { Collection } from 'discord.js'
 import { ModuleHookStoreSymbol } from '../symbols'
+import type { ComponentHookFn } from './componentHook'
 
-export type ModuleHookStore = Collection<string, Function[]>
+export type ModuleHookStore = Collection<string, ComponentHookFn<unknown[]>[]>
 
 export const getModuleHookStore = (target: object) => {
   let result: ModuleHookStore | null = Reflect.getMetadata(ModuleHookStoreSymbol, target)

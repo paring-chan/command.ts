@@ -6,7 +6,8 @@
  * Licensed under MIT License. Please see more defails in LICENSE file.
  */
 
-import { ApplicationCommandOptionType, ApplicationCommandType, ChatInputCommandInteraction, Client, Message } from 'discord.js'
+import type { ChatInputCommandInteraction, Message } from 'discord.js'
+import { ApplicationCommandOptionType, ApplicationCommandType, Client } from 'discord.js'
 import { applicationCommand, CommandClient, moduleHook, option, ownerOnly, listener, Extension, command, rest, SubCommandGroup } from '../src'
 import 'dotenv/config'
 import { Logger } from 'tslog'
@@ -70,7 +71,7 @@ class Test extends Extension {
 
   @listener({ event: 'ready' })
   async testEvent() {
-    this.logger.info(`Login: ${chalk.green(client.user!.tag)}`)
+    this.logger.info(`Login: ${chalk.green(client.user?.tag ?? 'Unknown')}`)
     await this.commandClient.fetchOwners()
   }
 
@@ -106,7 +107,7 @@ const run = async () => {
 
   await client.application?.commands.set([])
 
-  await cc.getApplicationCommandsExtension()!.sync()
+  await cc.getApplicationCommandsExtension()?.sync()
 }
 
 run()

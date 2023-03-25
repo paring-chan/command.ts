@@ -1,16 +1,16 @@
 import { Collection } from 'discord.js'
-import _ from 'lodash'
+import type { AnyFunction } from '../../utils/types'
 import type { ComponentHookStore } from '../hooks'
 import { ComponentArgument } from './ComponentArgument'
 
 export class BaseComponent {
-  method!: Function
+  method!: AnyFunction
 
   hooks: ComponentHookStore = new Collection()
 
   argTypes: Collection<number, ComponentArgument> = new Collection()
 
-  _init(method: Function, argTypes: unknown[]) {
+  _init(method: AnyFunction, argTypes: unknown[]) {
     this.method = method
     for (let i = 0; i < argTypes.length; i++) {
       const element = argTypes[i]

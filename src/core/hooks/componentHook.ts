@@ -1,9 +1,9 @@
 import { Collection } from 'discord.js'
 import { ComponentHookSymbol } from '../symbols'
 
-export type ComponentHookFn = (...args: any[]) => void | Promise<void>
+export type ComponentHookFn<T extends unknown[]> = (...args: T) => void | Promise<void>
 
-export type ComponentHookStore = Collection<string, ComponentHookFn[]>
+export type ComponentHookStore = Collection<string, ComponentHookFn<unknown[]>[]>
 
 export const getComponentHookStore = (target: object, property: string | symbol): ComponentHookStore => {
   let data = Reflect.getMetadata(ComponentHookSymbol, target, property) as ComponentHookStore
@@ -16,7 +16,7 @@ export const getComponentHookStore = (target: object, property: string | symbol)
   return data
 }
 
-export const createComponentHook = (name: string, fn: ComponentHookFn): MethodDecorator => {
+export const createComponentHook = <T extends unknown[]>(name: string, fn: ComponentHookFn<T>): MethodDecorator => {
   return (target, key) => {
     const store = getComponentHookStore(target, key)
 
@@ -27,6 +27,7 @@ export const createComponentHook = (name: string, fn: ComponentHookFn): MethodDe
       store.set(name, hooks)
     }
 
+    // @ts-expect-error unknown type
     hooks.unshift(fn)
   }
 }
