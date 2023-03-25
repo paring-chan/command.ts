@@ -22,7 +22,7 @@ jobs:
 
       - name: Remove packageManager entry
         run: |
-          apt install -y jq
+          sudo apt install -y jq
           cat package.json | jq "del(.packageManager)" | tee package.json
 
       - name: Get pnpm store directory
