@@ -14,7 +14,7 @@
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
     "all-contributors-cli": "6.20.0",
-    "discord.js": "14.3.0",
+    "discord.js": "14.8.0",
     "dotenv": "16.0.1",
     "eslint": "latest",
     "eslint-config-prettier": "^8.8.0",
