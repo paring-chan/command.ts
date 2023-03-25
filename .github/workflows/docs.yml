@@ -46,7 +46,7 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: Build docs
-        run: pnpm docs
+        run: pnpm run docs
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
