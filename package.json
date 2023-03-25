@@ -52,5 +52,14 @@
   "peerDependencies": {
     "discord.js": "*",
     "tslog": "*"
+  },
+  "release": {
+    "branches": [
+      "stable",
+      {
+        "name": "dev",
+        "prerelease": true
+      }
+    ]
   }
 }
