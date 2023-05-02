@@ -38,9 +38,9 @@ pnpm add @pikokr/command.ts
 If you want to start project with command.ts, you can use the [quickstart template](https://github.com/pikokr/command.ts-v5-template).
 
 ```shell
-npx degit pikokr/command.ts-v5-template my-app
+pnpx degit pikokr/command.ts-v5-template my-app
 cd my-app
-npm dev
+pnpm dev
 ```
 
 Please refer to [template repository](https://github.com/pikokr/command.ts-v5-template) for detailed usage.
