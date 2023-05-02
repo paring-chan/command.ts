@@ -1,7 +1,7 @@
 {
   "name": "@pikokr/command.ts",
   "description": "Discord.js command framework for typescript.",
-  "packageManager": "pnpm@7.30.3",
+  "packageManager": "pnpm@8.3.1",
   "version": "0.0.0-development",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

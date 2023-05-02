@@ -102,7 +102,8 @@ export class Registry {
 
     const p = require.resolve(file)
 
-    const mod = await import(p)
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const mod = require(p)
 
     if (typeof mod.setup !== 'function') throw new Error('Extension must have a setup function')
 
