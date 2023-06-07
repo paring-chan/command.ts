@@ -147,7 +147,7 @@ export class ApplicationCommandExtension extends CTSExtension {
             type: ApplicationCommandType.ChatInput,
           }
 
-          if (command.subcommandGroup.guilds) {
+          if (command.subcommandGroup.guilds && command.subcommandGroup.guilds.length) {
             for (const guild of command.subcommandGroup.guilds) {
               let commands = guildCommands.get(guild)
               if (!commands) {
