@@ -12,7 +12,7 @@
     "@types/lodash": "4.14.184",
     "@typescript-eslint/eslint-plugin": "latest",
     "@typescript-eslint/parser": "latest",
-    "all-contributors-cli": "6.20.0",
+    "all-contributors-cli": "6.26.1",
     "discord.js": "14.8.0",
     "dotenv": "16.0.1",
     "eslint": "latest",
