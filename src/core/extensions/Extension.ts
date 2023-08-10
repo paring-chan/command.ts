@@ -5,9 +5,9 @@ import type { ComponentArgument } from '../components/ComponentArgument'
 import { ConverterComponent } from '../converter'
 import { CommandClient } from '../structures'
 
-export class Extension {
+export class Extension<Client extends CommandClient = CommandClient> {
   protected get commandClient() {
-    return CommandClient.getFromModule(this)
+    return CommandClient.getFromModule(this) as Client
   }
 
   protected get client() {
