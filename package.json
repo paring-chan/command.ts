@@ -51,7 +51,7 @@
     "semantic-release": "semantic-release"
   },
   "peerDependencies": {
-    "discord.js": "14.8",
+    "discord.js": "14.8 || 14.13",
     "tslog": "*"
   },
   "release": {
