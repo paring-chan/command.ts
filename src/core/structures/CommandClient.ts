@@ -16,7 +16,11 @@ export class CommandClient extends EventEmitter {
 
   owners: Set<Snowflake> = new Set()
 
-  constructor(public discord: Client, public logger: Logger<unknown> = new Logger({ prettyLogTimeZone: 'local' }), loggerOptions: ISettingsParam<unknown> = {}) {
+  constructor(
+    public discord: Client,
+    public logger: Logger<unknown> = new Logger({ prettyLogTimeZone: 'local' }),
+    loggerOptions: ISettingsParam<unknown> = {},
+  ) {
     super()
 
     this.ctsLogger = logger.getSubLogger({

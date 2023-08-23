@@ -21,7 +21,10 @@ export class Registry {
 
   globalHooks: Record<string, ComponentHookFn<unknown[]>[]> = {}
 
-  constructor(logger: Logger<unknown>, public client: CommandClient) {
+  constructor(
+    logger: Logger<unknown>,
+    public client: CommandClient,
+  ) {
     this.logger = logger.getSubLogger({
       name: chalk.green('Registry'),
     })

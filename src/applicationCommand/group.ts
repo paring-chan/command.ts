@@ -4,7 +4,10 @@ import { createComponentDecorator } from '../core'
 import { ApplicationCommandComponent } from './ApplicationCommand'
 
 export class SubCommandGroup {
-  constructor(public options: Omit<ChatInputApplicationCommandData, 'type'>, public guilds?: string[]) {}
+  constructor(
+    public options: Omit<ChatInputApplicationCommandData, 'type'>,
+    public guilds?: string[],
+  ) {}
 
   command(options: Omit<ApplicationCommandSubGroupData, 'options' | 'type'>): MethodDecorator {
     const cmd = new ApplicationCommandComponent({
@@ -21,7 +24,10 @@ export class SubCommandGroup {
 }
 
 export class SubCommandGroupChild {
-  constructor(public options: Omit<ApplicationCommandSubGroupData, 'options' | 'type'>, public parent: SubCommandGroup) {}
+  constructor(
+    public options: Omit<ApplicationCommandSubGroupData, 'options' | 'type'>,
+    public parent: SubCommandGroup,
+  ) {}
 
   command(options: Omit<ChatInputApplicationCommandData, 'options' | 'type'>): MethodDecorator {
     const cmd = new ApplicationCommandComponent({
