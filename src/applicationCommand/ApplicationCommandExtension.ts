@@ -1,20 +1,33 @@
 import chalk from 'chalk'
-import type { ApplicationCommandData, ApplicationCommandSubCommandData, ApplicationCommandSubGroupData, ChatInputApplicationCommandData, Interaction, Snowflake } from 'discord.js'
-import {
-  ApplicationCommandOptionType,
-  ApplicationCommandType,
-  ChatInputCommandInteraction,
-  Collection,
-  CommandInteraction,
-  InteractionType,
-  MessageContextMenuCommandInteraction,
-  UserContextMenuCommandInteraction,
+import type { Mutable } from 'utility-types'
+import type {
+  ApplicationCommandData,
+  ApplicationCommandSubCommandData,
+  ApplicationCommandSubGroupData,
+  ChatInputApplicationCommandData,
+  Interaction,
+  Snowflake,
+  ApplicationCommandOptionData,
 } from 'discord.js'
+import { ChatInputCommandInteraction, Collection, CommandInteraction, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction } from 'discord.js'
+import { ApplicationCommandOptionType, ApplicationCommandType } from 'discord-api-types/v10'
 import { ApplicationCommandComponent } from './ApplicationCommand'
 import { ApplicationCommandOption } from './ApplicationCommandOption'
-import { listener } from '../core/listener'
-import { argConverter } from '../core/converter'
+import { listener } from '../core'
+import { argConverter } from '../core'
 import { CTSExtension } from '../core/extensions/CTSExtension'
+
+type MutableGroup = ChatInputApplicationCommandData & {
+  options: Mutable<ChatInputApplicationCommandData['options']>
+}
+
+type MutableSubGroup = ApplicationCommandSubGroupData & {
+  options: Mutable<ApplicationCommandSubGroupData['options']>
+}
+
+type MutableCommand = ChatInputApplicationCommandData & {
+  options: ApplicationCommandOptionData[]
+}
 
 export type ApplicationCommandExtensionConfig = {
   guilds?: Snowflake[]
@@ -27,6 +40,7 @@ export class ApplicationCommandExtension extends CTSExtension {
 
   unmanagedCommands: (ApplicationCommandData & { guilds?: Snowflake[] })[] = []
 
+  // noinspection JSUnusedGlobalSymbols
   registerUnmanagedCommand(command: ApplicationCommandData & { guilds?: Snowflake[] }) {
     this.unmanagedCommands.push(command)
   }
@@ -34,7 +48,7 @@ export class ApplicationCommandExtension extends CTSExtension {
   @listener({ event: 'interactionCreate' })
   async interactionCreate(i: Interaction) {
     try {
-      if (i.type !== InteractionType.ApplicationCommand) return
+      if (!i.isCommand()) return
 
       let cmd: ApplicationCommandComponent | null = null
       let ext: object | null = null
@@ -44,7 +58,7 @@ export class ApplicationCommandExtension extends CTSExtension {
       let subcommand: string | null = null
       let subcommandGroup: string | null = null
 
-      if (i.commandType === ApplicationCommandType.ChatInput) {
+      if (i.isChatInputCommand()) {
         subcommand = i.options.getSubcommand(false)
         subcommandGroup = i.options.getSubcommandGroup(false)
       }
@@ -139,13 +153,13 @@ export class ApplicationCommandExtension extends CTSExtension {
 
     for (const command of client.registry.getComponentsWithTypeGlobal<ApplicationCommandComponent>(ApplicationCommandComponent)) {
       if (command.subcommandGroup) {
-        let group = subcommandGroups.get(command.subcommandGroup.options.name)
+        let group = subcommandGroups.get(command.subcommandGroup.options.name) as MutableGroup
 
         if (!group) {
           group = {
             ...command.subcommandGroup.options,
             type: ApplicationCommandType.ChatInput,
-          }
+          } as MutableGroup
 
           if (command.subcommandGroup.guilds) {
             for (const guild of command.subcommandGroup.guilds) {
@@ -174,18 +188,18 @@ export class ApplicationCommandExtension extends CTSExtension {
           }
         }
 
-        group.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand, options } as ApplicationCommandSubCommandData)
+        group.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand, options } as Mutable<ApplicationCommandSubCommandData>)
 
         continue
       } else if (command.subcommandGroupChild) {
         const parent = command.subcommandGroupChild.parent
-        let group = subcommandGroups.get(parent.options.name)
+        let group = subcommandGroups.get(parent.options.name) as MutableGroup
 
         if (!group) {
           group = {
             ...parent.options,
             type: ApplicationCommandType.ChatInput,
-          }
+          } as MutableGroup
 
           if (parent.guilds) {
             for (const guild of parent.guilds) {
@@ -204,10 +218,13 @@ export class ApplicationCommandExtension extends CTSExtension {
 
         if (!group.options) group.options = []
 
-        let child = group.options.find((x) => x.name === command.subcommandGroupChild?.options.name) as ApplicationCommandSubGroupData
+        let child = group.options.find((x) => x.name === command.subcommandGroupChild?.options.name) as MutableSubGroup
 
         if (!child) {
-          child = { ...(command.subcommandGroupChild.options as Omit<ApplicationCommandSubGroupData, 'type'>), type: ApplicationCommandOptionType.SubcommandGroup }
+          child = {
+            ...(command.subcommandGroupChild.options as Omit<ApplicationCommandSubGroupData, 'type'>),
+            type: ApplicationCommandOptionType.SubcommandGroup,
+          } as MutableSubGroup
           group.options.push(child)
         }
 
@@ -223,12 +240,12 @@ export class ApplicationCommandExtension extends CTSExtension {
           }
         }
 
-        child.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand, options } as ApplicationCommandSubCommandData)
+        child.options.push({ ...command.options, type: ApplicationCommandOptionType.Subcommand, options } as Mutable<ApplicationCommandSubCommandData>)
 
         continue
       }
 
-      const cmd: ApplicationCommandData = { ...command.options }
+      const cmd = { ...command.options } as MutableCommand
 
       if (cmd.type === ApplicationCommandType.ChatInput) {
         cmd.options = []
@@ -269,7 +286,6 @@ export class ApplicationCommandExtension extends CTSExtension {
           }
           commands.push(rest)
         }
-        continue
       } else {
         commands.push(rest)
       }

@@ -61,6 +61,8 @@ export const getComponentArgumentStore = (target: object, key: string | symbol):
 export const createArgumentDecorator = <Options>(type: typeof ComponentArgumentDecorator<Options>) => {
   return (options: Options): ParameterDecorator => {
     return (target, key, idx) => {
+      if (!key) return
+
       const arg: ComponentArgumentDecorator<Options> = new type(options)
 
       const store = getComponentArgumentStore(target, key)
