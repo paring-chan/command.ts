@@ -18,7 +18,7 @@ jobs:
     if: github.repository_owner == 'pikokr'
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Install node.js v18
         uses: actions/setup-node@v3
@@ -75,7 +75,7 @@ jobs:
           path: docs
 
       - name: Checkout docs repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: 'pikokr/docs'
           token: ${{ secrets.PIKOKR_DOCS }}
