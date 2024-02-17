@@ -74,8 +74,8 @@ devDependencies:
     specifier: ^4.9.2
     version: 4.9.2
   tsup:
-    specifier: 8.0.1
-    version: 8.0.1(@swc/core@1.3.101)(ts-node@10.9.2)(typescript@5.3.3)
+    specifier: 8.0.2
+    version: 8.0.2(@swc/core@1.3.101)(ts-node@10.9.2)(typescript@5.3.3)
   typedoc:
     specifier: ^0.25.4
     version: 0.25.4(typescript@5.3.3)
@@ -3901,8 +3901,8 @@ packages:
     engines: {node: '>=16'}
     dev: true
 
-  /tsup@8.0.1(@swc/core@1.3.101)(ts-node@10.9.2)(typescript@5.3.3):
-    resolution: {integrity: sha512-hvW7gUSG96j53ZTSlT4j/KL0q1Q2l6TqGBFc6/mu/L46IoNWqLLUzLRLP1R8Q7xrJTmkDxxDoojV5uCVs1sVOg==}
+  /tsup@8.0.2(@swc/core@1.3.101)(ts-node@10.9.2)(typescript@5.3.3):
+    resolution: {integrity: sha512-NY8xtQXdH7hDUAZwcQdY/Vzlw9johQsaqf7iwZ6g1DOUlFYQ5/AtVAjTvihhEyeRlGo4dLRVHtrRaL35M1daqQ==}
     engines: {node: '>=18'}
     hasBin: true
     peerDependencies:

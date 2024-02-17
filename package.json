@@ -24,7 +24,7 @@
     "semantic-release": "^22.0.12",
     "ts-node": "10.9.2",
     "tslog": "^4.9.2",
-    "tsup": "8.0.1",
+    "tsup": "8.0.2",
     "typedoc": "^0.25.4",
     "typescript": "^5.3.3",
     "utility-types": "^3.10.0"
