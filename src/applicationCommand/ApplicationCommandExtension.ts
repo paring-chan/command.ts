@@ -9,7 +9,7 @@ import type {
   Snowflake,
   ApplicationCommandOptionData,
 } from 'discord.js'
-import { ChatInputCommandInteraction, Collection, CommandInteraction, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction } from 'discord.js'
+import { Attachment, ChatInputCommandInteraction, Collection, CommandInteraction, MessageContextMenuCommandInteraction, UserContextMenuCommandInteraction } from 'discord.js'
 import { ApplicationCommandOptionType, ApplicationCommandType } from 'discord-api-types/v10'
 import { ApplicationCommandComponent } from './ApplicationCommand'
 import { ApplicationCommandOption } from './ApplicationCommandOption'
@@ -118,7 +118,15 @@ export class ApplicationCommandExtension extends CTSExtension {
                 }
               }
 
-              value = i.options.get(decorator.options.name, false)?.value
+              switch (decorator.options.type) {
+                case ApplicationCommandOptionType.Attachment:
+                  value = i.options.getAttachment(decorator.options.name, decorator.options.required)
+                  break
+                default:
+                  value = i.options.get(decorator.options.name)?.value
+                  break
+              }
+
               break
             }
           }
@@ -373,4 +381,10 @@ export class ApplicationCommandExtension extends CTSExtension {
   async commandInteraction(i: UserContextMenuCommandInteraction) {
     return i
   }
+
+  @argConverter({
+    component: ApplicationCommandComponent,
+    type: Attachment,
+  })
+  async attachment() {}
 }
