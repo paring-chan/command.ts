@@ -62,5 +62,10 @@
         "prerelease": true
       }
     ]
+  },
+  "pnpm": {
+    "overrides": {
+      "undici@<=5.28.2": ">=5.28.3"
+    }
   }
 }
