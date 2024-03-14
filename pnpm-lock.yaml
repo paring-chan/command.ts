@@ -45,7 +45,7 @@ devDependencies:
     version: 6.26.1
   discord-api-types:
     specifier: ^0.37.73
-    version: 0.37.73
+    version: 0.37.74
   discord.js:
     specifier: 14.14.1
     version: 14.14.1
@@ -1716,8 +1716,8 @@ packages:
     resolution: {integrity: sha512-o/dXNFfhBpYHpQFdT6FWzeO7pKc838QeeZ9d91CfVAtpr5XLK4B/zYxQbYgPdoMiTDvJfzcsLW5naXgmHGDNXw==}
     dev: true
 
-  /discord-api-types@0.37.73:
-    resolution: {integrity: sha512-mi915PBUxF1G233EwHKNegNAF/tVfiSRN9+hKwu0G3NpbtLXvWUxCuCjgSyY+QmQ6/Hvpqm0xs5HxzfvhAS20A==}
+  /discord-api-types@0.37.74:
+    resolution: {integrity: sha512-JC6jhM5oflJoYpZhv56yr45Lnx/8/CJhZXyFDARuvkq7RoAC9HpKrd1hJ/RVAI36K52IPZ+wDURoED63MIXXOw==}
     dev: true
 
   /discord.js@14.14.1:
