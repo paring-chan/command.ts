@@ -19,7 +19,7 @@ dependencies:
     version: 4.17.21
   reflect-metadata:
     specifier: ^0.2.1
-    version: 0.2.1
+    version: 0.2.2
   walk-sync:
     specifier: ^3.0.0
     version: 3.0.0
@@ -3375,8 +3375,8 @@ packages:
       picomatch: 2.3.1
     dev: true
 
-  /reflect-metadata@0.2.1:
-    resolution: {integrity: sha512-i5lLI6iw9AU3Uu4szRNPPEkomnkjRTaVt9hy/bn5g/oSzekBSMeLZblcjP74AW0vBabqERLLIrz+gR8QYR54Tw==}
+  /reflect-metadata@0.2.2:
+    resolution: {integrity: sha512-urBwgfrvVP/eAyXx4hluJivBKzuEbSQs9rKWCrCkbSxNv8mxPcUZKeuoF3Uy4mJl3Lwprp6yy5/39VWigZ4K6Q==}
     dev: false
 
   /regenerator-runtime@0.14.1:
